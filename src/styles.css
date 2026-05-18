@@ -258,3 +258,166 @@ body:after{display:none!important;}
   .wcFrame.game{grid-template-columns:1fr;padding:12px;gap:12px;height:auto;min-height:100dvh;}
   .boardFrame{min-height:auto}.cards{grid-template-columns:1fr}.boardFrame>div:not(.mapScreen){width:100%;}
 }
+
+
+/* Map readability hotfix: keep the internet forest as the page backdrop, but make the playable map visible. */
+.wcFrame.game{
+  overflow:hidden;
+}
+.boardFrame{
+  place-items:center;
+}
+.mapScreen.pokelikeExact{
+  height:calc(100dvh - 48px);
+  min-height:720px;
+  width:100%;
+}
+.pokelikeBoard{
+  width:min(700px,100%);
+  height:calc(100dvh - 54px);
+  min-height:720px;
+  background:
+    radial-gradient(ellipse at 50% 8%,rgba(255,229,149,.16),transparent 34%),
+    linear-gradient(180deg,rgba(30,64,48,.86),rgba(16,36,31,.92) 56%,rgba(10,21,24,.96)),
+    url('./assets/backgrounds/forest/parallax-forest-lights.png') center bottom/auto 100% repeat-x,
+    linear-gradient(#17324a,#0c1714)!important;
+  border-color:#e0b768;
+  box-shadow:0 0 0 3px #080604,0 0 0 8px #4a341d,10px 12px 0 #050403,inset 0 0 0 5px rgba(255,238,170,.22);
+}
+.pokelikeBoard:before{
+  z-index:0;
+  opacity:.55;
+  background:
+    linear-gradient(90deg,rgba(255,235,168,.16) 0 1px,transparent 1px calc(100% - 1px),rgba(255,235,168,.16) calc(100% - 1px)),
+    linear-gradient(180deg,rgba(255,220,127,.10),rgba(0,0,0,.20));
+}
+.pokelikeBoard:after{
+  content:"";
+  position:absolute;
+  left:50%;top:92px;bottom:54px;width:34px;
+  transform:translateX(-50%);
+  border-radius:22px;
+  background:linear-gradient(180deg,rgba(235,187,88,.38),rgba(118,74,28,.5));
+  box-shadow:0 0 0 3px rgba(26,16,7,.38), inset 0 0 0 2px rgba(255,235,151,.25);
+  pointer-events:none;
+  z-index:1;
+}
+.boardTopRoom,.waterLane,.coral,.dockGap,.startMarker,.mapPartySprites{z-index:2;}
+.mapEdges{z-index:3;}
+.mapEdges line{
+  stroke:#f1c76e;
+  stroke-width:.95;
+  stroke-dasharray:none;
+  opacity:.92;
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.7));
+}
+.mapEdges line:nth-child(3n){stroke:#ffe59a;opacity:.85;}
+.node{
+  z-index:7!important;
+  width:66px;height:66px;
+  pointer-events:auto;
+  filter:drop-shadow(0 5px 0 rgba(0,0,0,.58));
+}
+.node:before{
+  content:"";
+  position:absolute;
+  inset:4px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#fff7b8,#d69b39 54%,#573217 74%);
+  border:3px solid #140b04;
+  box-shadow:0 0 0 2px #f4d27e,inset -6px -7px 0 rgba(0,0,0,.22);
+  z-index:-1;
+}
+.node.active:before{
+  background:radial-gradient(circle at 35% 28%,#fffbd3,#ffe568 52%,#b06024 76%);
+  box-shadow:0 0 0 3px #fff1a9,0 0 18px 6px rgba(255,220,77,.62),inset -6px -7px 0 rgba(0,0,0,.18);
+}
+.node.active:after{
+  top:-28px;
+  background:#1d1309;
+  color:#ffe88a;
+  border-color:#e6b95c;
+}
+.node.done:before{filter:grayscale(.4) brightness(.78);}
+.spriteNode{
+  width:52px!important;
+  height:52px!important;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(2px 3px 0 rgba(0,0,0,.55)) saturate(1.2) contrast(1.1)!important;
+}
+.node small{
+  display:block;
+  position:absolute;
+  top:62px;left:50%;transform:translateX(-50%);
+  background:rgba(10,7,4,.92);
+  color:#ffe6a4;
+  border:1px solid #a97a3e;
+  border-radius:4px;
+  padding:3px 5px;
+  font-size:8px;
+  line-height:1;
+  white-space:nowrap;
+  text-shadow:1px 1px #000;
+}
+.node:not(.active) small{opacity:.58;}
+.startMarker{
+  bottom:12px;
+  z-index:8;
+}
+.mapPartySprites{
+  bottom:78px;
+  z-index:6;
+}
+@media(max-width:900px){
+  .wcFrame.game{overflow:auto;}
+  .mapScreen.pokelikeExact,.pokelikeBoard{min-height:640px;height:70dvh;}
+  .node{width:58px;height:58px;}
+  .spriteNode{width:46px!important;height:46px!important;}
+  .node small{display:none;}
+}
+
+
+/* Viewport-fit hotfix: keep every map node inside the visible screen. */
+.mapScreen.pokelikeExact{
+  height:calc(100dvh - 48px)!important;
+  min-height:0!important;
+  overflow:visible;
+}
+.pokelikeBoard{
+  height:calc(100dvh - 58px)!important;
+  min-height:0!important;
+  max-height:none!important;
+}
+.boardTopRoom{top:12px;height:64px;}
+.roomPic{top:15px;height:26px;}
+.roomDoor{top:9px;height:48px;}
+.roomMachine{top:8px;height:52px;}
+.roomVial{top:12px;height:22px;}
+.waterLane{top:78px;bottom:8px;}
+.pokelikeBoard:after{top:78px;bottom:40px;}
+.startMarker{bottom:4px;}
+.node small{top:56px;}
+@media(max-height:720px){
+  .wcFrame.game{padding-top:14px;padding-bottom:10px;}
+  .sidebar,.rightPanel{padding:8px;}
+  .pokelikeBoard{height:calc(100dvh - 34px)!important;}
+  .mapScreen.pokelikeExact{height:calc(100dvh - 30px)!important;}
+  .node{width:54px;height:54px;}
+  .spriteNode{width:42px!important;height:42px!important;}
+  .node small{display:none;}
+  .node.active:after{top:-22px;width:30px;height:30px;font-size:15px;}
+}
+
+
+/* Width hotfix: the map container had collapsed to min-content, leaving only a vertical strip. */
+.mapScreen.pokelikeExact{
+  width:100%!important;
+  max-width:100%!important;
+  align-items:center!important;
+}
+.pokelikeBoard{
+  width:100%!important;
+  max-width:700px!important;
+  flex:0 0 auto;
+}
