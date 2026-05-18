@@ -142,3 +142,119 @@ body:after{
 .wcItem .spriteIcon + b{display:none;}
 .wcItem b{position:relative;z-index:1;font-size:18px;line-height:1;}
 .rightPanel .wcItem .spriteIcon{inset:0;width:100%;height:100%;}
+
+
+/* Internet asset forest redesign pass
+   Background: "Forest Background" by Luis Zuno / Ansimuz, CC0, OpenGameArt. */
+body{
+  background:#0a1020 !important;
+}
+body:after{display:none!important;}
+.page,.battlePage,.wcFrame.game{
+  background:
+    linear-gradient(180deg,rgba(6,9,17,.16),rgba(5,8,15,.82)),
+    url('./assets/backgrounds/forest/parallax-forest-lights.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-front-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-middle-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-back-trees.png') center bottom/auto 100% repeat-x,
+    linear-gradient(#17233a,#0a101b) !important;
+  image-rendering:auto;
+}
+.page:before,.battlePage:before,.wcFrame.game:before{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse at 50% 5%,rgba(238,218,142,.18),transparent 45%),
+    linear-gradient(180deg,rgba(6,10,16,.16),rgba(3,4,6,.72));
+}
+.wcFrame.game{
+  width:min(1180px,100vw);height:100dvh;margin:0 auto;padding:24px 18px 18px;
+  grid-template-columns:150px minmax(620px,760px) 180px;gap:18px;align-items:start;
+  overflow:auto;position:relative;
+}
+.sidebar,.rightPanel,.boardFrame{z-index:1;}
+.sidebar,.rightPanel{
+  background:linear-gradient(180deg,rgba(32,27,20,.96),rgba(13,11,9,.96))!important;
+  border:3px solid #806034;outline:2px solid #110d09;
+  box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 1px #d2a85b55,4px 4px 0 #050403;
+  border-radius:8px;color:#f4dfb0;
+}
+.sidebar h3,.rightPanel h3{color:#ffd98a;text-shadow:2px 2px #070604;font-size:15px;}
+.boardFrame{
+  min-height:calc(100dvh - 48px);display:grid;place-items:start center;
+}
+.boardFrame>div:not(.mapScreen){
+  width:min(100%,760px);margin-top:6px;padding:20px 22px 24px;
+  background:linear-gradient(180deg,rgba(30,24,16,.94),rgba(13,10,7,.95));
+  border:4px solid #9b733d;outline:2px solid #050403;border-radius:10px;
+  box-shadow:0 18px 35px rgba(0,0,0,.58),inset 0 0 0 2px rgba(255,225,151,.16);
+  color:#ead9ae;
+}
+.boardFrame>div:not(.mapScreen)>h1,.page>h1{
+  margin:0 0 10px;text-align:center;font-family:'Press Start 2P';font-size:20px;color:#ffd98a;text-shadow:3px 3px #070604;
+}
+.boardFrame>div:not(.mapScreen)>p{margin:0 0 16px;text-align:center;color:#c7b58d;}
+.cards{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch;
+}
+.cards.compact{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));}
+.pickCard{
+  min-height:230px;padding:12px 10px 14px;
+  background:
+    linear-gradient(180deg,rgba(50,37,21,.98),rgba(13,10,7,.98)),
+    radial-gradient(ellipse at 50% 0,rgba(255,213,118,.14),transparent 60%);
+  border:3px solid #0a0805;outline:2px solid #9b733d;border-radius:7px;
+  box-shadow:0 8px 0 #050403,0 14px 22px rgba(0,0,0,.48),inset 0 0 0 1px rgba(255,229,158,.17);
+  transition:transform .08s ease,filter .08s ease,box-shadow .08s ease;
+}
+.pickCard:hover:not(:disabled){transform:translateY(-3px);filter:brightness(1.12);box-shadow:0 11px 0 #050403,0 19px 25px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,229,158,.22);}
+.pickCard:disabled{filter:grayscale(.8) brightness(.65);cursor:not-allowed;}
+.pickCard h2{font-size:18px;color:#ffd98a;text-shadow:2px 2px #050403;margin:8px 0 4px;}
+.pickCard p{color:#cbb88f;font-size:13px;line-height:1.12;}
+.pickCard>.modelSprite.small{
+  width:100%;height:104px;margin:0 auto 4px;display:grid;place-items:end center;
+  background:linear-gradient(180deg,rgba(109,129,63,.28),rgba(36,68,32,.55));
+  border:2px solid #5f4828;border-radius:5px;overflow:hidden;
+}
+.pickCard>.modelSprite.small:after{
+  content:"";position:absolute;left:22%;right:22%;bottom:9px;height:15px;border-radius:50%;background:rgba(0,0,0,.38);z-index:1;
+}
+.pickCard>.modelSprite.small img{max-height:96px;z-index:2;filter:drop-shadow(2px 4px 0 rgba(0,0,0,.45));}
+.tags span,.statgrid span{
+  background:#120f0a;border:1px solid #7c5c31;color:#e7d29a;border-radius:3px;
+}
+.statgrid{gap:5px}.statgrid span{font-size:12px;}
+.boardFrame>div:not(.mapScreen)>button,.page button:not(.pickCard),.equipGrid button{
+  background:linear-gradient(#7f6031,#3d2a15);border:2px solid #0a0704;outline:1px solid #d0a054;color:#ffe0a0;
+  box-shadow:3px 4px 0 #050403;border-radius:5px;padding:7px 10px;text-shadow:1px 1px #050403;
+}
+.boardFrame>div:not(.mapScreen)>button:hover,.page button:not(.pickCard):hover,.equipGrid button:hover{filter:brightness(1.15);}
+.pokelikeBoard{
+  background:
+    linear-gradient(180deg,rgba(18,52,32,.12),rgba(10,20,13,.45)),
+    url('./assets/backgrounds/forest/parallax-forest-lights.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-front-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-middle-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-back-trees.png') center bottom/auto 100% repeat-x,
+    linear-gradient(#17324a,#0c1714)!important;
+  border-color:#b78b4c;box-shadow:0 0 0 3px #080604,0 0 0 7px #4a341d,9px 10px 0 #050403,inset 0 0 0 4px rgba(255,218,137,.18);
+}
+.pokelikeBoard:before{opacity:.18;background:linear-gradient(180deg,rgba(255,220,127,.12),rgba(0,0,0,.28));}
+.boardTopRoom{background:linear-gradient(#4b3820,#21170d);border-top-color:#b7863f;border-bottom-color:#4b2d14;box-shadow:inset 0 0 0 4px rgba(255,220,132,.15);}
+.waterLane{background:rgba(41,91,62,.22);}
+.startMarker{background:#f0c977;color:#2b1a0d;text-shadow:1px 1px #fff0bd;}
+.pokelikeBattle{
+  background:
+    linear-gradient(180deg,rgba(5,7,10,.15),rgba(3,5,7,.86)),
+    url('./assets/backgrounds/forest/parallax-forest-lights.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-front-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-middle-trees.png') center bottom/auto 100% repeat-x,
+    url('./assets/backgrounds/forest/parallax-forest-back-trees.png') center bottom/auto 100% repeat-x,
+    #0d1420!important;
+}
+.pokelikeBattle .battlePanel{background:linear-gradient(#2b261c,#15110c);border-color:#0c0905;outline-color:#8d6a37;}
+.modelBattleCard{background:linear-gradient(#96c86d,#5e9f4e);}
+.arenaStage{background:linear-gradient(#406f3a 0 55%,#2f5a2b 56% 100%);}
+@media(max-width:900px){
+  .wcFrame.game{grid-template-columns:1fr;padding:12px;gap:12px;height:auto;min-height:100dvh;}
+  .boardFrame{min-height:auto}.cards{grid-template-columns:1fr}.boardFrame>div:not(.mapScreen){width:100%;}
+}
