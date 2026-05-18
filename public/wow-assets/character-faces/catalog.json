@@ -1,0 +1,506 @@
+[
+  {
+    "id": "footman",
+    "name": "Footman",
+    "group": "human",
+    "wowIcon": "inv_misc_head_human_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_human_01.jpg",
+    "asset": "wow-assets/character-faces/footman.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "captain_footman",
+    "name": "Captain Footman",
+    "group": "human",
+    "wowIcon": "inv_misc_head_human_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_human_01.jpg",
+    "asset": "wow-assets/character-faces/captain_footman.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "rifleman",
+    "name": "Rifleman",
+    "group": "human",
+    "wowIcon": "achievement_character_dwarf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_dwarf_male.jpg",
+    "asset": "wow-assets/character-faces/rifleman.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "sharpshooter",
+    "name": "Sharpshooter",
+    "group": "human",
+    "wowIcon": "achievement_character_dwarf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_dwarf_male.jpg",
+    "asset": "wow-assets/character-faces/sharpshooter.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "priest",
+    "name": "Priest",
+    "group": "human",
+    "wowIcon": "achievement_character_human_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_female.jpg",
+    "asset": "wow-assets/character-faces/priest.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "high_priest",
+    "name": "High Priest",
+    "group": "human",
+    "wowIcon": "achievement_character_human_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_female.jpg",
+    "asset": "wow-assets/character-faces/high_priest.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "knight",
+    "name": "Knight",
+    "group": "human",
+    "wowIcon": "achievement_character_human_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_male.jpg",
+    "asset": "wow-assets/character-faces/knight.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "champion_knight",
+    "name": "Champion Knight",
+    "group": "human",
+    "wowIcon": "achievement_character_human_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_male.jpg",
+    "asset": "wow-assets/character-faces/champion_knight.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "gryphon",
+    "name": "Gryphon Rider",
+    "group": "human",
+    "wowIcon": "ability_mount_gryphon_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_mount_gryphon_01.jpg",
+    "asset": "wow-assets/character-faces/gryphon.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "grunt",
+    "name": "Grunt",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_orc_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_orc_01.jpg",
+    "asset": "wow-assets/character-faces/grunt.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "grunt_veteran",
+    "name": "Grunt Veteran",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_orc_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_orc_01.jpg",
+    "asset": "wow-assets/character-faces/grunt_veteran.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "headhunter",
+    "name": "Troll Headhunter",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_troll_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_troll_01.jpg",
+    "asset": "wow-assets/character-faces/headhunter.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "berserker",
+    "name": "Troll Berserker",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_troll_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_troll_01.jpg",
+    "asset": "wow-assets/character-faces/berserker.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "shaman",
+    "name": "Shaman",
+    "group": "orc",
+    "wowIcon": "achievement_character_orc_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_orc_male.jpg",
+    "asset": "wow-assets/character-faces/shaman.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "storm_shaman",
+    "name": "Storm Shaman",
+    "group": "orc",
+    "wowIcon": "achievement_character_orc_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_orc_male.jpg",
+    "asset": "wow-assets/character-faces/storm_shaman.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "raider",
+    "name": "Raider",
+    "group": "orc",
+    "wowIcon": "ability_hunter_pet_wolf",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_wolf.jpg",
+    "asset": "wow-assets/character-faces/raider.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "wolf_captain",
+    "name": "Wolf Captain",
+    "group": "orc",
+    "wowIcon": "ability_hunter_pet_wolf",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_wolf.jpg",
+    "asset": "wow-assets/character-faces/wolf_captain.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "tauren",
+    "name": "Tauren",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_tauren_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tauren_01.jpg",
+    "asset": "wow-assets/character-faces/tauren.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "archer",
+    "name": "Archer",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/archer.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "sentinel_archer",
+    "name": "Sentinel Archer",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/sentinel_archer.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "huntress",
+    "name": "Huntress",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/huntress.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "moon_huntress",
+    "name": "Moon Huntress",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/moon_huntress.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "dryad",
+    "name": "Dryad",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/dryad.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "elder_dryad",
+    "name": "Elder Dryad",
+    "group": "nightelf",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/elder_dryad.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "druid_claw",
+    "name": "Druid of the Claw",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_pet_bear",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_bear.jpg",
+    "asset": "wow-assets/character-faces/druid_claw.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "elder_bear",
+    "name": "Elder Bear Druid",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_pet_bear",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_bear.jpg",
+    "asset": "wow-assets/character-faces/elder_bear.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "chimaera",
+    "name": "Chimaera",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_pet_chimera",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_chimera.jpg",
+    "asset": "wow-assets/character-faces/chimaera.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "ghoul",
+    "name": "Ghoul",
+    "group": "undead",
+    "wowIcon": "inv_misc_head_undead_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_undead_01.jpg",
+    "asset": "wow-assets/character-faces/ghoul.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "frenzied_ghoul",
+    "name": "Frenzied Ghoul",
+    "group": "undead",
+    "wowIcon": "inv_misc_head_undead_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_undead_01.jpg",
+    "asset": "wow-assets/character-faces/frenzied_ghoul.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "crypt_fiend",
+    "name": "Crypt Fiend",
+    "group": "undead",
+    "wowIcon": "ability_hunter_pet_spider",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_spider.jpg",
+    "asset": "wow-assets/character-faces/crypt_fiend.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "crypt_reaver",
+    "name": "Crypt Reaver",
+    "group": "undead",
+    "wowIcon": "ability_hunter_pet_spider",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_spider.jpg",
+    "asset": "wow-assets/character-faces/crypt_reaver.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "necromancer",
+    "name": "Necromancer",
+    "group": "undead",
+    "wowIcon": "achievement_character_undead_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_undead_male.jpg",
+    "asset": "wow-assets/character-faces/necromancer.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "dark_necromancer",
+    "name": "Dark Necromancer",
+    "group": "undead",
+    "wowIcon": "achievement_character_undead_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_undead_male.jpg",
+    "asset": "wow-assets/character-faces/dark_necromancer.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "abomination",
+    "name": "Abomination",
+    "group": "undead",
+    "wowIcon": "achievement_boss_patchwerk",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_patchwerk.jpg",
+    "asset": "wow-assets/character-faces/abomination.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "plague_abom",
+    "name": "Plague Abomination",
+    "group": "undead",
+    "wowIcon": "achievement_boss_patchwerk",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_patchwerk.jpg",
+    "asset": "wow-assets/character-faces/plague_abom.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "frost_wyrm",
+    "name": "Frost Wyrm",
+    "group": "undead",
+    "wowIcon": "achievement_boss_sindragosa",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_sindragosa.jpg",
+    "asset": "wow-assets/character-faces/frost_wyrm.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "paladin",
+    "name": "Paladin",
+    "group": "human-hero",
+    "wowIcon": "achievement_character_human_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_male.jpg",
+    "asset": "wow-assets/character-faces/paladin.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "archmage",
+    "name": "Archmage",
+    "group": "human-hero",
+    "wowIcon": "achievement_character_human_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_human_male.jpg",
+    "asset": "wow-assets/character-faces/archmage.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "mountain_king",
+    "name": "Mountain King",
+    "group": "human-hero",
+    "wowIcon": "achievement_character_dwarf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_dwarf_male.jpg",
+    "asset": "wow-assets/character-faces/mountain_king.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "blood_mage",
+    "name": "Blood Mage",
+    "group": "human-hero",
+    "wowIcon": "achievement_character_bloodelf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_bloodelf_male.jpg",
+    "asset": "wow-assets/character-faces/blood_mage.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "blademaster",
+    "name": "Blademaster",
+    "group": "orc-hero",
+    "wowIcon": "inv_misc_head_orc_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_orc_01.jpg",
+    "asset": "wow-assets/character-faces/blademaster.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "far_seer",
+    "name": "Far Seer",
+    "group": "orc-hero",
+    "wowIcon": "achievement_character_orc_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_orc_male.jpg",
+    "asset": "wow-assets/character-faces/far_seer.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "tauren_chief",
+    "name": "Tauren Chieftain",
+    "group": "orc-hero",
+    "wowIcon": "inv_misc_head_tauren_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tauren_01.jpg",
+    "asset": "wow-assets/character-faces/tauren_chief.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "shadow_hunter",
+    "name": "Shadow Hunter",
+    "group": "orc-hero",
+    "wowIcon": "inv_misc_head_troll_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_troll_01.jpg",
+    "asset": "wow-assets/character-faces/shadow_hunter.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "demon_hunter",
+    "name": "Demon Hunter",
+    "group": "nightelf-hero",
+    "wowIcon": "achievement_boss_illidan",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_illidan.jpg",
+    "asset": "wow-assets/character-faces/demon_hunter.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "keeper",
+    "name": "Keeper of the Grove",
+    "group": "nightelf-hero",
+    "wowIcon": "achievement_character_nightelf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_male.jpg",
+    "asset": "wow-assets/character-faces/keeper.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "priestess",
+    "name": "Priestess of the Moon",
+    "group": "nightelf-hero",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/priestess.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "warden",
+    "name": "Warden",
+    "group": "nightelf-hero",
+    "wowIcon": "achievement_character_nightelf_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_nightelf_female.jpg",
+    "asset": "wow-assets/character-faces/warden.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "death_knight",
+    "name": "Death Knight",
+    "group": "undead-hero",
+    "wowIcon": "achievement_character_undead_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_undead_male.jpg",
+    "asset": "wow-assets/character-faces/death_knight.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "dreadlord",
+    "name": "Dreadlord",
+    "group": "undead-hero",
+    "wowIcon": "inv_misc_monsterhead_04",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterhead_04.jpg",
+    "asset": "wow-assets/character-faces/dreadlord.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "lich",
+    "name": "Lich",
+    "group": "undead-hero",
+    "wowIcon": "achievement_boss_kelthuzad_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_kelthuzad_01.jpg",
+    "asset": "wow-assets/character-faces/lich.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "crypt_lord",
+    "name": "Crypt Lord",
+    "group": "undead-hero",
+    "wowIcon": "ability_hunter_pet_spider",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_spider.jpg",
+    "asset": "wow-assets/character-faces/crypt_lord.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "naga",
+    "name": "Naga Sea Witch",
+    "group": "neutral-hero",
+    "wowIcon": "inv_misc_monsterhead_03",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterhead_03.jpg",
+    "asset": "wow-assets/character-faces/naga.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "panda",
+    "name": "Pandaren Brewmaster",
+    "group": "neutral-hero",
+    "wowIcon": "achievement_character_pandaren_female",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_pandaren_female.jpg",
+    "asset": "wow-assets/character-faces/panda.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "beastmaster",
+    "name": "Beastmaster",
+    "group": "neutral-hero",
+    "wowIcon": "inv_misc_head_orc_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_orc_01.jpg",
+    "asset": "wow-assets/character-faces/beastmaster.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  },
+  {
+    "id": "dark_ranger",
+    "name": "Dark Ranger",
+    "group": "neutral-hero",
+    "wowIcon": "achievement_character_bloodelf_male",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_character_bloodelf_male.jpg",
+    "asset": "wow-assets/character-faces/dark_ranger.png",
+    "assetStyle": "face/portrait icon; no weapon/ability-only placeholder"
+  }
+]
