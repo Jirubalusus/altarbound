@@ -132,16 +132,16 @@ const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar',
 const NODE_ASSETS = {
   // Validated one by one: battle encounters use the actual unit model; utility nodes use sourced HiveWorkshop building/object previews.
   // Avoid misleading substitutes like showing a Headhunter/lancer for an Item Chest.
-  battle:{src:'war3-assets/models/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
-  elite:{src:'war3-assets/models/tauren_chief.png', kind:'unit', validatedAs:'Tauren Chieftain'},
-  tavern:{src:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
-  altar:{src:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Hero Altar / hero site'},
-  special:{src:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
-  training:{src:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training Facility / upgrade site'},
-  item:{src:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
-  fountain:{src:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
-  boss:{src:'hive-assets/nodes/boss.png', kind:'unit', validatedAs:'HiveWorkshop Old-school Lich King / boss encounter'},
-  tower:{src:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Square Tower / battle tower'}
+  battle:{src:'war3-assets/route-icons/grunt.png', sourceSrc:'war3-assets/models/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
+  elite:{src:'war3-assets/route-icons/tauren_chief.png', sourceSrc:'war3-assets/models/tauren_chief.png', kind:'unit', validatedAs:'Tauren Chieftain'},
+  tavern:{src:'hive-assets/nodes-readable/tavern.png', sourceSrc:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
+  altar:{src:'hive-assets/nodes-readable/altar.png', sourceSrc:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Hero Altar / hero site'},
+  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
+  training:{src:'hive-assets/nodes-readable/training.png', sourceSrc:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training Facility / upgrade site'},
+  item:{src:'hive-assets/nodes-readable/item.png', sourceSrc:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
+  fountain:{src:'hive-assets/nodes-readable/fountain.png', sourceSrc:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
+  boss:{src:'hive-assets/nodes-readable/boss.png', sourceSrc:'hive-assets/nodes/boss.png', kind:'unit', validatedAs:'HiveWorkshop Old-school Lich King / boss encounter'},
+  tower:{src:'hive-assets/nodes-readable/tower.png', sourceSrc:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Square Tower / battle tower'}
 };
 const WOW_ROUTE_BACKDROPS = {
   human:'wow-map-backgrounds/route-clean-elwynn-forest.jpg',

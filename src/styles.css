@@ -1552,3 +1552,187 @@ body:after{display:none!important;}
 @media(max-width:900px){
   .pokelikeBoard.wowRouteBoard{min-height:640px!important;height:min(820px, calc(100dvh - 78px))!important;}
 }
+
+/* Route icon visibility pass: use tightly cropped sourced sprites and make them readable over detailed WoW maps, without circles/peanas. */
+.pokelikeBoard.wowRouteBoard{
+  background:
+    linear-gradient(180deg,rgba(4,3,2,.18),rgba(4,3,2,.34)),
+    var(--route-map) center center/cover no-repeat!important;
+}
+.wowRouteBoard:before{
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(255,224,145,.06),transparent 38%),
+    linear-gradient(90deg,rgba(0,0,0,.42),transparent 18%,transparent 82%,rgba(0,0,0,.44)),
+    linear-gradient(180deg,rgba(0,0,0,.30),transparent 16%,transparent 84%,rgba(0,0,0,.50))!important;
+}
+.wowRouteBoard .node{
+  width:154px!important;
+  height:132px!important;
+  z-index:5!important;
+}
+.wowRouteBoard .nodeDisc{
+  width:100%!important;
+  height:104px!important;
+  display:grid!important;
+  place-items:end center!important;
+}
+.wowRouteBoard .node .nodeWar3Asset,
+.wowRouteBoard .node.active .nodeWar3Asset,
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset,
+.wowRouteBoard .node.done .nodeWar3Asset{
+  max-width:154px!important;
+  max-height:116px!important;
+  width:154px!important;
+  height:116px!important;
+  object-fit:contain!important;
+  image-rendering:auto!important;
+  opacity:1!important;
+  filter:
+    drop-shadow(0 0 1px rgba(255,240,180,.92))
+    drop-shadow(1px 0 0 rgba(0,0,0,.98))
+    drop-shadow(-1px 0 0 rgba(0,0,0,.98))
+    drop-shadow(0 1px 0 rgba(0,0,0,.98))
+    drop-shadow(0 -1px 0 rgba(0,0,0,.86))
+    drop-shadow(0 7px 2px rgba(0,0,0,.86))!important;
+}
+.wowRouteBoard .node.active .nodeWar3Asset{
+  filter:
+    brightness(1.24) saturate(1.18) contrast(1.12)
+    drop-shadow(0 0 2px rgba(255,245,176,.96))
+    drop-shadow(1px 0 0 rgba(0,0,0,1))
+    drop-shadow(-1px 0 0 rgba(0,0,0,1))
+    drop-shadow(0 1px 0 rgba(0,0,0,1))
+    drop-shadow(0 -1px 0 rgba(0,0,0,.94))
+    drop-shadow(0 0 8px rgba(255,218,80,.72))
+    drop-shadow(0 7px 2px rgba(0,0,0,.9))!important;
+}
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset{
+  opacity:.96!important;
+  filter:
+    grayscale(.08) brightness(1.08) saturate(1.08) contrast(1.12)
+    drop-shadow(0 0 1px rgba(255,235,170,.72))
+    drop-shadow(1px 0 0 rgba(0,0,0,.96))
+    drop-shadow(-1px 0 0 rgba(0,0,0,.96))
+    drop-shadow(0 1px 0 rgba(0,0,0,.96))
+    drop-shadow(0 -1px 0 rgba(0,0,0,.84))
+    drop-shadow(0 6px 2px rgba(0,0,0,.82))!important;
+}
+.wowRouteBoard .node.done .nodeWar3Asset{
+  opacity:.78!important;
+  filter:grayscale(.52) brightness(.82) saturate(.9) contrast(1.08) drop-shadow(1px 0 0 rgba(0,0,0,.9)) drop-shadow(-1px 0 0 rgba(0,0,0,.9)) drop-shadow(0 5px 2px rgba(0,0,0,.75))!important;
+}
+.wowRouteBoard .node small,
+.wowRouteBoard .node:disabled small,
+.wowRouteBoard .node:not(.active):not(.done) small,
+.wowRouteBoard .node.active small{
+  margin-top:-10px!important;
+  max-width:128px!important;
+  min-width:88px!important;
+  font-size:7px!important;
+  background:rgba(9,6,3,.96)!important;
+  border-color:rgba(255,224,124,.95)!important;
+  opacity:.95!important;
+}
+.wowRouteBoard .mapEdges line{
+  stroke-width:1.15px!important;
+  opacity:.58!important;
+}
+.wowRouteBoard .mapEdges line.reachable{
+  stroke-width:1.7px!important;
+  opacity:.9!important;
+}
+@media(max-width:900px){
+  .wowRouteBoard .node{width:126px!important;height:112px!important;}
+  .wowRouteBoard .nodeDisc{height:88px!important;}
+  .wowRouteBoard .node .nodeWar3Asset{width:126px!important;height:96px!important;max-width:126px!important;max-height:96px!important;}
+  .wowRouteBoard .node small{max-width:112px!important;min-width:76px!important;font-size:6px!important;margin-top:-8px!important;}
+}
+
+/* Override old short-viewport min/max constraints so route icons can actually grow. */
+.wowRouteBoard .node,
+.wowRouteBoard .node.active,
+.wowRouteBoard .node:disabled,
+.wowRouteBoard .node.done{
+  width:154px!important;
+  min-width:154px!important;
+  max-width:154px!important;
+  height:132px!important;
+  min-height:132px!important;
+  max-height:132px!important;
+}
+.wowRouteBoard .nodeDisc,
+.wowRouteBoard .node.active .nodeDisc,
+.wowRouteBoard .node:disabled .nodeDisc,
+.wowRouteBoard .node.done .nodeDisc{
+  width:154px!important;
+  min-width:154px!important;
+  max-width:154px!important;
+  height:104px!important;
+  min-height:104px!important;
+  max-height:104px!important;
+}
+@media(max-width:900px){
+  .wowRouteBoard .node,
+  .wowRouteBoard .node.active,
+  .wowRouteBoard .node:disabled,
+  .wowRouteBoard .node.done{
+    width:126px!important;min-width:126px!important;max-width:126px!important;
+    height:112px!important;min-height:112px!important;max-height:112px!important;
+  }
+  .wowRouteBoard .nodeDisc,
+  .wowRouteBoard .node.active .nodeDisc,
+  .wowRouteBoard .node:disabled .nodeDisc,
+  .wowRouteBoard .node.done .nodeDisc{
+    width:126px!important;min-width:126px!important;max-width:126px!important;
+    height:88px!important;min-height:88px!important;max-height:88px!important;
+  }
+}
+
+/* Center readable route icons; older Warcraft pass positioned images absolute at left:50%. */
+.wowRouteBoard .node .nodeWar3Asset,
+.wowRouteBoard .node.active .nodeWar3Asset,
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset,
+.wowRouteBoard .node.done .nodeWar3Asset{
+  position:relative!important;
+  left:auto!important;
+  right:auto!important;
+  top:auto!important;
+  bottom:auto!important;
+  display:block!important;
+  margin:0 auto!important;
+  transform:none!important;
+}
+
+/* Short viewport fit: keep enlarged icons visible instead of clipping at bottom. */
+@media(max-height:650px){
+  .pokelikeBoard.wowRouteBoard{
+    min-height:560px!important;
+    height:calc(100dvh - 18px)!important;
+    max-height:560px!important;
+  }
+  .wowRouteBoard .node,
+  .wowRouteBoard .node.active,
+  .wowRouteBoard .node:disabled,
+  .wowRouteBoard .node.done{
+    width:132px!important;min-width:132px!important;max-width:132px!important;
+    height:112px!important;min-height:112px!important;max-height:112px!important;
+  }
+  .wowRouteBoard .nodeDisc,
+  .wowRouteBoard .node.active .nodeDisc,
+  .wowRouteBoard .node:disabled .nodeDisc,
+  .wowRouteBoard .node.done .nodeDisc{
+    width:132px!important;min-width:132px!important;max-width:132px!important;
+    height:88px!important;min-height:88px!important;max-height:88px!important;
+  }
+  .wowRouteBoard .node .nodeWar3Asset,
+  .wowRouteBoard .node.active .nodeWar3Asset,
+  .wowRouteBoard .node:disabled .nodeWar3Asset,
+  .wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset,
+  .wowRouteBoard .node.done .nodeWar3Asset{
+    width:132px!important;height:96px!important;max-width:132px!important;max-height:96px!important;
+  }
+  .wowRouteBoard .node small{font-size:6px!important;margin-top:-8px!important;max-width:112px!important;}
+}

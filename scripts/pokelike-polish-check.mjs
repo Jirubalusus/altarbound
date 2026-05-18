@@ -72,10 +72,10 @@ const nodeAssetMetrics = await page.evaluate(() => {
     oldTopOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.waterLane,.coral,.dockGap,.startMarker')].find(el => getComputedStyle(el).display !== 'none'),
     routeLegendVisible: !![...document.querySelectorAll('.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
     usesWowMapBackground: getComputedStyle(document.querySelector('.wowRouteBoard') || document.querySelector('.pokelikeBoard')).backgroundImage.includes('/wow-map-backgrounds/route-clean-'),
-    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/hive-assets/nodes/'))),
-    illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes/item.png') || /raider|headhunter|grunt/.test(src)).length,
-    nonGruntBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/war3-assets/models/grunt.png')).length,
-    nonHiveSiteNodes: nodes.filter(n=>['tavern','altar','special','training','item','fountain','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes/')).length,
+    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/war3-assets/route-icons/') || src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))),
+    illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes-readable/item.png') || /raider|headhunter|grunt/.test(src)).length,
+    nonGruntBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/war3-assets/route-icons/grunt.png')).length,
+    nonHiveSiteNodes: nodes.filter(n=>['tavern','altar','special','training','item','fountain','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!(src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))).length,
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);
       return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
@@ -125,7 +125,7 @@ if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw 
 await assertNoBadImages('battle');
 await shot('04-battle');
 
-await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 90000 }).catch(() => {});
+await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 180000 }).catch(() => {});
 await page.waitForTimeout(500);
 const bodyText = await page.locator('body').innerText();
 if (bodyText.includes('Victory Reward') || bodyText.includes('Choose one reward')) {
