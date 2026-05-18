@@ -1765,3 +1765,40 @@ body:after{display:none!important;}
   width:30px!important;
   height:30px!important;
 }
+
+/* WoW/Warcraft character asset pass: use sourced icons for every unit/hero, not generated model placeholders. */
+.wcPortrait .officialCharacterIcon,
+.modelSprite .officialCharacterIcon{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:cover!important;
+  image-rendering:auto!important;
+  background:#060504!important;
+  border:2px solid #090806!important;
+  outline:2px solid #8b6b32!important;
+  box-shadow:3px 3px 0 #000, inset 0 0 0 1px #3b2d19!important;
+  border-radius:2px!important;
+  filter:none!important;
+  transform:none!important;
+}
+.modelSprite.enemy .officialCharacterIcon{transform:none!important;}
+.modelSprite,
+.modelSprite.small,
+.arenaStage .modelSprite,
+.mapPartySprites .modelSprite{
+  place-items:center!important;
+  align-items:center!important;
+  justify-items:center!important;
+}
+.modelSprite.small{width:82px!important;height:82px!important;}
+.pickCard>.modelSprite.small{width:96px!important;height:96px!important;margin:0 auto 10px!important;place-items:center!important;}
+.pickCard>.modelSprite.small:after{display:none!important;content:none!important;}
+.starterCard>.modelSprite.small{width:112px!important;height:112px!important;}
+.arenaStage .modelSprite{width:98px!important;height:98px!important;}
+.pokelikeBattle .modelBattleCard .modelSprite{width:92px!important;height:92px!important;}
+.mapPartySprites .modelSprite{width:44px!important;height:44px!important;}
+.wcPortrait:before,.wcPortrait .pixelHead{display:none!important;content:none!important;}
+.wcPortrait{background:#070604!important;}

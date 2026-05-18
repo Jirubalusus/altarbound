@@ -29,8 +29,17 @@ for (const asset of wowItemRefs) {
   try { await fs.access(path.resolve('public', asset)); }
   catch { missingWowItems.push(asset); }
 }
+const characterCatalog = JSON.parse(await fs.readFile(path.resolve('public/wow-assets/characters/catalog.json'), 'utf8'));
+const missingCharacterAssets = [];
+for (const entry of characterCatalog) {
+  try { await fs.access(path.resolve('public', entry.asset)); }
+  catch { missingCharacterAssets.push(entry.asset); }
+}
 if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sprites/items') || sourceText.includes('item?.icon')) {
   throw new Error(`Item cards must use sourced WoW/Warcraft icons, not generated sprites/emoji fallbacks: ${JSON.stringify({wowItemRefs:wowItemRefs.length, missingWowItems, usesSpritesItems:sourceText.includes('sprites/items'), usesItemIconFallback:sourceText.includes('item?.icon')})}`);
+}
+if (characterCatalog.length < 56 || missingCharacterAssets.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
+  throw new Error(`All units/heroes must use sourced WoW/Warcraft character assets, not generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
 }
 
 await page.goto(baseURL, { waitUntil: 'networkidle' });

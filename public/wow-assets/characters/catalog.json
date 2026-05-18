@@ -1,0 +1,450 @@
+[
+  {
+    "id": "footman",
+    "name": "Footman",
+    "group": "human",
+    "wowIcon": "ability_warrior_defensivestance",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg",
+    "asset": "wow-assets/characters/footman.png"
+  },
+  {
+    "id": "captain_footman",
+    "name": "Captain Footman",
+    "group": "human",
+    "wowIcon": "ability_warrior_shieldwall",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_shieldwall.jpg",
+    "asset": "wow-assets/characters/captain_footman.png"
+  },
+  {
+    "id": "rifleman",
+    "name": "Rifleman",
+    "group": "human",
+    "wowIcon": "inv_weapon_rifle_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_weapon_rifle_01.jpg",
+    "asset": "wow-assets/characters/rifleman.png"
+  },
+  {
+    "id": "sharpshooter",
+    "name": "Sharpshooter",
+    "group": "human",
+    "wowIcon": "ability_hunter_snipershot",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_snipershot.jpg",
+    "asset": "wow-assets/characters/sharpshooter.png"
+  },
+  {
+    "id": "priest",
+    "name": "Priest",
+    "group": "human",
+    "wowIcon": "spell_holy_lesserheal",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_holy_lesserheal.jpg",
+    "asset": "wow-assets/characters/priest.png"
+  },
+  {
+    "id": "high_priest",
+    "name": "High Priest",
+    "group": "human",
+    "wowIcon": "spell_holy_greaterheal",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_holy_greaterheal.jpg",
+    "asset": "wow-assets/characters/high_priest.png"
+  },
+  {
+    "id": "knight",
+    "name": "Knight",
+    "group": "human",
+    "wowIcon": "ability_mount_charger",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_mount_charger.jpg",
+    "asset": "wow-assets/characters/knight.png"
+  },
+  {
+    "id": "champion_knight",
+    "name": "Champion Knight",
+    "group": "human",
+    "wowIcon": "ability_paladin_divinestorm",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_paladin_divinestorm.jpg",
+    "asset": "wow-assets/characters/champion_knight.png"
+  },
+  {
+    "id": "gryphon",
+    "name": "Gryphon Rider",
+    "group": "human",
+    "wowIcon": "ability_mount_gryphon_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_mount_gryphon_01.jpg",
+    "asset": "wow-assets/characters/gryphon.png"
+  },
+  {
+    "id": "grunt",
+    "name": "Grunt",
+    "group": "orc",
+    "wowIcon": "ability_warrior_savageblow",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_savageblow.jpg",
+    "asset": "wow-assets/characters/grunt.png"
+  },
+  {
+    "id": "grunt_veteran",
+    "name": "Grunt Veteran",
+    "group": "orc",
+    "wowIcon": "ability_warrior_bloodfrenzy",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bloodfrenzy.jpg",
+    "asset": "wow-assets/characters/grunt_veteran.png"
+  },
+  {
+    "id": "headhunter",
+    "name": "Troll Headhunter",
+    "group": "orc",
+    "wowIcon": "inv_spear_05",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_spear_05.jpg",
+    "asset": "wow-assets/characters/headhunter.png"
+  },
+  {
+    "id": "berserker",
+    "name": "Troll Berserker",
+    "group": "orc",
+    "wowIcon": "ability_warrior_rampage",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_rampage.jpg",
+    "asset": "wow-assets/characters/berserker.png"
+  },
+  {
+    "id": "shaman",
+    "name": "Shaman",
+    "group": "orc",
+    "wowIcon": "spell_nature_bloodlust",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_bloodlust.jpg",
+    "asset": "wow-assets/characters/shaman.png"
+  },
+  {
+    "id": "storm_shaman",
+    "name": "Storm Shaman",
+    "group": "orc",
+    "wowIcon": "spell_nature_chainlightning",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_chainlightning.jpg",
+    "asset": "wow-assets/characters/storm_shaman.png"
+  },
+  {
+    "id": "raider",
+    "name": "Raider",
+    "group": "orc",
+    "wowIcon": "ability_mount_blackdirewolf",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_mount_blackdirewolf.jpg",
+    "asset": "wow-assets/characters/raider.png"
+  },
+  {
+    "id": "wolf_captain",
+    "name": "Wolf Captain",
+    "group": "orc",
+    "wowIcon": "ability_hunter_pet_wolf",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_wolf.jpg",
+    "asset": "wow-assets/characters/wolf_captain.png"
+  },
+  {
+    "id": "tauren",
+    "name": "Tauren",
+    "group": "orc",
+    "wowIcon": "inv_misc_head_tauren_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tauren_01.jpg",
+    "asset": "wow-assets/characters/tauren.png"
+  },
+  {
+    "id": "archer",
+    "name": "Archer",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_aimedshot",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_aimedshot.jpg",
+    "asset": "wow-assets/characters/archer.png"
+  },
+  {
+    "id": "sentinel_archer",
+    "name": "Sentinel Archer",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_markedfordeath",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_markedfordeath.jpg",
+    "asset": "wow-assets/characters/sentinel_archer.png"
+  },
+  {
+    "id": "huntress",
+    "name": "Huntress",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_swiftstrike",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_swiftstrike.jpg",
+    "asset": "wow-assets/characters/huntress.png"
+  },
+  {
+    "id": "moon_huntress",
+    "name": "Moon Huntress",
+    "group": "nightelf",
+    "wowIcon": "spell_arcane_starfire",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_starfire.jpg",
+    "asset": "wow-assets/characters/moon_huntress.png"
+  },
+  {
+    "id": "dryad",
+    "name": "Dryad",
+    "group": "nightelf",
+    "wowIcon": "spell_nature_abolishmagic",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_abolishmagic.jpg",
+    "asset": "wow-assets/characters/dryad.png"
+  },
+  {
+    "id": "elder_dryad",
+    "name": "Elder Dryad",
+    "group": "nightelf",
+    "wowIcon": "spell_nature_resistnature",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_resistnature.jpg",
+    "asset": "wow-assets/characters/elder_dryad.png"
+  },
+  {
+    "id": "druid_claw",
+    "name": "Druid of the Claw",
+    "group": "nightelf",
+    "wowIcon": "ability_druid_maul",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_druid_maul.jpg",
+    "asset": "wow-assets/characters/druid_claw.png"
+  },
+  {
+    "id": "elder_bear",
+    "name": "Elder Bear Druid",
+    "group": "nightelf",
+    "wowIcon": "ability_racial_bearform",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg",
+    "asset": "wow-assets/characters/elder_bear.png"
+  },
+  {
+    "id": "chimaera",
+    "name": "Chimaera",
+    "group": "nightelf",
+    "wowIcon": "ability_hunter_pet_chimera",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_chimera.jpg",
+    "asset": "wow-assets/characters/chimaera.png"
+  },
+  {
+    "id": "ghoul",
+    "name": "Ghoul",
+    "group": "undead",
+    "wowIcon": "ability_creature_cursed_02",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_creature_cursed_02.jpg",
+    "asset": "wow-assets/characters/ghoul.png"
+  },
+  {
+    "id": "frenzied_ghoul",
+    "name": "Frenzied Ghoul",
+    "group": "undead",
+    "wowIcon": "ability_ghoulfrenzy",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_ghoulfrenzy.jpg",
+    "asset": "wow-assets/characters/frenzied_ghoul.png"
+  },
+  {
+    "id": "crypt_fiend",
+    "name": "Crypt Fiend",
+    "group": "undead",
+    "wowIcon": "ability_hunter_pet_spider",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_pet_spider.jpg",
+    "asset": "wow-assets/characters/crypt_fiend.png"
+  },
+  {
+    "id": "crypt_reaver",
+    "name": "Crypt Reaver",
+    "group": "undead",
+    "wowIcon": "ability_creature_poison_06",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_creature_poison_06.jpg",
+    "asset": "wow-assets/characters/crypt_reaver.png"
+  },
+  {
+    "id": "necromancer",
+    "name": "Necromancer",
+    "group": "undead",
+    "wowIcon": "spell_shadow_raisedead",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_raisedead.jpg",
+    "asset": "wow-assets/characters/necromancer.png"
+  },
+  {
+    "id": "dark_necromancer",
+    "name": "Dark Necromancer",
+    "group": "undead",
+    "wowIcon": "spell_shadow_shadowbolt",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowbolt.jpg",
+    "asset": "wow-assets/characters/dark_necromancer.png"
+  },
+  {
+    "id": "abomination",
+    "name": "Abomination",
+    "group": "undead",
+    "wowIcon": "achievement_boss_patchwerk",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_boss_patchwerk.jpg",
+    "asset": "wow-assets/characters/abomination.png"
+  },
+  {
+    "id": "plague_abom",
+    "name": "Plague Abomination",
+    "group": "undead",
+    "wowIcon": "spell_shadow_plaguecloud",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_plaguecloud.jpg",
+    "asset": "wow-assets/characters/plague_abom.png"
+  },
+  {
+    "id": "frost_wyrm",
+    "name": "Frost Wyrm",
+    "group": "undead",
+    "wowIcon": "spell_frost_arcticwinds",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_frost_arcticwinds.jpg",
+    "asset": "wow-assets/characters/frost_wyrm.png"
+  },
+  {
+    "id": "paladin",
+    "name": "Paladin",
+    "group": "human-hero",
+    "wowIcon": "classicon_paladin",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/classicon_paladin.jpg",
+    "asset": "wow-assets/characters/paladin.png"
+  },
+  {
+    "id": "archmage",
+    "name": "Archmage",
+    "group": "human-hero",
+    "wowIcon": "classicon_mage",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/classicon_mage.jpg",
+    "asset": "wow-assets/characters/archmage.png"
+  },
+  {
+    "id": "mountain_king",
+    "name": "Mountain King",
+    "group": "human-hero",
+    "wowIcon": "inv_hammer_04",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_hammer_04.jpg",
+    "asset": "wow-assets/characters/mountain_king.png"
+  },
+  {
+    "id": "blood_mage",
+    "name": "Blood Mage",
+    "group": "human-hero",
+    "wowIcon": "spell_fire_flamebolt",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_fire_flamebolt.jpg",
+    "asset": "wow-assets/characters/blood_mage.png"
+  },
+  {
+    "id": "blademaster",
+    "name": "Blademaster",
+    "group": "orc-hero",
+    "wowIcon": "ability_warrior_bladestorm",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bladestorm.jpg",
+    "asset": "wow-assets/characters/blademaster.png"
+  },
+  {
+    "id": "far_seer",
+    "name": "Far Seer",
+    "group": "orc-hero",
+    "wowIcon": "spell_nature_lightning",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg",
+    "asset": "wow-assets/characters/far_seer.png"
+  },
+  {
+    "id": "tauren_chief",
+    "name": "Tauren Chieftain",
+    "group": "orc-hero",
+    "wowIcon": "ability_warstomp",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_warstomp.jpg",
+    "asset": "wow-assets/characters/tauren_chief.png"
+  },
+  {
+    "id": "shadow_hunter",
+    "name": "Shadow Hunter",
+    "group": "orc-hero",
+    "wowIcon": "spell_nature_healingwavegreater",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingwavegreater.jpg",
+    "asset": "wow-assets/characters/shadow_hunter.png"
+  },
+  {
+    "id": "demon_hunter",
+    "name": "Demon Hunter",
+    "group": "nightelf-hero",
+    "wowIcon": "classicon_demonhunter",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/classicon_demonhunter.jpg",
+    "asset": "wow-assets/characters/demon_hunter.png"
+  },
+  {
+    "id": "keeper",
+    "name": "Keeper of the Grove",
+    "group": "nightelf-hero",
+    "wowIcon": "spell_nature_forceofnature",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_nature_forceofnature.jpg",
+    "asset": "wow-assets/characters/keeper.png"
+  },
+  {
+    "id": "priestess",
+    "name": "Priestess of the Moon",
+    "group": "nightelf-hero",
+    "wowIcon": "spell_arcane_starfire",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_arcane_starfire.jpg",
+    "asset": "wow-assets/characters/priestess.png"
+  },
+  {
+    "id": "warden",
+    "name": "Warden",
+    "group": "nightelf-hero",
+    "wowIcon": "ability_rogue_shadowstrike",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_rogue_shadowstrike.jpg",
+    "asset": "wow-assets/characters/warden.png"
+  },
+  {
+    "id": "death_knight",
+    "name": "Death Knight",
+    "group": "undead-hero",
+    "wowIcon": "classicon_deathknight",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/classicon_deathknight.jpg",
+    "asset": "wow-assets/characters/death_knight.png"
+  },
+  {
+    "id": "dreadlord",
+    "name": "Dreadlord",
+    "group": "undead-hero",
+    "wowIcon": "spell_shadow_carrionswarm",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_shadow_carrionswarm.jpg",
+    "asset": "wow-assets/characters/dreadlord.png"
+  },
+  {
+    "id": "lich",
+    "name": "Lich",
+    "group": "undead-hero",
+    "wowIcon": "spell_frost_frostnova",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostnova.jpg",
+    "asset": "wow-assets/characters/lich.png"
+  },
+  {
+    "id": "crypt_lord",
+    "name": "Crypt Lord",
+    "group": "undead-hero",
+    "wowIcon": "ability_creature_poison_06",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_creature_poison_06.jpg",
+    "asset": "wow-assets/characters/crypt_lord.png"
+  },
+  {
+    "id": "naga",
+    "name": "Naga Sea Witch",
+    "group": "neutral-hero",
+    "wowIcon": "inv_misc_monsterhead_03",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterhead_03.jpg",
+    "asset": "wow-assets/characters/naga.png"
+  },
+  {
+    "id": "panda",
+    "name": "Pandaren Brewmaster",
+    "group": "neutral-hero",
+    "wowIcon": "achievement_brewery_2",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/achievement_brewery_2.jpg",
+    "asset": "wow-assets/characters/panda.png"
+  },
+  {
+    "id": "beastmaster",
+    "name": "Beastmaster",
+    "group": "neutral-hero",
+    "wowIcon": "ability_hunter_beastcall",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_hunter_beastcall.jpg",
+    "asset": "wow-assets/characters/beastmaster.png"
+  },
+  {
+    "id": "dark_ranger",
+    "name": "Dark Ranger",
+    "group": "neutral-hero",
+    "wowIcon": "ability_theblackarrow",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/ability_theblackarrow.jpg",
+    "asset": "wow-assets/characters/dark_ranger.png"
+  }
+]
