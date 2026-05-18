@@ -130,23 +130,23 @@ const PORTRAIT_OVERRIDES = {
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
 const NODE_ASSETS = {
-  // Validated one by one: battle encounters use the actual unit model; utility nodes use their matching node asset.
+  // Validated one by one: battle encounters use the actual unit model; utility nodes use sourced HiveWorkshop building/object previews.
   // Avoid misleading substitutes like showing a Headhunter/lancer for an Item Chest.
   battle:{src:'war3-assets/models/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
   elite:{src:'war3-assets/models/tauren_chief.png', kind:'unit', validatedAs:'Tauren Chieftain'},
-  tavern:{src:'sprites/tavern.png', kind:'site', validatedAs:'Tavern / recruit site'},
-  altar:{src:'sprites/altar.png', kind:'site', validatedAs:'Altar / hero site'},
-  special:{src:'war3-assets/models/raider.png', kind:'unit', validatedAs:'Special encounter / Raider'},
-  training:{src:'sprites/training.png', kind:'site', validatedAs:'Training / upgrade site'},
-  item:{src:'sprites/item.png', kind:'site', validatedAs:'Item Chest / loot site'},
-  fountain:{src:'sprites/fountain.png', kind:'site', validatedAs:'Fountain / heal site'},
-  boss:{src:'sprites/boss.png', kind:'site', validatedAs:'Boss marker'},
-  tower:{src:'sprites/tower.png', kind:'site', validatedAs:'Battle Tower marker'}
+  tavern:{src:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
+  altar:{src:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Hero Altar / hero site'},
+  special:{src:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
+  training:{src:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training Facility / upgrade site'},
+  item:{src:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
+  fountain:{src:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
+  boss:{src:'hive-assets/nodes/boss.png', kind:'unit', validatedAs:'HiveWorkshop Old-school Lich King / boss encounter'},
+  tower:{src:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Square Tower / battle tower'}
 };
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 const FIREBASE_HOSTING_ASSET_ROOT = 'https://altarbound-660da.web.app/';
-function hostedAsset(path){ return `${FIREBASE_HOSTING_ASSET_ROOT}${path}`; }
+function hostedAsset(path){ return publicAsset(path); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[hostedAsset(`war3-assets/portraits/${id}.png`)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}>{!missing&&<img className="officialPortrait" src={sources[srcIndex]} alt="" onError={()=>setSrcIndex(i=>i+1)}/>}<i className="pixelHead" data-key={artKey(id)}/><em>{initials(label)}</em></span>; }
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[hostedAsset(`war3-assets/models/${id}.png`), hostedAsset(`sprites/models/${id}.png`)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img src={sources[srcIndex]} alt="" onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }

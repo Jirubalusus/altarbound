@@ -1,0 +1,82 @@
+[
+  {
+    "nodeType": "item",
+    "file": "hive-assets/nodes/item.png",
+    "sourceFile": "hive-assets/sources/item-chest_medium_old.jpg",
+    "title": "Medium Old Chest",
+    "author": "Kithraya",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/medium-old-chest.138303/",
+    "validatedAs": "Medium Old Chest / Item Chest",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "tavern",
+    "file": "hive-assets/nodes/tavern.png",
+    "sourceFile": "hive-assets/sources/tavern-tavern_mike.jpg",
+    "title": "Tavern",
+    "author": "Mike",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/tavern.275327/",
+    "validatedAs": "Tavern / recruit site",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "altar",
+    "file": "hive-assets/nodes/altar.png",
+    "sourceFile": "hive-assets/sources/altar-hero_altar.png",
+    "title": "Hero Altar",
+    "author": "stan0033",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/hero-altar.360085/",
+    "validatedAs": "Hero Altar / hero recruit site",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "special",
+    "file": "hive-assets/nodes/special.png",
+    "sourceFile": "hive-assets/sources/special-mercenary_camp_pack.png",
+    "title": "Mercenary Camp Pack",
+    "author": "Ilya Alaric",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/mercenary-camp-pack.358935/",
+    "validatedAs": "Mercenary Camp / special recruit site",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "training",
+    "file": "hive-assets/nodes/training.png",
+    "sourceFile": "hive-assets/sources/training-training_facility.jpg",
+    "title": "Training Facility",
+    "author": "Mr. Bob",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/training-facility.95772/",
+    "validatedAs": "Training Facility / upgrade site",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "fountain",
+    "file": "hive-assets/nodes/fountain.png",
+    "sourceFile": "hive-assets/sources/fountain-fountain.jpg",
+    "title": "Fountain",
+    "author": "Mike",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/fountain.254654/",
+    "validatedAs": "Fountain / heal site",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated."
+  },
+  {
+    "nodeType": "tower",
+    "file": "hive-assets/nodes/tower.png",
+    "sourceFile": "hive-assets/sources/tower-square_tower.png",
+    "title": "Square Tower",
+    "author": "stan0033",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/square-tower.356589/",
+    "validatedAs": "Square Tower / Battle Tower",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated. Chosen over Wooden Guard Tower because it is cleaner for small map nodes."
+  },
+  {
+    "nodeType": "boss",
+    "file": "hive-assets/nodes/boss.png",
+    "sourceFile": "hive-assets/sources/boss-old_lich_king.png",
+    "title": "Old-school Lich King",
+    "author": "HerrDave",
+    "sourceUrl": "https://www.hiveworkshop.com/threads/old-school-lich-king.270406/",
+    "validatedAs": "Old-school Lich King / boss encounter",
+    "notes": "Cropped/transparent PNG derived from HiveWorkshop preview image; not AI-generated. Chosen over Archimonde/Pit Lord candidates because it is more legible as a small boss node."
+  }
+]

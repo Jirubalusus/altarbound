@@ -70,8 +70,10 @@ const nodeAssetMetrics = await page.evaluate(() => {
     war3Assets: imgs.length,
     oldSpriteIcons: document.querySelectorAll('.node .spriteNode').length,
     topOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
-    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/sprites/'))),
-    illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/sprites/item.png')).length,
+    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/hive-assets/nodes/'))),
+    illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes/item.png') || /raider|headhunter|grunt/.test(src)).length,
+    nonGruntBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/war3-assets/models/grunt.png')).length,
+    nonHiveSiteNodes: nodes.filter(n=>['tavern','altar','special','training','item','fountain','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes/')).length,
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);
       return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
@@ -87,7 +89,7 @@ const nodeAssetMetrics = await page.evaluate(() => {
     }).length
   };
 });
-if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use validated logical assets with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.nonGruntBattleNodes || nodeAssetMetrics.nonHiveSiteNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use validated logical assets with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
@@ -121,7 +123,7 @@ if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw 
 await assertNoBadImages('battle');
 await shot('04-battle');
 
-await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 45000 }).catch(() => {});
+await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 90000 }).catch(() => {});
 await page.waitForTimeout(500);
 const bodyText = await page.locator('body').innerText();
 if (bodyText.includes('Victory Reward') || bodyText.includes('Choose one reward')) {
