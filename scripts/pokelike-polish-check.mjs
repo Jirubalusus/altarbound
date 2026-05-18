@@ -41,11 +41,28 @@ const routeStart = await page.evaluate(() => {
   const byStep = Object.fromEntries([...new Set(nodes.map(n => n.dataset.step))].map(step => [step, nodes.filter(n => n.dataset.step === step).length]));
   const active = nodes.filter(n => n.classList.contains('active'));
   const disabled = nodes.filter(n => n.disabled);
-  const positions = nodes.map(n => ({ step:n.dataset.step, lane:n.dataset.lane, left:n.style.left, top:n.style.top }));
+  const positions = nodes.map(n => {
+    const board = document.querySelector('.pokelikeBoard').getBoundingClientRect();
+    const disc = n.querySelector('.nodeDisc')?.getBoundingClientRect();
+    const left = parseFloat(n.style.left);
+    const top = parseFloat(n.style.top);
+    return {
+      step:n.dataset.step,
+      lane:n.dataset.lane,
+      left,
+      top,
+      discCx: disc ? (disc.left + disc.width/2 - board.left) : null,
+      discCy: disc ? (disc.top + disc.height/2 - board.top) : null,
+      errX: disc ? Math.abs((disc.left + disc.width/2 - board.left) - board.width*left/100) : 999,
+      errY: disc ? Math.abs((disc.top + disc.height/2 - board.top) - board.height*top/100) : 999
+    };
+  });
   return { byStep, activeCount: active.length, disabledCount: disabled.length, nodeCount:nodes.length, positions };
 });
 if (JSON.stringify(routeStart.byStep) !== JSON.stringify({0:2,1:3,2:4,3:3,4:2,5:1})) throw new Error(`Route is not diamond 2-3-4-3-2-1: ${JSON.stringify(routeStart.byStep)}`);
 if (routeStart.activeCount !== 2) throw new Error(`Initial active nodes should be exactly 2, got ${routeStart.activeCount}`);
+const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
+if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
 
 async function resolveChoiceIfNeeded() {

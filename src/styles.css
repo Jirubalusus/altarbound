@@ -529,3 +529,109 @@ body:after{display:none!important;}
 .node:disabled .spriteNode{filter:grayscale(1) brightness(.62) drop-shadow(1px 2px 0 rgba(0,0,0,.2))!important;}
 .mapEdges line{opacity:.55!important;}.mapEdges line.reachable{opacity:.95!important;}
 @media(max-height:760px){.pokelikeBoard{height:calc(100dvh - 118px)!important;min-height:540px!important}.mapHeader{bottom:-58px!important}.mapPartySprites{display:none!important}}
+
+/* Deep map alignment refinement: mathematical route grid, exact node centers, no pseudo/layout drift. */
+.pokelikeBoard{
+  isolation:isolate;
+}
+.node{
+  width:50px!important;
+  height:50px!important;
+  min-width:50px!important;
+  min-height:50px!important;
+  max-width:50px!important;
+  max-height:50px!important;
+  padding:0!important;
+  margin:0!important;
+  border:0!important;
+  display:grid!important;
+  place-items:center!important;
+  transform:translate(-50%,-50%)!important;
+  overflow:visible!important;
+  line-height:1!important;
+  contain:layout paint;
+}
+.node,.node:hover,.node:active,.node:focus,.node.active{
+  transition:none!important;
+  animation:none!important;
+}
+.nodeDisc{
+  position:absolute;
+  left:50%;top:50%;
+  width:44px;height:44px;
+  min-width:44px;min-height:44px;
+  transform:translate(-50%,-50%);
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:radial-gradient(circle at 34% 28%,#fff9d3 0 17%,#e4c66f 18% 43%,#a27535 44% 67%,#4d351d 68% 100%);
+  border:2px solid #162317;
+  box-shadow:0 2px 0 rgba(0,0,0,.42), inset -4px -5px 0 rgba(0,0,0,.18), inset 4px 4px 0 rgba(255,255,255,.22);
+  z-index:1;
+  pointer-events:none;
+}
+.node.active .nodeDisc{
+  background:radial-gradient(circle at 34% 28%,#fffce0 0 18%,#fff06f 19% 44%,#d9a449 45% 68%,#67411d 69% 100%);
+  border-color:#1f2515;
+  box-shadow:0 0 0 2px #fff3a0,0 0 12px rgba(255,234,88,.76),0 2px 0 rgba(0,0,0,.42),inset -4px -5px 0 rgba(0,0,0,.14);
+}
+.node:disabled .nodeDisc{
+  filter:grayscale(.9) brightness(.66);
+  opacity:.86;
+}
+.node.done .nodeDisc{
+  filter:grayscale(.35) brightness(.82);
+}
+.node .spriteNode{
+  position:relative!important;
+  width:34px!important;
+  height:34px!important;
+  max-width:34px!important;
+  max-height:34px!important;
+  object-fit:contain!important;
+  display:block!important;
+  transform:none!important;
+  margin:0!important;
+  filter:drop-shadow(1px 2px 0 rgba(0,0,0,.35))!important;
+  z-index:2;
+}
+.node.active:after{
+  left:50%!important;
+  top:-26px!important;
+  transform:translateX(-50%)!important;
+  width:30px!important;
+  height:30px!important;
+  line-height:30px!important;
+  padding:0!important;
+  display:grid!important;
+  place-items:center!important;
+}
+.mapEdges line{
+  vector-effect:non-scaling-stroke;
+  stroke-width:1.35px!important;
+  stroke-dasharray:3 5!important;
+}
+.mapEdges line.reachable{stroke-width:1.55px!important;}
+.mapEdges line.chosen{stroke-width:2px!important;}
+.boardTopRoom{
+  top:6px!important;
+  left:35%!important;
+  right:35%!important;
+  height:62px!important;
+  opacity:.92;
+}
+.roomDoor{top:34px!important;height:26px!important;width:62px!important;}
+.mapPartySprites{bottom:6px!important;}
+@media(max-height:760px){
+  .node{width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;max-width:44px!important;max-height:44px!important;}
+  .nodeDisc{width:40px;height:40px;min-width:40px;min-height:40px;}
+  .node .spriteNode{width:31px!important;height:31px!important;max-width:31px!important;max-height:31px!important;}
+}
+
+/* Alignment bugfix: global button:disabled had transform:none; route nodes must always stay centered. */
+.node:disabled,
+.node:disabled:hover,
+.node:disabled:active,
+.node:disabled:focus{
+  transform:translate(-50%,-50%)!important;
+}

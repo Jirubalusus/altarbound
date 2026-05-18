@@ -139,9 +139,12 @@ function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-')
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
 function NodeGlyph({type}){ const key=NODE_GLYPHS[type]||'question'; return <img className={`nodeGlyph spriteNode ${key}`} src={hostedAsset(`sprites/${type}.png`)} alt="" onError={e=>{e.currentTarget.src=hostedAsset('sprites/question.png')}}/>; }
 function mapPoint(n,len){
-  const y=90-(n.step*(76/Math.max(1,len-1)));
-  const x=20+(n.lane??n.row)*20;
-  return {x:clamp(x,12,88), y:clamp(y,10,92)};
+  const lane = n.lane ?? n.row;
+  const routeTop = 18.5;
+  const routeBottom = 86;
+  const y = routeBottom - (n.step * ((routeBottom-routeTop)/Math.max(1,len-1)));
+  const x = 50 + ((lane-1.5) * 16);
+  return {x:clamp(x,18,82), y:clamp(y,14,90)};
 } 
 function lanesForStep(step,len){
   if(step===0) return [1,2];
@@ -342,7 +345,7 @@ function MapView({game, openNode}){
       <div className="waterLane left"/><div className="waterLane right"/>
       <div className="coral coralA"/><div className="coral coralB"/><div className="dockGap left"/><div className="dockGap right"/>
       <svg className="mapEdges" viewBox="0 0 100 100" preserveAspectRatio="none">{edges.map(([a,b],idx)=>{ const p1=mapPoint(a,len), p2=mapPoint(b,len); const chosen=pathIds.has(a.id)&&pathIds.has(b.id); const reachable=activeNodes.some(n=>n.id===b.id); return <line key={idx} className={`${chosen?'chosen':''} ${reachable?'reachable':''}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;})}</svg>
-      {nodes.map(n=>{ const p=mapPoint(n,len); const active=activeNodes.some(a=>a.id===n.id); const chosen=pathIds.has(n.id); return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${chosen||n.step<game.nodeIndex?'done':''} ${active?'active':''}`} data-step={n.step} data-lane={n.lane} onClick={()=>openNode(n)} title={nodeLabel[n.type]}><NodeGlyph type={n.type}/><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
+      {nodes.map(n=>{ const p=mapPoint(n,len); const active=activeNodes.some(a=>a.id===n.id); const chosen=pathIds.has(n.id); return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${chosen||n.step<game.nodeIndex?'done':''} ${active?'active':''}`} data-step={n.step} data-lane={n.lane} onClick={()=>openNode(n)} title={nodeLabel[n.type]}><span className="nodeDisc"><NodeGlyph type={n.type}/></span><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
       <div className="mapPartySprites">{game.units.slice(0,2).map((u,i)=><ModelSprite key={u.uid} id={u.id} small title={baseOf(u).name} side={i?'enemy':'ally'}/>)}</div>
       <div className="startMarker">?</div>
     </div>
