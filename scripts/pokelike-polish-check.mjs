@@ -36,15 +36,49 @@ await shot('02-race-select');
 await page.getByRole('button', { name: /Orc Starter|Orc/i }).first().click();
 await page.waitForSelector('.pokelikeBoard');
 await assertNoBadImages('map');
+const routeStart = await page.evaluate(() => {
+  const nodes = [...document.querySelectorAll('.node')];
+  const byStep = Object.fromEntries([...new Set(nodes.map(n => n.dataset.step))].map(step => [step, nodes.filter(n => n.dataset.step === step).length]));
+  const active = nodes.filter(n => n.classList.contains('active'));
+  const disabled = nodes.filter(n => n.disabled);
+  const positions = nodes.map(n => ({ step:n.dataset.step, lane:n.dataset.lane, left:n.style.left, top:n.style.top }));
+  return { byStep, activeCount: active.length, disabledCount: disabled.length, nodeCount:nodes.length, positions };
+});
+if (JSON.stringify(routeStart.byStep) !== JSON.stringify({0:2,1:3,2:4,3:3,4:2,5:1})) throw new Error(`Route is not diamond 2-3-4-3-2-1: ${JSON.stringify(routeStart.byStep)}`);
+if (routeStart.activeCount !== 2) throw new Error(`Initial active nodes should be exactly 2, got ${routeStart.activeCount}`);
 await shot('03-map');
 
-const firstActive = page.locator('.node.active').first();
-await firstActive.click();
+async function resolveChoiceIfNeeded() {
+  if (await page.locator('.choicePanel').count()) {
+    const title = (await page.locator('.choicePanel h1').first().innerText()).toLowerCase();
+    if (title.includes('item chest')) {
+      await page.locator('.equipGrid button').first().click();
+    } else if (title.includes('training')) {
+      const trainable = page.locator('.choicePanel .pickCard:not([disabled])').first();
+      if (await trainable.count()) await trainable.click();
+      else await page.getByRole('button', { name: /skip/i }).click();
+    } else {
+      await page.locator('.choicePanel .pickCard').first().click();
+    }
+    await page.waitForTimeout(350);
+  }
+}
+
+// First smoke route: click the guaranteed normal battle opener. This validates no post-battle reward
+// and avoids random late elite/boss fights timing out the deploy check.
+await page.locator('.node.active').first().click();
 await page.waitForSelector('.pokelikeBattle');
+await page.waitForSelector('.battleRoster .modelBattleCard');
+const battleMetrics = await page.evaluate(() => ({
+  panels: [...document.querySelectorAll('.battlePanel')].map(p => p.querySelectorAll('.modelBattleCard').length),
+  rosters: document.querySelectorAll('.battleRoster').length
+}));
+if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw new Error(`Battle does not render roster rows: ${JSON.stringify(battleMetrics)}`);
 await assertNoBadImages('battle');
 await shot('04-battle');
 
-await page.waitForTimeout(6500);
+await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 20000 }).catch(() => {});
+await page.waitForTimeout(500);
 const bodyText = await page.locator('body').innerText();
 if (bodyText.includes('Victory Reward') || bodyText.includes('Choose one reward')) {
   throw new Error('Unexpected battle victory reward screen appeared after battle');
@@ -52,6 +86,12 @@ if (bodyText.includes('Victory Reward') || bodyText.includes('Choose one reward'
 if (!bodyText.includes('TEAM') || !bodyText.includes('PATH')) {
   throw new Error('Did not return to map shell after battle');
 }
+const routeAfter = await page.evaluate(() => {
+  const nodes = [...document.querySelectorAll('.node')];
+  const active = nodes.filter(n => n.classList.contains('active'));
+  return { activeCount: active.length, activeLanes: active.map(n => Number(n.dataset.lane)), activeSteps: active.map(n => Number(n.dataset.step)) };
+});
+if (routeAfter.activeCount < 1 || routeAfter.activeCount > 2) throw new Error(`After picking a route, next choices should be connected only, got ${JSON.stringify(routeAfter)}`);
 await shot('05-after-battle-map');
 
 const metrics = await page.evaluate(() => {

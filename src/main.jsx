@@ -138,28 +138,67 @@ function ModelSprite({id, side='ally', small=false, title}){ const label=title||
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
 function NodeGlyph({type}){ const key=NODE_GLYPHS[type]||'question'; return <img className={`nodeGlyph spriteNode ${key}`} src={hostedAsset(`sprites/${type}.png`)} alt="" onError={e=>{e.currentTarget.src=hostedAsset('sprites/question.png')}}/>; }
-function mapPoint(n,len){ const lanes=[22,50,78]; const wobble=[0,8,-5,6,-8,4,-4,0]; const y=88-(n.step*(76/Math.max(1,len-1))); const x=lanes[n.row]+(wobble[n.step]||0); return {x:clamp(x,10,90), y:clamp(y,8,92)}; }
+function mapPoint(n,len){
+  const y=90-(n.step*(76/Math.max(1,len-1)));
+  const x=20+(n.lane??n.row)*20;
+  return {x:clamp(x,12,88), y:clamp(y,10,92)};
+} 
+function lanesForStep(step,len){
+  if(step===0) return [1,2];
+  if(step===len-1) return [1.5];
+  if(step===1) return [0.5,1.5,2.5];
+  if(step===2) return [0,1,2,3];
+  if(step===3) return [0.5,1.5,2.5];
+  return [1,2];
+}
+function connected(a,b){ return b.step===a.step+1 && Math.abs((a.lane??a.row)-(b.lane??b.row))<=0.75; }
+function allMapEdges(nodes,len){
+  const edges=[];
+  for(let step=0; step<len-1; step++){
+    const a=nodes.filter(n=>n.step===step), b=nodes.filter(n=>n.step===step+1);
+    a.forEach(n1=>b.forEach(n2=>{ if(connected(n1,n2)) edges.push([n1,n2]); }));
+  }
+  return edges;
+}
+function getSelectedNode(game, step=game.nodeIndex-1){
+  const id=game.path?.[step];
+  return game.map.flat().find(n=>n.id===id);
+}
+function activeMapNodes(game){
+  const nodes=game.map.flat();
+  const stepNodes=nodes.filter(n=>n.step===game.nodeIndex);
+  if(game.nodeIndex===0) return stepNodes;
+  const prev=getSelectedNode(game, game.nodeIndex-1);
+  if(!prev) return [];
+  return stepNodes.filter(n=>connected(prev,n));
+}
 function initials(name='?'){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
 const nodeLabel = {battle:'Battle', elite:'Elite Battle', tavern:'Tavern', altar:'Altar of Heroes', special:'Tavern of Legends', training:'Training Grounds', item:'Item Chest', fountain:'Fountain', boss:'Boss', tower:'Battle Tower'};
 const nodeIcon = {battle:'⚔️', elite:'💀', tavern:'🍺', altar:'⛩️', special:'🌌', training:'🏋️', item:'🎁', fountain:'💧', boss:'👑', tower:'🗼'};
 
 function buildMap(level=1){
-  const len = level%5===0 ? 7 : 6;
-  const fixed = level%5===0 ? ['battle','tavern','elite','training','item','boss','tower'] : ['battle','tavern','battle','training','item','boss'];
-  const variants = [];
-  for(let r=0;r<3;r++) variants.push(fixed.map((t,i)=>{
-    let type=t;
-    if(i>0 && i<len-1){
-      const pool = level>4 ? ['battle','tavern','training','item','elite','altar','fountain','special'] : ['battle','tavern','training','item','elite','altar','fountain'];
-      if(Math.random()<0.45) type=rand(pool);
+  const len = 6;
+  const columns=[];
+  const pools={
+    early:['battle','tavern','item'],
+    mid: level>4 ? ['battle','elite','tavern','training','item','altar','fountain','special'] : ['battle','elite','tavern','training','item','altar','fountain'],
+    late:['elite','training','item','altar','fountain']
+  };
+  for(let step=0; step<len; step++){
+    const lanes=lanesForStep(step,len);
+    columns.push(lanes.map((lane,idx)=>{
+      let type='battle';
+      if(step===0) type=idx===0?'battle':'tavern';
+      else if(step===len-1) type=level%5===0?'tower':'boss';
+      else if(step===1) type=rand(pools.early);
+      else if(step===len-2) type=rand(pools.late);
+      else type=rand(pools.mid);
       if(level<3 && type==='special') type='altar';
-    }
-    return {id:uid(), type, row:r, step:i, done:false};
-  }));
-  variants[0][0].type='battle';
-  variants[1][len-1].type = level%5===0?'tower':'boss';
-  return variants;
+      return {id:uid(), type, row:idx, lane, step, done:false};
+    }));
+  }
+  return columns;
 }
 
 function App(){
@@ -173,19 +212,26 @@ function App(){
 
   function startRace(race){
     const starter = makeUnit(RACES[race].starter, 1);
-    const g={race, level:1, nodeIndex:0, map:buildMap(1), units:[starter], heroes:[], bag:[], badges:[], defeated:0, hall:JSON.parse(localStorage.getItem('altarbound_hof')||'[]')};
+    const g={race, level:1, nodeIndex:0, map:buildMap(1), path:[], units:[starter], heroes:[], bag:[], badges:[], defeated:0, hall:JSON.parse(localStorage.getItem('altarbound_hof')||'[]')};
     setGame(g); setScreen('map');
   }
   function nextLevel(winTower=false){
     setGame(g=>{
-      const ng={...g, level:g.level+1, nodeIndex:0, map:buildMap(g.level+1), units:g.units.map(healFull), heroes:g.heroes.map(healFull), badges: winTower?[...g.badges,`Tower ${g.level}`]:[...g.badges,`Lv ${g.level}`]};
+      const ng={...g, level:g.level+1, nodeIndex:0, map:buildMap(g.level+1), path:[], units:g.units.map(healFull), heroes:g.heroes.map(healFull), badges: winTower?[...g.badges,`Tower ${g.level}`]:[...g.badges,`Lv ${g.level}`]};
       return ng;
     }); setScreen('map'); setToast('Your army was fully restored. Next level begins!');
   }
   function finishNode(){
     setGame(g=> ({...g, nodeIndex:g.nodeIndex+1})); setScreen('map');
   }
-  function openNode(type){
+  function openNode(nodeOrType){
+    const node = typeof nodeOrType==='string' ? {type:nodeOrType} : nodeOrType;
+    const type=node.type;
+    if(node.id){
+      const allowed=activeMapNodes(game).some(n=>n.id===node.id);
+      if(!allowed) return;
+      setGame(g=>({...g, path:[...(g.path||[]), node.id]}));
+    }
     if(type==='battle'||type==='elite'||type==='boss'||type==='tower') startBattle(type);
     else if(type==='tavern') openTavern();
     else if(type==='altar'||type==='special') openAltar(type==='special');
@@ -283,27 +329,20 @@ function RaceSelect({onPick}){ return <div className="page starterPage"><h1>Choo
 function Shell({game, children, reorder, onSettings, fastMode}){ const equipped=[...game.units.flatMap(u=>[u.item]),...game.heroes.flatMap(h=>[h.item,h.item2])].filter(Boolean); const badgeSlots=Array.from({length:10}); return <div className="game wcFrame"><aside className="sidebar leftPanel"><div className="topBtns"><button>Codex</button><button>Achievements</button><button onClick={onSettings}>Settings</button><button onClick={()=>location.reload()}>↻</button></div>{fastMode&&<div className="fastBadge small">⚡ FAST</div>}<h3>TEAM</h3><div className="miniList">{game.units.map((u,i)=><Mini key={u.uid} c={u} onUp={()=>i>0&&reorder('unit',i,i-1)} onDown={()=>i<game.units.length-1&&reorder('unit',i,i+1)}/>)}</div><div className="panelHelp">Use ↑ ↓ to set battle order. First living unit tanks first.</div><h3>HEROES</h3><div className="miniList heroesMini">{game.heroes.length?game.heroes.map((h,i)=><Mini key={h.uid} c={h} hero onUp={()=>i>0&&reorder('hero',i,i-1)} onDown={()=>i<game.heroes.length-1&&reorder('hero',i,i+1)}/>):<p className="muted panelMuted">Find an Altar.</p>}</div><h3>BADGES</h3><div className="badges badgeSlots">{badgeSlots.map((_,i)=><span key={i} className={game.badges[i]?'earned':''}>{game.badges[i]||''}</span>)}</div></aside><main className="main boardFrame">{children}</main><aside className="rightPanel"><h3>ITEMS</h3><div className="itemRack">{equipped.length?equipped.slice(0,8).map((it,i)=><ItemIcon key={it.name+i} item={it}/>):<p>Bag empty</p>}</div><h3>PATH</h3><p className="runStat">Level {game.level}</p><p className="runStat">Wins {game.defeated}</p><p className="runStat">Node {game.nodeIndex+1}</p></aside></div> }
 function Mini({c,onUp,onDown}){ const b=baseOf(c); return <div className={`mini ${c.hp<=0?'dead':''}`}><Portrait id={c.id} tiny title={b.name}/><div><b>{b.name}</b><small>Lv{c.level} {c.kind==='hero'?'Hero':b.role}</small><div className="hp"><i style={{width:`${100*c.hp/c.maxHp}%`}}/></div></div><div className="order"><button onClick={onUp}>↑</button><button onClick={onDown}>↓</button></div></div> }
 function MapView({game, openNode}){
-  const len=game.map[0]?.length||1;
+  const len=game.map.length||1;
   const nodes=game.map.flat();
-  const edges=[];
-  for(let step=0; step<len-1; step++){
-    const a=nodes.filter(n=>n.step===step), b=nodes.filter(n=>n.step===step+1);
-    a.forEach(n1=>b.forEach(n2=>{
-      const mainLane = n1.row===n2.row;
-      const branch = (step%2===0 && n1.row===0 && n2.row===1) || (step%2===1 && n1.row===2 && n2.row===1);
-      if(mainLane || branch) edges.push([n1,n2]);
-    }));
-  }
-  const activeNodes=nodes.filter(n=>n.step===game.nodeIndex);
+  const edges=allMapEdges(nodes,len);
+  const activeNodes=activeMapNodes(game);
+  const pathIds=new Set(game.path||[]);
   return <div className="mapScreen pokelikeExact">
-    <div className="mapHeader"><h1>Level {game.level} Path</h1><p>Choose one glowing node. Battles give XP; rewards live on Tavern, Altar, Training and Chest nodes.</p></div>
+    <div className="mapHeader"><h1>Level {game.level} Path</h1><p>Real route: choose one reachable node. Only connected next nodes unlock.</p></div>
     <div className="routeLegend">{activeNodes.map(n=><span key={n.id}>{nodeIcon[n.type]} {nodeLabel[n.type]}</span>)}</div>
     <div className="pokelikeBoard">
       <div className="boardTopRoom"><span className="roomPic"/><span className="roomDoor"/><span className="roomMachine"/><span className="roomVial"/></div>
       <div className="waterLane left"/><div className="waterLane right"/>
       <div className="coral coralA"/><div className="coral coralB"/><div className="dockGap left"/><div className="dockGap right"/>
-      <svg className="mapEdges" viewBox="0 0 100 100" preserveAspectRatio="none">{edges.map(([a,b],idx)=>{ const p1=mapPoint(a,len), p2=mapPoint(b,len); return <line key={idx} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;})}</svg>
-      {nodes.map(n=>{ const p=mapPoint(n,len); const active=n.step===game.nodeIndex; return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${n.step<game.nodeIndex?'done':''} ${active?'active':''}`} onClick={()=>openNode(n.type)} title={nodeLabel[n.type]}><NodeGlyph type={n.type}/><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
+      <svg className="mapEdges" viewBox="0 0 100 100" preserveAspectRatio="none">{edges.map(([a,b],idx)=>{ const p1=mapPoint(a,len), p2=mapPoint(b,len); const chosen=pathIds.has(a.id)&&pathIds.has(b.id); const reachable=activeNodes.some(n=>n.id===b.id); return <line key={idx} className={`${chosen?'chosen':''} ${reachable?'reachable':''}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;})}</svg>
+      {nodes.map(n=>{ const p=mapPoint(n,len); const active=activeNodes.some(a=>a.id===n.id); const chosen=pathIds.has(n.id); return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${chosen||n.step<game.nodeIndex?'done':''} ${active?'active':''}`} data-step={n.step} data-lane={n.lane} onClick={()=>openNode(n)} title={nodeLabel[n.type]}><NodeGlyph type={n.type}/><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
       <div className="mapPartySprites">{game.units.slice(0,2).map((u,i)=><ModelSprite key={u.uid} id={u.id} small title={baseOf(u).name} side={i?'enemy':'ally'}/>)}</div>
       <div className="startMarker">?</div>
     </div>
@@ -340,7 +379,7 @@ function BattleView({battle,setBattle,onEnd,fastMode}){
   const allies=battle.ally, enemies=battle.enemy;
   return <div className="battlePage pokelikeBattle"><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><BattleSide title="YOUR TEAM" units={allies}/><BattleSide title="ENEMY" units={enemies} enemy/></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
 }
-function BattleSide({title,units,enemy=false}){ const active=units.find(c=>c.hp>0)||units[0]; return <section className={`battlePanel ${enemy?'enemySide':'allySide'}`}><h2>{title}</h2>{active&&<BattleCard c={active} enemy={enemy} active/>}<div className="benchRow">{units.map(c=><span key={c.uid} className={c.hp<=0?'dead':''}><Portrait id={c.id} tiny title={baseOf(c).name}/></span>)}</div></section>; }
+function BattleSide({title,units,enemy=false}){ return <section className={`battlePanel ${enemy?'enemySide':'allySide'}`}><h2>{title}</h2><div className="battleRoster">{units.map((c,i)=><BattleCard key={c.uid} c={c} enemy={enemy} active={c.hp>0 && i===units.findIndex(x=>x.hp>0)}/>)}</div></section>; }
 function BattleCard({c,enemy}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${c.hp<=0?'dead':''}`}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/><span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }

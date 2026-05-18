@@ -475,3 +475,57 @@ body:after{display:none!important;}
 .pokelikeBattle .log{border-color:#a77b3e;box-shadow:4px 5px 0 #050403;background:rgba(12,9,6,.94);}
 @media(max-width:1050px){.starterCards{grid-template-columns:repeat(2,minmax(160px,1fr));}.wcFrame.game{grid-template-columns:132px minmax(480px,1fr) 156px;gap:12px;}}
 @media(max-width:760px){.starterCards{grid-template-columns:1fr}.pokelikeMenu .logo{font-size:30px}.pokelikeMenu .menuGrid{grid-template-columns:1fr}.wcFrame.game{grid-template-columns:1fr}.routeLegend{position:relative;top:auto;left:auto;transform:none;margin-bottom:6px}.mapHeader{position:relative;bottom:auto;left:auto;transform:none;width:100%;margin-top:6px}.pokelikeBoard{height:70dvh!important;}}
+
+
+/* Corrected Pokelike route parity pass: thin dotted diamond paths, fixed node positions, reachable-only choices. */
+.pokelikeBoard{
+  background:
+    radial-gradient(circle at 22% 26%, rgba(66,124,72,.22) 0 18px, transparent 19px),
+    radial-gradient(circle at 58% 44%, rgba(75,137,81,.18) 0 22px, transparent 23px),
+    radial-gradient(circle at 33% 72%, rgba(63,121,69,.20) 0 20px, transparent 21px),
+    repeating-linear-gradient(0deg, rgba(42,100,59,.08) 0 4px, transparent 4px 16px),
+    linear-gradient(180deg,#8fe1b2 0%,#79d09b 52%,#68be87 100%) !important;
+  border:4px solid #293b31!important;
+  box-shadow:0 0 0 3px #eef8d8,0 0 0 7px #7a6b55,6px 8px 0 rgba(0,0,0,.35),inset 0 0 0 3px rgba(255,255,255,.18)!important;
+}
+.pokelikeBoard:before{
+  opacity:1!important;z-index:0!important;
+  background:
+    radial-gradient(ellipse at 3% 20%, #365d35 0 46px, transparent 47px),
+    radial-gradient(ellipse at 97% 19%, #365d35 0 50px, transparent 51px),
+    radial-gradient(ellipse at 3% 86%, #3d682e 0 62px, transparent 63px),
+    radial-gradient(ellipse at 98% 82%, #3d682e 0 64px, transparent 65px),
+    radial-gradient(circle at 12% 16%, #ef956b 0 7px, transparent 8px),
+    radial-gradient(circle at 15% 18%, #ef956b 0 7px, transparent 8px),
+    radial-gradient(circle at 86% 66%, rgba(121,87,54,.45) 0 28px, transparent 29px);
+}
+.pokelikeBoard:after{display:none!important;}
+.boardTopRoom{top:0!important;left:31%!important;right:31%!important;height:78px!important;background:linear-gradient(#6a7f65 0 18%,#c7bea1 18% 42%,#39432d 43% 100%)!important;border:0!important;border-bottom:5px solid #273222!important;box-shadow:inset 0 0 0 3px rgba(255,255,255,.22)!important;}
+.roomPic,.roomMachine,.roomVial{display:none!important}.roomDoor{top:42px!important;width:74px!important;height:34px!important;background:#2d2740!important;border:4px solid #b8a48e!important;}
+.waterLane,.coral,.dockGap{display:none!important;}
+.mapEdges{z-index:2!important}.mapEdges line{stroke:#1d4934!important;stroke-width:.23!important;stroke-dasharray:1.15 1.8!important;stroke-linecap:round!important;opacity:.78!important;filter:none!important;}
+.mapEdges line.reachable{stroke:#133927!important;opacity:.92!important;stroke-width:.28!important;}
+.mapEdges line.chosen{stroke:#f6e48b!important;stroke-width:.52!important;stroke-dasharray:none!important;opacity:.95!important;filter:drop-shadow(0 1px 0 rgba(0,0,0,.45))!important;}
+.node{width:48px!important;height:48px!important;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.22))!important;transition:none!important;animation:none!important;}
+.node:before{display:none!important;}.node:disabled{filter:grayscale(.85) brightness(.72) drop-shadow(2px 3px 0 rgba(0,0,0,.18))!important;}
+.node.active{filter:drop-shadow(0 0 8px rgba(255,247,129,.9)) drop-shadow(2px 3px 0 rgba(0,0,0,.3))!important;}
+.node.active:after{top:-24px!important;width:30px!important;height:30px!important;background:#fff7b4!important;color:#3c3211!important;border:3px solid #2f2a18!important;box-shadow:0 2px 0 rgba(0,0,0,.38)!important;font-family:'Press Start 2P';font-size:12px!important;}
+.spriteNode{width:42px!important;height:42px!important;filter:drop-shadow(1px 2px 0 rgba(0,0,0,.35))!important;}.node.done .spriteNode{filter:brightness(.9) saturate(.9) drop-shadow(1px 2px 0 rgba(0,0,0,.25))!important;}.node small{display:none!important;}.startMarker{display:none!important;}
+.mapPartySprites{left:44%!important;right:44%!important;bottom:4px!important;gap:0!important;}.mapPartySprites .modelSprite{width:52px!important;height:64px!important;}.mapPartySprites .modelSprite img{max-height:62px!important;}
+.routeLegend span{background:#fff8df!important;color:#24402f!important;border:2px solid #284631!important;box-shadow:2px 3px 0 rgba(0,0,0,.25)!important;}.mapHeader{background:rgba(255,248,223,.94)!important;border:2px solid #314832!important;color:#24402f!important;box-shadow:2px 3px 0 rgba(0,0,0,.32)!important;}.mapHeader h1{color:#2a442d!important;text-shadow:1px 1px #fff!important}.mapHeader p{color:#34563b!important;}
+
+/* Corrected battle parity: show every combatant as Pokelike-style rows, not only the active fighter. */
+.pokelikeBattle{background:#242b78!important;padding:24px 34px 18px!important;}.pokelikeBattle .battleGrid{max-width:1030px!important;grid-template-columns:1fr 1fr!important;gap:16px!important;align-items:start!important;}.pokelikeBattle .battlePanel{min-height:360px!important;padding:42px 12px 12px!important;background:#2c2c2c!important;border:3px solid #090909!important;outline:2px solid #505050!important;}.battleRoster{display:flex;flex-direction:column;gap:8px;max-height:64vh;overflow:auto;padding-right:4px;}
+.pokelikeBattle .modelBattleCard{margin:0!important;min-height:104px!important;padding:7px 8px 8px!important;background:#8ee16b!important;border:3px solid #111!important;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35),3px 4px 0 #090909!important;display:grid;grid-template-columns:1fr 122px;grid-template-rows:auto 14px 1fr auto;column-gap:8px;align-items:start;}.pokelikeBattle .modelBattleCard.active{outline:3px solid #fff27a;}.modelBattleCard .fighterName{position:static!important;grid-column:1/3;display:flex!important;justify-content:space-between!important;font-size:9px!important;line-height:1.1!important;color:#fff!important;text-shadow:2px 2px #333!important;}.modelBattleCard .fighterName span{position:static!important;font-family:'Pixelify Sans'!important;font-size:12px!important;color:#31522a!important;text-shadow:none!important;}.modelBattleCard .hp{grid-column:1/3;height:11px!important;margin:4px 0!important;}.arenaStage{grid-column:2;grid-row:3/5;height:68px!important;margin:0!important;background:transparent!important;overflow:visible!important;}.arenaStage:before{display:none!important}.arenaStage .modelSprite{width:118px!important;height:70px!important;}.arenaStage .modelSprite img{max-height:70px!important;}.spriteShadow{bottom:0!important;width:78px!important;height:18px!important;}.modelBattleCard .speed,.modelBattleCard .power{grid-column:1;height:8px!important;margin:4px 0 0!important;}.modelBattleCard>small{grid-column:1;font-size:10px!important;text-align:left!important;background:rgba(255,255,255,.2)!important;color:#293622!important;}.pokelikeBattle .log{max-width:1030px!important;min-height:96px!important;max-height:148px!important;overflow:auto!important;}.benchRow{display:none!important;}
+@media(max-width:900px){.pokelikeBattle .battleGrid{grid-template-columns:1fr!important}.battleRoster{max-height:none}.pokelikeBattle .modelBattleCard{grid-template-columns:1fr 100px}.arenaStage .modelSprite{width:96px!important}}
+
+
+/* Second correction: keep the start nodes clear and push explanatory UI out of the playable route. */
+.mapScreen.pokelikeExact{padding-bottom:74px!important;position:relative;}
+.pokelikeBoard{height:calc(100dvh - 128px)!important;min-height:590px!important;}
+.mapHeader{bottom:-66px!important;width:min(640px,96%)!important;padding:6px 10px!important;}
+.mapHeader h1{font-size:11px!important}.mapHeader p{font-size:11px!important;line-height:1.1!important;}
+.node:disabled{opacity:.34!important;}
+.node:disabled .spriteNode{filter:grayscale(1) brightness(.62) drop-shadow(1px 2px 0 rgba(0,0,0,.2))!important;}
+.mapEdges line{opacity:.55!important;}.mapEdges line.reachable{opacity:.95!important;}
+@media(max-height:760px){.pokelikeBoard{height:calc(100dvh - 118px)!important;min-height:540px!important}.mapHeader{bottom:-58px!important}.mapPartySprites{display:none!important}}
