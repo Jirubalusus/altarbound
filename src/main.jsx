@@ -129,11 +129,19 @@ const PORTRAIT_OVERRIDES = {
   paladin:'human paladin', archmage:'human archmage', mountain_king:'human mountainking', blood_mage:'human bloodmage', blademaster:'orc blademaster', far_seer:'orc farseer', tauren_chief:'orc taurenchief', shadow_hunter:'orc shadowhunter', demon_hunter:'nightelf demonhunter', keeper:'nightelf keeper', priestess:'nightelf priestess', warden:'nightelf warden', death_knight:'undead deathknight', dreadlord:'undead dreadlord', lich:'undead lich', crypt_lord:'undead cryptlord', naga:'neutral naga', panda:'neutral panda', beastmaster:'neutral beastmaster', dark_ranger:'neutral darkranger'
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
-const NODE_MODELS = {
-  // Route nodes intentionally use only available Warcraft III model assets from public/war3-assets/models.
-  // Different node types still read differently through model choice + labels, but never fall back to CSS/emoji art.
-  battle:'grunt', elite:'tauren_chief', tavern:'shaman', altar:'blademaster', special:'raider',
-  training:'grunt_veteran', item:'headhunter', fountain:'storm_shaman', boss:'blademaster', tower:'tauren_chief'
+const NODE_ASSETS = {
+  // Validated one by one: battle encounters use the actual unit model; utility nodes use their matching node asset.
+  // Avoid misleading substitutes like showing a Headhunter/lancer for an Item Chest.
+  battle:{src:'war3-assets/models/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
+  elite:{src:'war3-assets/models/tauren_chief.png', kind:'unit', validatedAs:'Tauren Chieftain'},
+  tavern:{src:'sprites/tavern.png', kind:'site', validatedAs:'Tavern / recruit site'},
+  altar:{src:'sprites/altar.png', kind:'site', validatedAs:'Altar / hero site'},
+  special:{src:'war3-assets/models/raider.png', kind:'unit', validatedAs:'Special encounter / Raider'},
+  training:{src:'sprites/training.png', kind:'site', validatedAs:'Training / upgrade site'},
+  item:{src:'sprites/item.png', kind:'site', validatedAs:'Item Chest / loot site'},
+  fountain:{src:'sprites/fountain.png', kind:'site', validatedAs:'Fountain / heal site'},
+  boss:{src:'sprites/boss.png', kind:'site', validatedAs:'Boss marker'},
+  tower:{src:'sprites/tower.png', kind:'site', validatedAs:'Battle Tower marker'}
 };
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
@@ -144,12 +152,13 @@ function ModelSprite({id, side='ally', small=false, title}){ const label=title||
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
 function NodeGlyph({type}){
-  const model=NODE_MODELS[type];
-  const sources=[hostedAsset(`war3-assets/models/${model}.png`)];
-  const [srcIndex,setSrcIndex]=useState(0);
-  useEffect(()=>setSrcIndex(0),[type]);
-  const src=sources[Math.min(srcIndex,sources.length-1)];
-  return <img className={`nodeGlyph nodeWar3Asset ${type} unitNodeAsset`} src={src} alt="" onError={()=>setSrcIndex(i=>Math.min(i+1,sources.length-1))}/>;
+  const asset=NODE_ASSETS[type] || NODE_ASSETS.battle;
+  return <img
+    className={`nodeGlyph nodeWar3Asset ${type} ${asset.kind==='unit'?'unitNodeAsset':'siteNodeAsset'}`}
+    src={hostedAsset(asset.src)}
+    alt={asset.validatedAs || nodeLabel[type] || type}
+    title={asset.validatedAs || nodeLabel[type] || type}
+  />;
 }
 function mapPoint(n,len){
   const lane = n.lane ?? n.row;

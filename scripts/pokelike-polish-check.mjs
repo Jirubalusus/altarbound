@@ -70,7 +70,8 @@ const nodeAssetMetrics = await page.evaluate(() => {
     war3Assets: imgs.length,
     oldSpriteIcons: document.querySelectorAll('.node .spriteNode').length,
     topOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
-    nonOfficialSources: imgs.map(img=>img.src).filter(src=>!src.includes('/war3-assets/models/')),
+    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/sprites/'))),
+    illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/sprites/item.png')).length,
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);
       return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
@@ -86,7 +87,7 @@ const nodeAssetMetrics = await page.evaluate(() => {
     }).length
   };
 });
-if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonOfficialSources.length || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must be sprite-only Warcraft assets with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use validated logical assets with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
