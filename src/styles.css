@@ -799,3 +799,255 @@ body:after{display:none!important;}
   box-shadow:0 1px 0 rgba(0,0,0,.35)!important;
   z-index:6!important;
 }
+
+/* Pokelike world-map pass: sprites stand directly on tilemap terrain; locked nodes become fog/brush, not dark pucks. */
+.pokelikeBoard{
+  overflow:hidden!important;
+  background-color:#77c77d!important;
+  background-image:
+    radial-gradient(ellipse at 12% 18%,rgba(34,107,61,.62) 0 8%,transparent 8.5%),
+    radial-gradient(ellipse at 93% 78%,rgba(215,184,112,.72) 0 13%,transparent 13.5%),
+    radial-gradient(ellipse at 22% 72%,rgba(94,183,145,.42) 0 16%,transparent 16.5%),
+    radial-gradient(ellipse at 84% 24%,rgba(48,132,76,.42) 0 9%,transparent 9.5%),
+    linear-gradient(0deg,rgba(255,255,255,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(43,119,76,.12) 1px,transparent 1px),
+    linear-gradient(135deg,#87d98d 0%,#7dcc86 39%,#6ebe7f 74%,#d7bc73 100%)!important;
+  background-size:auto,auto,auto,auto,16px 16px,16px 16px,100% 100%!important;
+  border-color:#2f5c37!important;
+  box-shadow:inset 0 0 0 5px #d8c082,inset 0 0 0 10px #5b8b49,0 14px 0 rgba(0,0,0,.34)!important;
+}
+.pokelikeBoard:after{
+  content:"";
+  position:absolute;inset:0;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 7% 7%,#315f35 0 7%,transparent 7.5%),
+    radial-gradient(circle at 11% 12%,#244c2c 0 9%,transparent 9.5%),
+    radial-gradient(circle at 4% 18%,#2e6d3b 0 8%,transparent 8.5%),
+    radial-gradient(circle at 96% 5%,#2e6d3b 0 8%,transparent 8.5%),
+    radial-gradient(circle at 91% 13%,#244c2c 0 10%,transparent 10.5%),
+    radial-gradient(circle at 4% 96%,#315f35 0 10%,transparent 10.5%);
+  opacity:.72;
+  z-index:0;
+}
+.waterLane,.coral,.dockGap{display:none!important;}
+.mapEdges{z-index:1!important;}
+.mapEdges line{
+  stroke:#254a37!important;
+  stroke-width:1.15px!important;
+  stroke-dasharray:3 6!important;
+  opacity:.82!important;
+}
+.mapEdges line.reachable{stroke:#273d22!important;opacity:.95!important;stroke-width:1.35px!important;}
+.mapEdges line.chosen{stroke:#fff0a5!important;opacity:1!important;stroke-width:1.8px!important;}
+.node{
+  z-index:3!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  overflow:visible!important;
+}
+.node:disabled,
+.node:disabled:hover,
+.node:disabled:active,
+.node:disabled:focus{background:transparent!important;border:0!important;box-shadow:none!important;}
+.nodeDisc{background:transparent!important;border:0!important;box-shadow:none!important;overflow:visible!important;}
+.nodeDisc:before{
+  content:"";
+  position:absolute;
+  left:50%;bottom:3px;
+  width:60px;height:18px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(31,89,38,.5) 0 34%,rgba(34,106,45,.25) 35% 64%,transparent 65%);
+  z-index:0;
+}
+.nodeDisc:after{
+  content:""!important;
+  position:absolute!important;
+  left:50%!important;bottom:-1px!important;
+  width:54px!important;height:16px!important;
+  transform:translateX(-50%)!important;
+  border-radius:46% 54% 44% 56%!important;
+  background:
+    radial-gradient(circle at 14% 48%,#4b9a45 0 12%,transparent 13%),
+    radial-gradient(circle at 31% 31%,#6abd4d 0 14%,transparent 15%),
+    radial-gradient(circle at 51% 50%,#3f893f 0 16%,transparent 17%),
+    radial-gradient(circle at 70% 34%,#5fad44 0 14%,transparent 15%),
+    radial-gradient(circle at 88% 54%,#347c38 0 12%,transparent 13%)!important;
+  opacity:.88!important;
+  z-index:1!important;
+}
+.node .nodeWar3Asset{
+  z-index:3!important;
+  bottom:11px!important;
+  filter:drop-shadow(0 3px 1px rgba(0,0,0,.48)) saturate(1.12) contrast(1.06)!important;
+}
+.node.active .nodeWar3Asset{
+  animation:nodeIdleBob 1.45s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 8px rgba(255,243,111,.95)) drop-shadow(0 4px 1px rgba(0,0,0,.52)) saturate(1.2) contrast(1.08)!important;
+}
+.node.active .nodeDisc:before{background:radial-gradient(ellipse at center,rgba(255,235,102,.8) 0 31%,rgba(77,117,38,.36) 32% 68%,transparent 69%)!important;}
+.node:disabled .nodeWar3Asset{
+  opacity:.28!important;
+  filter:grayscale(.9) brightness(.55) blur(.2px) drop-shadow(0 3px 1px rgba(0,0,0,.3))!important;
+}
+.node:disabled .nodeDisc:before{
+  width:66px!important;height:28px!important;bottom:0!important;
+  background:radial-gradient(ellipse at center,rgba(188,227,183,.45) 0 36%,rgba(96,154,91,.36) 37% 68%,transparent 69%)!important;
+  filter:blur(2px)!important;
+}
+.node:disabled .nodeDisc:after{
+  width:66px!important;height:25px!important;bottom:0!important;
+  background:
+    radial-gradient(circle at 10% 54%,#4d9a4b 0 13%,transparent 14%),
+    radial-gradient(circle at 25% 34%,#73bd51 0 17%,transparent 18%),
+    radial-gradient(circle at 45% 50%,#3e8742 0 19%,transparent 20%),
+    radial-gradient(circle at 66% 31%,#6ab14b 0 17%,transparent 18%),
+    radial-gradient(circle at 86% 57%,#347a38 0 14%,transparent 15%)!important;
+  opacity:.78!important;
+  filter:blur(.15px)!important;
+}
+.node.done .nodeWar3Asset{opacity:.58!important;filter:grayscale(.35) brightness(.72) drop-shadow(0 3px 1px rgba(0,0,0,.28))!important;}
+.node small{
+  bottom:-12px!important;
+  background:rgba(247,240,196,.88)!important;
+  border-color:#557348!important;
+  color:#172d19!important;
+  box-shadow:0 1px 0 rgba(0,0,0,.25)!important;
+}
+.node:not(.active):not(:hover) small{opacity:0!important;}
+.node.active small{opacity:.92!important;}
+.node.active:after{top:0!important;right:6px!important;}
+@keyframes nodeIdleBob{from{transform:translateX(-50%) translateY(0)}to{transform:translateX(-50%) translateY(-2px)}}
+
+/* Second Pokelike world-map pass: no peanas/círculos; locked route positions become organic bushes/fog. */
+.pokelikeBoard{
+  background-color:#82cf82!important;
+  background-image:
+    linear-gradient(0deg,rgba(255,255,255,.10) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(45,119,70,.12) 1px,transparent 1px),
+    repeating-linear-gradient(0deg,rgba(65,143,70,.12) 0 2px,transparent 2px 18px),
+    radial-gradient(ellipse at 17% 69%,rgba(86,183,145,.42) 0 14%,transparent 14.5%),
+    radial-gradient(ellipse at 90% 84%,rgba(226,190,111,.72) 0 13%,transparent 13.5%),
+    linear-gradient(135deg,#92dc8c 0%,#78c67e 52%,#6ab779 100%)!important;
+  background-size:16px 16px,16px 16px,100% 100%,100% 100%,100% 100%,100% 100%!important;
+}
+.nodeDisc:before{
+  width:38px!important;
+  height:9px!important;
+  bottom:7px!important;
+  background:radial-gradient(ellipse at center,rgba(16,44,20,.42) 0 42%,rgba(16,44,20,.16) 43% 66%,transparent 67%)!important;
+  filter:blur(.4px)!important;
+}
+.nodeDisc:after{display:none!important;}
+.node.active .nodeDisc:before{
+  width:42px!important;height:11px!important;bottom:6px!important;
+  background:radial-gradient(ellipse at center,rgba(255,236,109,.58) 0 32%,rgba(34,88,30,.24) 33% 69%,transparent 70%)!important;
+  filter:blur(.35px)!important;
+}
+.node .nodeWar3Asset{
+  bottom:10px!important;
+  filter:drop-shadow(0 3px 1px rgba(0,0,0,.45)) saturate(1.12) contrast(1.06)!important;
+}
+.node.active:after{
+  top:5px!important;
+  right:9px!important;
+  transform:scale(.72)!important;
+  opacity:.92!important;
+}
+.node:disabled .nodeWar3Asset{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+.node:disabled .nodeDisc:before{
+  width:62px!important;
+  height:34px!important;
+  left:50%!important;
+  bottom:6px!important;
+  transform:translateX(-50%)!important;
+  border-radius:48% 52% 46% 54%!important;
+  background:
+    radial-gradient(circle at 11% 58%,#387c3b 0 13%,transparent 14%),
+    radial-gradient(circle at 23% 35%,#70b853 0 18%,transparent 19%),
+    radial-gradient(circle at 42% 51%,#4e9b45 0 20%,transparent 21%),
+    radial-gradient(circle at 61% 32%,#82c45d 0 18%,transparent 19%),
+    radial-gradient(circle at 78% 54%,#3f843d 0 17%,transparent 18%),
+    radial-gradient(circle at 93% 61%,#2e6e36 0 12%,transparent 13%)!important;
+  filter:drop-shadow(0 2px 0 rgba(0,0,0,.22))!important;
+  opacity:.92!important;
+}
+.node:disabled .nodeDisc:after{
+  display:block!important;
+  width:76px!important;height:42px!important;left:50%!important;bottom:0!important;transform:translateX(-50%)!important;
+  background:radial-gradient(ellipse at center,rgba(213,239,204,.32) 0 34%,rgba(119,174,112,.22) 35% 67%,transparent 68%)!important;
+  border-radius:50%!important;
+  filter:blur(3px)!important;
+  opacity:.82!important;
+  z-index:0!important;
+}
+.node.done .nodeWar3Asset{opacity:.48!important;filter:grayscale(.55) brightness(.62) drop-shadow(0 3px 1px rgba(0,0,0,.24))!important;}
+.node.done .nodeDisc:before{width:38px!important;height:10px!important;background:radial-gradient(ellipse at center,rgba(29,61,31,.36) 0 42%,transparent 70%)!important;}
+
+/* Remove active peana: active nodes are standing units with only a tiny natural foot shadow. */
+.node.active,
+.node.active:hover,
+.node.active:focus{
+  background:transparent!important;
+  box-shadow:none!important;
+  outline:0!important;
+}
+.node.active .nodeDisc:before{
+  width:40px!important;
+  height:9px!important;
+  bottom:7px!important;
+  background:radial-gradient(ellipse at center,rgba(21,52,20,.46) 0 42%,rgba(21,52,20,.16) 43% 67%,transparent 68%)!important;
+  filter:blur(.35px)!important;
+  opacity:.92!important;
+}
+.node.active .nodeDisc:after{display:none!important;}
+.node.active .nodeWar3Asset{
+  filter:drop-shadow(0 3px 1px rgba(0,0,0,.48)) saturate(1.18) contrast(1.08)!important;
+}
+.node.active:before{
+  content:"";
+  position:absolute;
+  left:50%;bottom:5px;
+  width:42px;height:2px;
+  transform:translateX(-50%);
+  border-radius:999px;
+  background:rgba(255,235,106,.75);
+  box-shadow:0 0 6px rgba(255,235,106,.42);
+  z-index:2;
+  pointer-events:none;
+}
+
+/* Ultra-clean Pokelike node footing: no selectable ring at all, just sprite + tiny pixel shadow + small corner marker. */
+.node.active:before{display:none!important;content:none!important;}
+.nodeDisc:before,
+.node.active .nodeDisc:before{
+  width:30px!important;
+  height:6px!important;
+  bottom:8px!important;
+  background:radial-gradient(ellipse at center,rgba(15,39,18,.34) 0 38%,rgba(15,39,18,.1) 39% 62%,transparent 63%)!important;
+  filter:blur(.2px)!important;
+  opacity:.78!important;
+}
+.node.active .nodeWar3Asset{
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.45)) saturate(1.16) contrast(1.08)!important;
+}
+.node.active:after{
+  width:13px!important;height:13px!important;min-width:13px!important;min-height:13px!important;
+  font-size:7px!important;line-height:13px!important;
+  top:7px!important;right:12px!important;
+  border-width:1px!important;
+  background:#fff6ae!important;
+  box-shadow:0 1px 0 rgba(0,0,0,.25)!important;
+}
+
+/* Final no-peana override: active sprites have absolutely no drawn base/halo. */
+.node.active .nodeDisc:before,
+.node.active .nodeDisc:after{display:none!important;content:none!important;background:none!important;box-shadow:none!important;}
+.node.active .nodeWar3Asset{bottom:5px!important;}
+.node.active:after{top:3px!important;right:8px!important;}

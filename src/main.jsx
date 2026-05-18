@@ -144,7 +144,7 @@ function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empt
 function NodeGlyph({type}){
   const model=NODE_MODELS[type];
   const isItem=false;
-  const sources=[hostedAsset(`war3-assets/models/${model}.png`), hostedAsset(`sprites/models/${model}.png`), hostedAsset(`sprites/${type}.png`)];
+  const sources=[hostedAsset(`sprites/models/${model}.png`), hostedAsset(`war3-assets/models/${model}.png`), hostedAsset(`sprites/${type}.png`)];
   const [srcIndex,setSrcIndex]=useState(0);
   useEffect(()=>setSrcIndex(0),[type]);
   const src=sources[Math.min(srcIndex,sources.length-1)];
