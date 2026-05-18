@@ -12,5 +12,6 @@ public/war3-assets/**/*.png
 public/war3-assets/**/*.jpg
 public/war3-assets/**/*.jpeg
 public/war3-assets/**/*.webp
+public/war3-assets/**/*.json
 public/war3-assets/**/*.blp
 !public/war3-assets/README.md
