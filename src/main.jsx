@@ -133,8 +133,9 @@ function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}><img className="officialPortrait" src={publicAsset(`war3-assets/portraits/${id}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/><i className="pixelHead" data-key={artKey(id)}/><em>{initials(label)}</em></span>; }
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const [missing,setMissing]=useState(false); return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img src={publicAsset(`war3-assets/models/${id}.png`)} alt="" onError={()=>setMissing(true)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
-function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.icon||''}</span>; }
-function NodeGlyph({type}){ return <span className={`nodeGlyph ${NODE_GLYPHS[type]||'sword'}`} />; }
+function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={publicAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
+function NodeGlyph({type}){ const key=NODE_GLYPHS[type]||'question'; return <img className={`nodeGlyph spriteNode ${key}`} src={publicAsset(`sprites/${type}.png`)} alt="" onError={e=>{e.currentTarget.src=publicAsset('sprites/question.png')}}/>; }
 function mapPoint(n,len){ const lanes=[22,50,78]; const wobble=[0,8,-5,6,-8,4,-4,0]; const y=88-(n.step*(76/Math.max(1,len-1))); const x=lanes[n.row]+(wobble[n.step]||0); return {x:clamp(x,10,90), y:clamp(y,8,92)}; }
 function initials(name='?'){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
