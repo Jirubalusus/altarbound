@@ -264,7 +264,7 @@ function App(){
     setGame(g=>({...g, units:g.units.map(u=>healFull(addXp(u,xp))), heroes:g.heroes.map(h=>healFull(addXp(h,xp))), defeated:g.defeated+1}));
     if(b.type==='boss'){ setBattle(null); nextLevel(false); }
     else if(b.type==='tower'){ setBattle(null); nextLevel(true); }
-    else { setBattle(null); setScreen('reward'); setChoice({type:'reward', title:'Victory Reward', subtitle:'Choose one reward.', options:makeRewardOptions(game)}); }
+    else { setBattle(null); setToast('Victory! Your army gains XP and moves on.'); finishNode(); }
   }
 
   if(screen==='menu') return <Menu onStart={()=>setScreen('race')} onSettings={()=>setScreen('settings')} fastMode={fastMode} hall={JSON.parse(localStorage.getItem('altarbound_hof')||'[]')} />;
