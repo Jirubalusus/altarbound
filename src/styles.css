@@ -635,3 +635,167 @@ body:after{display:none!important;}
 .node:disabled:focus{
   transform:translate(-50%,-50%)!important;
 }
+
+/* Warcraft III map-node asset pass: Pokelike-style world sprites instead of generic round icons. */
+.node{
+  width:58px!important;
+  height:70px!important;
+  min-width:58px!important;
+  min-height:70px!important;
+  max-width:58px!important;
+  max-height:70px!important;
+}
+.nodeDisc{
+  width:58px!important;
+  height:70px!important;
+  min-width:58px!important;
+  min-height:70px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+}
+.nodeDisc:after{
+  content:"";
+  position:absolute;
+  left:50%;
+  bottom:5px;
+  width:44px;
+  height:16px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(27,70,35,.42) 0 48%,rgba(18,55,27,.16) 49% 72%,transparent 73%);
+  z-index:0;
+}
+.node .nodeWar3Asset{
+  position:absolute!important;
+  left:50%!important;
+  bottom:7px!important;
+  width:58px!important;
+  height:62px!important;
+  max-width:58px!important;
+  max-height:62px!important;
+  transform:translateX(-50%)!important;
+  object-fit:contain!important;
+  display:block!important;
+  margin:0!important;
+  image-rendering:auto!important;
+  filter:drop-shadow(0 3px 0 rgba(0,0,0,.42))!important;
+  z-index:2!important;
+}
+.node .nodeWar3Asset.itemNodeAsset{
+  width:42px!important;
+  height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  bottom:17px!important;
+  image-rendering:pixelated!important;
+  background:#efe8d0;
+  border:2px solid #715845;
+  border-radius:4px;
+  padding:3px;
+  box-shadow:0 2px 0 rgba(0,0,0,.34);
+}
+.node.boss .nodeWar3Asset,.node.tower .nodeWar3Asset,.node.elite .nodeWar3Asset{height:68px!important;max-height:68px!important;bottom:4px!important;}
+.node.fountain .nodeWar3Asset,.node.altar .nodeWar3Asset,.node.special .nodeWar3Asset{height:66px!important;max-height:66px!important;bottom:5px!important;}
+.node.active .nodeWar3Asset{
+  filter:drop-shadow(0 0 7px rgba(255,240,112,.98)) drop-shadow(0 4px 0 rgba(0,0,0,.48))!important;
+}
+.node.active .nodeDisc:after{
+  background:radial-gradient(ellipse at center,rgba(255,234,101,.76) 0 36%,rgba(82,96,33,.42) 37% 68%,transparent 69%);
+}
+.node:disabled .nodeDisc{filter:none!important;opacity:.64!important;}
+.node:disabled .nodeWar3Asset{filter:grayscale(.8) brightness(.7) drop-shadow(0 3px 0 rgba(0,0,0,.26))!important;}
+.node.done .nodeWar3Asset{filter:grayscale(.25) brightness(.82) drop-shadow(0 3px 0 rgba(0,0,0,.3))!important;}
+.node.active:after{top:-16px!important;}
+@media(max-height:760px){
+  .node{width:52px!important;height:62px!important;min-width:52px!important;min-height:62px!important;max-width:52px!important;max-height:62px!important;}
+  .nodeDisc{width:52px!important;height:62px!important;min-width:52px!important;min-height:62px!important;}
+  .node .nodeWar3Asset{width:52px!important;height:56px!important;max-width:52px!important;max-height:56px!important;}
+  .node .nodeWar3Asset.itemNodeAsset{width:38px!important;height:38px!important;max-width:38px!important;max-height:38px!important;}
+}
+
+/* Warcraft node clarity pass: all route positions use readable sprites, and no legend overlaps the top node. */
+.routeLegend{display:none!important;}
+.node:disabled{opacity:1!important;}
+.node:disabled .nodeDisc{opacity:.86!important;}
+.node:disabled .nodeWar3Asset{filter:grayscale(.55) brightness(.82) contrast(1.08) drop-shadow(0 3px 0 rgba(0,0,0,.3))!important;}
+.node:not(.active):not(.done) .nodeWar3Asset{opacity:.88!important;}
+.node:not(.active):not(.done) .nodeDisc:after{opacity:.72;}
+
+/* Full sprite-map pass: remove decorative UI overlays and keep every future node readable as Warcraft unit art. */
+.boardTopRoom,.roomDoor{display:none!important;}
+.mapHeader{display:none!important;}
+.mapScreen.pokelikeExact{padding-bottom:0!important;}
+.pokelikeBoard{height:calc(100dvh - 54px)!important;min-height:600px!important;}
+.node .nodeWar3Asset.itemNodeAsset{
+  background:transparent!important;
+  border:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+}
+.node:disabled .nodeWar3Asset,
+.node:not(.active):not(.done) .nodeWar3Asset{
+  opacity:.96!important;
+  filter:brightness(.98) saturate(.92) contrast(1.05) drop-shadow(0 3px 0 rgba(0,0,0,.36))!important;
+}
+.node:disabled .nodeDisc{opacity:1!important;}
+.node:disabled .nodeDisc:after,
+.node:not(.active):not(.done) .nodeDisc:after{
+  opacity:.78!important;
+  background:radial-gradient(ellipse at center,rgba(26,84,40,.45) 0 46%,rgba(18,55,27,.2) 47% 72%,transparent 73%)!important;
+}
+.node.active .nodeWar3Asset{opacity:1!important;}
+@media(max-height:760px){.pokelikeBoard{height:calc(100dvh - 38px)!important;min-height:540px!important;}}
+
+/* Final Warcraft sprite readability: no dark pucks, no orange decorative artifacts, larger standing units. */
+.pokelikeBoard:before{display:none!important;}
+.node{
+  width:72px!important;height:82px!important;min-width:72px!important;min-height:82px!important;max-width:72px!important;max-height:82px!important;
+}
+.nodeDisc{
+  width:72px!important;height:82px!important;min-width:72px!important;min-height:82px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;filter:none!important;opacity:1!important;
+}
+.nodeDisc:after{
+  bottom:4px!important;width:54px!important;height:18px!important;
+  background:radial-gradient(ellipse at center,rgba(20,75,31,.42) 0 42%,rgba(18,55,27,.16) 43% 72%,transparent 73%)!important;
+}
+.node .nodeWar3Asset{
+  width:72px!important;height:78px!important;max-width:72px!important;max-height:78px!important;bottom:5px!important;
+  opacity:1!important;filter:drop-shadow(0 4px 0 rgba(0,0,0,.42)) saturate(1.08) contrast(1.05)!important;
+}
+.node:disabled .nodeWar3Asset,.node:not(.active):not(.done) .nodeWar3Asset{
+  opacity:1!important;filter:drop-shadow(0 4px 0 rgba(0,0,0,.34)) saturate(1.02) contrast(1.05)!important;
+}
+.node.active .nodeWar3Asset{
+  filter:drop-shadow(0 0 9px rgba(255,243,107,.98)) drop-shadow(0 4px 0 rgba(0,0,0,.48)) saturate(1.14) contrast(1.08)!important;
+}
+.node.boss .nodeWar3Asset,.node.tower .nodeWar3Asset,.node.elite .nodeWar3Asset{height:82px!important;max-height:82px!important;bottom:2px!important;}
+.node.active:after{top:-8px!important;z-index:5!important;}
+@media(max-height:760px){
+  .node{width:62px!important;height:72px!important;min-width:62px!important;min-height:72px!important;max-width:62px!important;max-height:72px!important;}
+  .nodeDisc{width:62px!important;height:72px!important;min-width:62px!important;min-height:72px!important;}
+  .node .nodeWar3Asset{width:62px!important;height:68px!important;max-width:62px!important;max-height:68px!important;}
+}
+
+/* Keep active marker Pokelike-like but tiny, so Warcraft sprites are never covered. */
+.node.active:after{
+  content:"!"!important;
+  top:-2px!important;
+  right:4px!important;
+  left:auto!important;
+  transform:none!important;
+  width:16px!important;
+  height:16px!important;
+  min-width:16px!important;
+  min-height:16px!important;
+  border-radius:50%!important;
+  font-size:8px!important;
+  line-height:16px!important;
+  border:2px solid #2f2a18!important;
+  background:#fff7b4!important;
+  color:#3c3211!important;
+  box-shadow:0 1px 0 rgba(0,0,0,.35)!important;
+  z-index:6!important;
+}

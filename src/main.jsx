@@ -129,6 +129,10 @@ const PORTRAIT_OVERRIDES = {
   paladin:'human paladin', archmage:'human archmage', mountain_king:'human mountainking', blood_mage:'human bloodmage', blademaster:'orc blademaster', far_seer:'orc farseer', tauren_chief:'orc taurenchief', shadow_hunter:'orc shadowhunter', demon_hunter:'nightelf demonhunter', keeper:'nightelf keeper', priestess:'nightelf priestess', warden:'nightelf warden', death_knight:'undead deathknight', dreadlord:'undead dreadlord', lich:'undead lich', crypt_lord:'undead cryptlord', naga:'neutral naga', panda:'neutral panda', beastmaster:'neutral beastmaster', dark_ranger:'neutral darkranger'
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
+const NODE_MODELS = {
+  battle:'grunt', elite:'tauren', tavern:'shaman', altar:'blademaster', special:'naga',
+  training:'grunt_veteran', item:'raider', fountain:'keeper', boss:'death_knight', tower:'frost_wyrm'
+};
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 const FIREBASE_HOSTING_ASSET_ROOT = 'https://altarbound-660da.web.app/';
@@ -137,7 +141,15 @@ function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[hostedAsset(`war3-assets/models/${id}.png`), hostedAsset(`sprites/models/${id}.png`)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img src={sources[srcIndex]} alt="" onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
-function NodeGlyph({type}){ const key=NODE_GLYPHS[type]||'question'; return <img className={`nodeGlyph spriteNode ${key}`} src={hostedAsset(`sprites/${type}.png`)} alt="" onError={e=>{e.currentTarget.src=hostedAsset('sprites/question.png')}}/>; }
+function NodeGlyph({type}){
+  const model=NODE_MODELS[type];
+  const isItem=false;
+  const sources=[hostedAsset(`war3-assets/models/${model}.png`), hostedAsset(`sprites/models/${model}.png`), hostedAsset(`sprites/${type}.png`)];
+  const [srcIndex,setSrcIndex]=useState(0);
+  useEffect(()=>setSrcIndex(0),[type]);
+  const src=sources[Math.min(srcIndex,sources.length-1)];
+  return <img className={`nodeGlyph nodeWar3Asset ${type} ${isItem?'itemNodeAsset':'unitNodeAsset'}`} src={src} alt="" onError={()=>setSrcIndex(i=>Math.min(i+1,sources.length-1))}/>;
+}
 function mapPoint(n,len){
   const lane = n.lane ?? n.row;
   const routeTop = 18.5;

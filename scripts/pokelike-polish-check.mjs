@@ -61,6 +61,13 @@ const routeStart = await page.evaluate(() => {
 });
 if (JSON.stringify(routeStart.byStep) !== JSON.stringify({0:2,1:3,2:4,3:3,4:2,5:1})) throw new Error(`Route is not diamond 2-3-4-3-2-1: ${JSON.stringify(routeStart.byStep)}`);
 if (routeStart.activeCount !== 2) throw new Error(`Initial active nodes should be exactly 2, got ${routeStart.activeCount}`);
+const nodeAssetMetrics = await page.evaluate(() => ({
+  nodes: document.querySelectorAll('.node').length,
+  war3Assets: document.querySelectorAll('.node .nodeWar3Asset').length,
+  oldSpriteIcons: document.querySelectorAll('.node .spriteNode').length,
+  topOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.routeLegend')].find(el => getComputedStyle(el).display !== 'none')
+}));
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible) throw new Error(`Map nodes are not pure Warcraft asset sprites: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
