@@ -2,6 +2,8 @@ import React, {useEffect, useMemo, useRef, useState} from 'react';
 import { createRoot } from 'react-dom/client';
 import './styles.css';
 
+const FAST_MODE_KEY = 'altarbound_fast_mode';
+
 const RACES = {
   human:{name:'Human', color:'#69a7ff', starter:'footman', style:'armor, healing, disciplined lines'},
   orc:{name:'Orc', color:'#79c65b', starter:'grunt', style:'brutal melee, rage, bloodlust'},
@@ -145,6 +147,8 @@ function App(){
   const [choice,setChoice]=useState(null);
   const [battle,setBattle]=useState(null);
   const [toast,setToast]=useState(null);
+  const [fastMode,setFastModeState]=useState(()=>localStorage.getItem(FAST_MODE_KEY)==='1');
+  const setFastMode=(value)=>{ const enabled=!!value; setFastModeState(enabled); localStorage.setItem(FAST_MODE_KEY, enabled?'1':'0'); };
 
   function startRace(race){
     const starter = makeUnit(RACES[race].starter, 1);
@@ -242,18 +246,20 @@ function App(){
     else { setBattle(null); setScreen('reward'); setChoice({type:'reward', title:'Victory Reward', subtitle:'Choose one reward.', options:makeRewardOptions(game)}); }
   }
 
-  if(screen==='menu') return <Menu onStart={()=>setScreen('race')} hall={JSON.parse(localStorage.getItem('altarbound_hof')||'[]')} />;
+  if(screen==='menu') return <Menu onStart={()=>setScreen('race')} onSettings={()=>setScreen('settings')} fastMode={fastMode} hall={JSON.parse(localStorage.getItem('altarbound_hof')||'[]')} />;
+  if(screen==='settings') return <SettingsView fastMode={fastMode} setFastMode={setFastMode} onBack={()=>setScreen(game?'map':'menu')} />;
   if(screen==='race') return <RaceSelect onPick={startRace}/>;
   if(!game) return null;
-  if(screen==='map') return <Shell game={game} reorder={reorder}><MapView game={game} openNode={openNode}/>{toast&&<Toast text={toast} onClose={()=>setToast(null)}/>}</Shell>;
-  if(screen==='choice'||screen==='reward') return <Shell game={game} reorder={reorder}><ChoiceView choice={choice} game={game} onUnit={takeUnit} onHero={takeHero} onItem={openItem=>{}} equipItem={equipItem} train={train} finish={finishNode} /></Shell>;
-  if(screen==='replace') return <Shell game={game} reorder={reorder}><ReplaceView game={game} replaceEntity={replaceEntity} cancel={()=>{setGame(g=>({...g,pendingReplace:null})); finishNode();}} /></Shell>;
-  if(screen==='battle') return <BattleView battle={battle} setBattle={setBattle} onEnd={applyBattleResult}/>;
+  if(screen==='map') return <Shell game={game} reorder={reorder} onSettings={()=>setScreen('settings')} fastMode={fastMode}><MapView game={game} openNode={openNode}/>{toast&&<Toast text={toast} onClose={()=>setToast(null)}/>}</Shell>;
+  if(screen==='choice'||screen==='reward') return <Shell game={game} reorder={reorder} onSettings={()=>setScreen('settings')} fastMode={fastMode}><ChoiceView choice={choice} game={game} onUnit={takeUnit} onHero={takeHero} onItem={openItem=>{}} equipItem={equipItem} train={train} finish={finishNode} /></Shell>;
+  if(screen==='replace') return <Shell game={game} reorder={reorder} onSettings={()=>setScreen('settings')} fastMode={fastMode}><ReplaceView game={game} replaceEntity={replaceEntity} cancel={()=>{setGame(g=>({...g,pendingReplace:null})); finishNode();}} /></Shell>;
+  if(screen==='battle') return <BattleView battle={battle} setBattle={setBattle} onEnd={applyBattleResult} fastMode={fastMode}/>;
 }
 
-function Menu({onStart,hall}){ return <div className="page menu"><div className="logo">ALTARBOUND</div><div className="subtitle">Warcraft Roguelike</div><div className="raceButtons"><button onClick={onStart}>NORMAL MODE</button><button>HARDCORE</button><button className="disabled">BATTLE TOWER</button></div><div className="menuGrid"><button>📖 Codex</button><button>🏆 Achievements</button><button>🏛 Hall of Fame ({hall.length})</button><button>📋 Patch Notes</button><button>⚙️ Settings</button></div><p className="fine">Prototype: choose race → recruit units → altar heroes → training → speed-bar battles.</p></div> }
+function Menu({onStart,onSettings,fastMode,hall}){ return <div className="page menu"><div className="logo">ALTARBOUND</div><div className="subtitle">Warcraft Roguelike</div>{fastMode&&<div className="fastBadge">⚡ FAST MODE ON</div>}<div className="raceButtons"><button onClick={onStart}>NORMAL MODE</button><button>HARDCORE</button><button className="disabled">BATTLE TOWER</button></div><div className="menuGrid"><button>📖 Codex</button><button>🏆 Achievements</button><button>🏛 Hall of Fame ({hall.length})</button><button>📋 Patch Notes</button><button onClick={onSettings}>⚙️ Settings</button></div><p className="fine">Prototype: choose race → recruit units → altar heroes → training → speed-bar battles.</p></div> }
+function SettingsView({fastMode,setFastMode,onBack}){ return <div className="page settingsPage"><h1>Settings</h1><div className="settingsPanel"><div><h2>⚡ Fast Mode</h2><p>Speeds up automatic battles and end-of-fight transitions. This setting is saved permanently on this device.</p></div><button className={fastMode?'toggle on':'toggle'} onClick={()=>setFastMode(!fastMode)}>{fastMode?'FAST ON':'FAST OFF'}</button></div><button onClick={onBack}>Back</button></div> }
 function RaceSelect({onPick}){ return <div className="page"><h1>Choose Your Race!</h1><div className="cards">{Object.entries(RACES).map(([id,r])=><button className="pickCard" key={id} onClick={()=>onPick(id)}><div className="bigIcon">{UNITS[r.starter].icon}</div><h2 style={{color:r.color}}>{r.name}</h2><p>Starter: {UNITS[r.starter].name}</p><p>{r.style}</p></button>)}</div></div> }
-function Shell({game, children, reorder}){ return <div className="game"><aside className="sidebar"><div className="topBtns"><button>Codex</button><button>Achievements</button><button>Settings</button><button onClick={()=>location.reload()}>↻</button></div><h3>TEAM</h3><div className="miniList">{game.units.map((u,i)=><Mini key={u.uid} c={u} onUp={()=>i>0&&reorder('unit',i,i-1)} onDown={()=>i<game.units.length-1&&reorder('unit',i,i+1)}/>)}</div><h3>HEROES</h3><div className="miniList">{game.heroes.length?game.heroes.map((h,i)=><Mini key={h.uid} c={h} hero onUp={()=>i>0&&reorder('hero',i,i-1)} onDown={()=>i<game.heroes.length-1&&reorder('hero',i,i+1)}/>):<p className="muted">No heroes. Find an altar.</p>}</div><h3>BADGES</h3><div className="badges">{game.badges.map(b=><span key={b}>{b}</span>)}</div></aside><main className="main">{children}</main></div> }
+function Shell({game, children, reorder, onSettings, fastMode}){ return <div className="game"><aside className="sidebar"><div className="topBtns"><button>Codex</button><button>Achievements</button><button onClick={onSettings}>Settings</button><button onClick={()=>location.reload()}>↻</button></div>{fastMode&&<div className="fastBadge small">⚡ FAST</div>}<h3>TEAM</h3><div className="miniList">{game.units.map((u,i)=><Mini key={u.uid} c={u} onUp={()=>i>0&&reorder('unit',i,i-1)} onDown={()=>i<game.units.length-1&&reorder('unit',i,i+1)}/>)}</div><h3>HEROES</h3><div className="miniList">{game.heroes.length?game.heroes.map((h,i)=><Mini key={h.uid} c={h} hero onUp={()=>i>0&&reorder('hero',i,i-1)} onDown={()=>i<game.heroes.length-1&&reorder('hero',i,i+1)}/>):<p className="muted">No heroes. Find an altar.</p>}</div><h3>BADGES</h3><div className="badges">{game.badges.map(b=><span key={b}>{b}</span>)}</div></aside><main className="main">{children}</main></div> }
 function Mini({c,onUp,onDown}){ const b=baseOf(c); return <div className={`mini ${c.hp<=0?'dead':''}`}><span className="ico">{b.icon}</span><div><b>{b.name}</b><small>Lv{c.level} {c.kind==='hero'?'Hero':b.role}</small><div className="hp"><i style={{width:`${100*c.hp/c.maxHp}%`}}/></div></div><div className="order"><button onClick={onUp}>↑</button><button onClick={onDown}>↓</button></div></div> }
 function MapView({game, openNode}){ const flat=game.map.map(row=>row[game.nodeIndex]).filter(Boolean); return <div><h1>Level {game.level} Path</h1><p className="muted">Choose the next node. Every fifth level ends in a Battle Tower: 5 teams in a row.</p><div className="map">{game.map.map((row,ri)=><div className="mapRow" key={ri}>{row.map((n,i)=><button key={n.id} disabled={i!==game.nodeIndex} className={`node ${i<game.nodeIndex?'done':''} ${i===game.nodeIndex?'active':''}`} onClick={()=>openNode(n.type)}><span>{nodeIcon[n.type]}</span><small>{nodeLabel[n.type]}</small></button>)}</div>)}</div></div> }
 function ChoiceView({choice,game,onUnit,onHero,equipItem,train,finish}){
@@ -281,11 +287,11 @@ function makeRewardOptions(game){
   const tier=tierForLevel(game.level); const units=UNIT_BY_RACE[game.race].filter(id=>UNITS[id].tier<=tier); return [makeUnit(rand(units),scaledLevel(game.level,-1)), makeUnit(rand(units),scaledLevel(game.level,-1)), makeUnit(rand(units),scaledLevel(game.level,-1))];
 }
 
-function BattleView({battle,setBattle,onEnd}){
-  useEffect(()=>{ if(!battle?.running) return; const t=setInterval(()=>setBattle(b=>stepBattle(b)),160); return()=>clearInterval(t); },[battle?.running]);
-  useEffect(()=>{ if(battle?.won||battle?.lost){ const t=setTimeout(()=>onEnd(battle.won,battle),800); return()=>clearTimeout(t); }},[battle?.won,battle?.lost]);
+function BattleView({battle,setBattle,onEnd,fastMode}){
+  useEffect(()=>{ if(!battle?.running) return; const t=setInterval(()=>setBattle(b=>stepBattle(b)),fastMode?45:160); return()=>clearInterval(t); },[battle?.running,fastMode]);
+  useEffect(()=>{ if(battle?.won||battle?.lost){ const t=setTimeout(()=>onEnd(battle.won,battle),fastMode?260:800); return()=>clearTimeout(t); }},[battle?.won,battle?.lost,fastMode]);
   const allies=battle.ally, enemies=battle.enemy;
-  return <div className="battlePage"><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button></div><div className="battleGrid"><section className="battlePanel"><h2>YOUR TEAM</h2>{allies.map(c=><BattleCard key={c.uid} c={c}/>)}</section><section className="battlePanel"><h2>ENEMY</h2>{enemies.map(c=><BattleCard key={c.uid} c={c} enemy/>)}</section></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
+  return <div className="battlePage"><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><section className="battlePanel"><h2>YOUR TEAM</h2>{allies.map(c=><BattleCard key={c.uid} c={c}/>)}</section><section className="battlePanel"><h2>ENEMY</h2>{enemies.map(c=><BattleCard key={c.uid} c={c} enemy/>)}</section></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
 }
 function BattleCard({c,enemy}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); return <div className={`battleCard ${enemy?'enemy':''} ${c.hp<=0?'dead':''}`}><div className="nameLine"><b>{b.icon} {b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.icon}`}</small></div> }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
