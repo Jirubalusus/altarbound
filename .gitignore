@@ -4,3 +4,12 @@ dist/
 .DS_Store
 .env
 .env.local
+
+# Local/private Warcraft III assets; keep README/docs only
+raw-war3-blp/
+public/war3-assets/**/*.png
+public/war3-assets/**/*.jpg
+public/war3-assets/**/*.jpeg
+public/war3-assets/**/*.webp
+public/war3-assets/**/*.blp
+!public/war3-assets/README.md

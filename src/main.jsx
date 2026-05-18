@@ -130,7 +130,8 @@ const PORTRAIT_OVERRIDES = {
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
-function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={title||UNITS[id]?.name||HEROES[id]?.name}><i className="pixelHead" data-key={artKey(id)}/><em>{initials(title||UNITS[id]?.name||HEROES[id]?.name||id)}</em></span>; }
+function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
+function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}><img className="officialPortrait" src={publicAsset(`war3-assets/portraits/${id}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/><i className="pixelHead" data-key={artKey(id)}/><em>{initials(label)}</em></span>; }
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.icon||''}</span>; }
 function NodeGlyph({type}){ return <span className={`nodeGlyph ${NODE_GLYPHS[type]||'sword'}`} />; }
 function mapPoint(n,len){ const lanes=[22,50,78]; const wobble=[0,8,-5,6,-8,4,-4,0]; const y=88-(n.step*(76/Math.max(1,len-1))); const x=lanes[n.row]+(wobble[n.step]||0); return {x:clamp(x,10,90), y:clamp(y,8,92)}; }

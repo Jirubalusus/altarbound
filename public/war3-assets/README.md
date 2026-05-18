@@ -1,12 +1,40 @@
-# Warcraft III assets
+# Warcraft III asset drop folder
 
-This folder is reserved for Warcraft III image files supplied by the project owner with the appropriate rights/licence.
+This folder is the local/private seam for Warcraft III assets supplied from a legitimate source.
 
-Expected optional filenames for future integration:
+## Telegram upload workaround
 
-- units: `footman.png`, `grunt.png`, `archer.png`, `ghoul.png`, etc.
-- heroes: `paladin.png`, `archmage.png`, `blademaster.png`, etc.
-- items: `item-*.png`
-- map nodes: `node-battle.png`, `node-tavern.png`, `node-training.png`, `node-item.png`, `node-boss.png`
+Telegram/Hermes does not accept raw `.blp` as a document type here. Zip the `.blp` files first, or copy them directly into the project from Windows.
 
-I did not scrape or commit Blizzard/Warcraft III copyrighted assets into the public repository.
+Suggested local source folder:
+
+```txt
+raw-war3-blp/
+```
+
+Then run:
+
+```bash
+python3 scripts/import-blp-assets.py --src raw-war3-blp --dest public/war3-assets/portraits
+```
+
+The app will automatically try PNG portraits from:
+
+```txt
+public/war3-assets/portraits/<unit_or_hero_id>.png
+```
+
+Examples:
+
+```txt
+public/war3-assets/portraits/footman.png
+public/war3-assets/portraits/grunt.png
+public/war3-assets/portraits/archer.png
+public/war3-assets/portraits/ghoul.png
+public/war3-assets/portraits/paladin.png
+public/war3-assets/portraits/archmage.png
+```
+
+## Important
+
+Do not commit or publish protected Blizzard assets unless you have permission/license to redistribute them. Generated `.png` files in this folder are ignored by git by default.
