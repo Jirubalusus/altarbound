@@ -5,7 +5,8 @@ dist/
 .env
 .env.local
 
-# Local/private Warcraft III assets; keep README/docs only
+# Local/private Warcraft III/Hiveworkshop assets; keep README/docs only
+external-assets/
 raw-war3-blp/
 public/war3-assets/**/*.png
 public/war3-assets/**/*.jpg
