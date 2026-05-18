@@ -35,11 +35,22 @@ for (const entry of characterCatalog) {
   try { await fs.access(path.resolve('public', entry.asset)); }
   catch { missingCharacterAssets.push(entry.asset); }
 }
+const bannedWeaponOrSpellCharacterIcons = new Set([
+  'ability_warrior_savageblow','ability_warrior_bloodfrenzy','inv_spear_05',
+  'ability_warrior_rampage','spell_nature_bloodlust','spell_nature_chainlightning',
+  'ability_hunter_aimedshot','ability_hunter_markedfordeath','ability_hunter_swiftstrike',
+  'spell_arcane_starfire','spell_nature_abolishmagic','spell_nature_resistnature',
+  'ability_druid_maul','ability_racial_bearform','spell_frost_arcticwinds',
+  'inv_hammer_04','ability_warrior_bladestorm','spell_nature_lightning',
+  'ability_warstomp','spell_nature_healingwavegreater','spell_shadow_carrionswarm',
+  'spell_frost_frostnova','ability_theblackarrow','classicon_deathknight'
+]);
+const nonFaceCharacterIcons = characterCatalog.filter(entry => bannedWeaponOrSpellCharacterIcons.has(entry.wowIcon) || /^inv_weapon_/.test(entry.wowIcon || '') || /^spell_/.test(entry.wowIcon || '')).map(entry => `${entry.id}:${entry.wowIcon}`);
 if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sprites/items') || sourceText.includes('item?.icon')) {
   throw new Error(`Item cards must use sourced WoW/Warcraft icons, not generated sprites/emoji fallbacks: ${JSON.stringify({wowItemRefs:wowItemRefs.length, missingWowItems, usesSpritesItems:sourceText.includes('sprites/items'), usesItemIconFallback:sourceText.includes('item?.icon')})}`);
 }
-if (characterCatalog.length < 56 || missingCharacterAssets.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
-  throw new Error(`All units/heroes must use sourced WoW/Warcraft character assets, not generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
+if (characterCatalog.length < 56 || missingCharacterAssets.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
+  throw new Error(`All units/heroes must use sourced face/portrait WoW/Warcraft character assets, not weapons/spells or generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
 }
 
 await page.goto(baseURL, { waitUntil: 'networkidle' });
