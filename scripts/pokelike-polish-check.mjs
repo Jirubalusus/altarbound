@@ -57,6 +57,14 @@ await page.goto(baseURL, { waitUntil: 'networkidle' });
 await page.evaluate(() => localStorage.setItem('altarbound_fast_mode','1'));
 await page.reload({ waitUntil: 'networkidle' });
 await page.waitForSelector('.pokelikeMenu .logo');
+const menuMotion = await page.evaluate(() => ({
+  transitionShell: !!document.querySelector('.appScreenTransition'),
+  backdrop: !!document.querySelector('.aaaBackdrop'),
+  animationName: getComputedStyle(document.querySelector('.appScreenTransition')).animationName
+}));
+if (!menuMotion.transitionShell || !menuMotion.backdrop || !menuMotion.animationName.includes('altarScreenEnterPro')) {
+  throw new Error(`AAA menu motion layer missing: ${JSON.stringify(menuMotion)}`);
+}
 await shot('01-menu');
 
 await page.getByRole('button', { name: /NORMAL MODE/i }).click();
@@ -124,6 +132,18 @@ const nodeAssetMetrics = await page.evaluate(() => {
   };
 });
 if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.oldTopOverlayVisible || !nodeAssetMetrics.routeLegendVisible || !nodeAssetMetrics.usesWowMapBackground || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.nonOrcBattleNodes || nodeAssetMetrics.nonFactionMapNodes || nodeAssetMetrics.nonHiveObjectNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use race-dependent Warcraft/WoW assets on a WoW route background with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
+const mapMotion = await page.evaluate(() => {
+  const reachable = document.querySelector('.wowRouteBoard .mapEdges line.reachable') || document.querySelector('.wowRouteBoard .mapEdges line');
+  const activeIcon = document.querySelector('.wowRouteBoard .node.active .nodeWar3Asset');
+  return {
+    reachableDash: reachable ? getComputedStyle(reachable).animationName : 'missing',
+    activeNodePulse: activeIcon ? getComputedStyle(activeIcon).animationName : 'missing',
+    shellBackdrop: !!document.querySelector('.wcFrame .aaaBackdrop')
+  };
+});
+if (!mapMotion.reachableDash.includes('altarPathDash') || !mapMotion.activeNodePulse.includes('altarNodePulse') || !mapMotion.shellBackdrop) {
+  throw new Error(`AAA route-map motion layer missing: ${JSON.stringify(mapMotion)}`);
+}
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
@@ -154,6 +174,15 @@ const battleMetrics = await page.evaluate(() => ({
   rosters: document.querySelectorAll('.battleRoster').length
 }));
 if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw new Error(`Battle does not render roster rows: ${JSON.stringify(battleMetrics)}`);
+const battleMotion = await page.evaluate(() => ({
+  transitionShell: !!document.querySelector('.pokelikeBattle.appScreenTransition'),
+  backdrop: !!document.querySelector('.pokelikeBattle .aaaBackdrop.battleFX'),
+  activeCards: document.querySelectorAll('.modelBattleCard.activeFighter').length,
+  logAnimation: getComputedStyle(document.querySelector('.log p')).animationName
+}));
+if (!battleMotion.transitionShell || !battleMotion.backdrop || battleMotion.activeCards < 2 || !battleMotion.logAnimation.includes('altarLogIn')) {
+  throw new Error(`AAA battle motion layer missing: ${JSON.stringify(battleMotion)}`);
+}
 await assertNoBadImages('battle');
 await shot('04-battle');
 
