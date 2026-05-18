@@ -1,0 +1,98 @@
+[
+  {
+    "slug": "elwynn-forest",
+    "zoneId": 12,
+    "name": "Elwynn Forest",
+    "usage": "Human opening / green forest",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/12.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "durotar",
+    "zoneId": 14,
+    "name": "Durotar",
+    "usage": "Orc opening / red desert coast",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/14.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "teldrassil",
+    "zoneId": 141,
+    "name": "Teldrassil",
+    "usage": "Night Elf opening / ancient forest",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/141.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "tirisfal-glades",
+    "zoneId": 85,
+    "name": "Tirisfal Glades",
+    "usage": "Undead opening / haunted lands",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/85.jpg",
+    "dimensions": [
+      1024,
+      683
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "ashenvale",
+    "zoneId": 331,
+    "name": "Ashenvale",
+    "usage": "Mid-run forest route",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/331.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "barrens",
+    "zoneId": 17,
+    "name": "The Barrens",
+    "usage": "Dry contested route",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/17.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "hillsbrad-foothills",
+    "zoneId": 267,
+    "name": "Hillsbrad Foothills",
+    "usage": "Alliance/Horde crossroads",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/267.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  },
+  {
+    "slug": "redridge-mountains",
+    "zoneId": 44,
+    "name": "Redridge Mountains",
+    "usage": "Mountain route",
+    "source": "https://wow.zamimg.com/images/wow/maps/enus/original/44.jpg",
+    "dimensions": [
+      1022,
+      668
+    ],
+    "note": "World of Warcraft zone map image from Wowhead/ZAM CDN; use in prototype only, verify rights before public/commercial release."
+  }
+]

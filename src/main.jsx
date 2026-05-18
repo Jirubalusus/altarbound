@@ -143,6 +143,18 @@ const NODE_ASSETS = {
   boss:{src:'hive-assets/nodes/boss.png', kind:'unit', validatedAs:'HiveWorkshop Old-school Lich King / boss encounter'},
   tower:{src:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Square Tower / battle tower'}
 };
+const WOW_ROUTE_BACKDROPS = {
+  human:'wow-map-backgrounds/route-clean-elwynn-forest.jpg',
+  orc:'wow-map-backgrounds/route-clean-durotar.jpg',
+  nightelf:'wow-map-backgrounds/route-clean-teldrassil.jpg',
+  undead:'wow-map-backgrounds/route-clean-tirisfal-glades.jpg',
+  cycle:['wow-map-backgrounds/route-clean-barrens.jpg','wow-map-backgrounds/route-clean-ashenvale.jpg','wow-map-backgrounds/route-clean-redridge-mountains.jpg','wow-map-backgrounds/route-clean-hillsbrad-foothills.jpg']
+};
+function routeBackdrop(game){
+  if(!game) return WOW_ROUTE_BACKDROPS.cycle[0];
+  if(game.level<=1 && WOW_ROUTE_BACKDROPS[game.race]) return WOW_ROUTE_BACKDROPS[game.race];
+  return WOW_ROUTE_BACKDROPS.cycle[(game.level-2+WOW_ROUTE_BACKDROPS.cycle.length)%WOW_ROUTE_BACKDROPS.cycle.length];
+}
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 const FIREBASE_HOSTING_ASSET_ROOT = 'https://altarbound-660da.web.app/';
@@ -162,8 +174,8 @@ function NodeGlyph({type}){
 }
 function mapPoint(n,len){
   const lane = n.lane ?? n.row;
-  const routeTop = 18.5;
-  const routeBottom = 86;
+  const routeTop = 14.5;
+  const routeBottom = 77;
   const y = routeBottom - (n.step * ((routeBottom-routeTop)/Math.max(1,len-1)));
   const x = 50 + ((lane-1.5) * 16);
   return {x:clamp(x,18,82), y:clamp(y,14,90)};
@@ -362,7 +374,7 @@ function MapView({game, openNode}){
   return <div className="mapScreen pokelikeExact">
     <div className="mapHeader"><h1>Level {game.level} Path</h1><p>Real route: choose one reachable node. Only connected next nodes unlock.</p></div>
     <div className="routeLegend">{activeNodes.map(n=><span key={n.id}>{nodeIcon[n.type]} {nodeLabel[n.type]}</span>)}</div>
-    <div className="pokelikeBoard">
+    <div className="pokelikeBoard wowRouteBoard" style={{'--route-map':`url(${hostedAsset(routeBackdrop(game))})`}}>
       <div className="boardTopRoom"><span className="roomPic"/><span className="roomDoor"/><span className="roomMachine"/><span className="roomVial"/></div>
       <div className="waterLane left"/><div className="waterLane right"/>
       <div className="coral coralA"/><div className="coral coralB"/><div className="dockGap left"/><div className="dockGap right"/>

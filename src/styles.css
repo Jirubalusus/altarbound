@@ -1299,3 +1299,256 @@ body:after{display:none!important;}
   text-shadow:0 1px 1px rgba(0,0,0,.75)!important;
   color:#fff3b2!important;
 }
+
+/* WoW zone-map route pass: use real zone-map backdrops instead of generated grass grid. */
+.wowRouteBoard,
+.pokelikeBoard.wowRouteBoard{
+  width:min(700px,100%)!important;
+  min-height:760px!important;
+  height:calc(100dvh - 34px)!important;
+  max-height:1060px!important;
+  background:
+    linear-gradient(180deg,rgba(3,4,5,.18),rgba(3,4,5,.34)),
+    var(--route-map) center center/cover no-repeat!important;
+  border:3px solid #22170d!important;
+  outline:3px solid #ad7d3e!important;
+  box-shadow:0 0 0 2px #070503,0 18px 34px rgba(0,0,0,.62),inset 0 0 0 2px rgba(255,219,140,.16)!important;
+  border-radius:10px!important;
+  isolation:isolate;
+}
+.wowRouteBoard:before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(ellipse at 50% 42%,rgba(255,216,126,.08),transparent 38%),
+    linear-gradient(90deg,rgba(0,0,0,.34),transparent 16%,transparent 84%,rgba(0,0,0,.36)),
+    linear-gradient(180deg,rgba(0,0,0,.28),transparent 17%,transparent 82%,rgba(0,0,0,.45))!important;
+  opacity:1!important;
+  z-index:1!important;
+}
+/* Remove old Pokelike lab/sea decorations; the actual WoW map is now the setting. */
+.wowRouteBoard .boardTopRoom,
+.wowRouteBoard .waterLane,
+.wowRouteBoard .coral,
+.wowRouteBoard .dockGap,
+.wowRouteBoard .startMarker{
+  display:none!important;
+}
+.wowRouteBoard .mapEdges{z-index:2!important;}
+.wowRouteBoard .mapEdges line{
+  stroke:#19150d!important;
+  stroke-width:.72px!important;
+  stroke-dasharray:2.4 5.2!important;
+  opacity:.58!important;
+  filter:drop-shadow(0 1px 0 rgba(255,223,145,.38));
+}
+.wowRouteBoard .mapEdges line.reachable{
+  stroke:#f5d06d!important;
+  stroke-width:1.15px!important;
+  stroke-dasharray:3 4.5!important;
+  opacity:.94!important;
+  filter:drop-shadow(0 0 2px rgba(255,237,151,.45)) drop-shadow(0 1px 0 rgba(0,0,0,.72));
+}
+.wowRouteBoard .mapEdges line.chosen{
+  stroke:#fff3a8!important;
+  stroke-width:1.55px!important;
+  stroke-dasharray:none!important;
+  opacity:1!important;
+}
+.wowRouteBoard .node{
+  z-index:4!important;
+  width:104px!important;
+  height:92px!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:0!important;
+  padding:0!important;
+}
+.wowRouteBoard .nodeDisc{display:grid!important;place-items:end center!important;width:100%!important;height:68px!important;}
+.wowRouteBoard .node .nodeWar3Asset,
+.wowRouteBoard .node.active .nodeWar3Asset,
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset,
+.wowRouteBoard .node.done .nodeWar3Asset{
+  max-width:96px!important;
+  max-height:74px!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  image-rendering:auto!important;
+  filter:drop-shadow(0 3px 1px rgba(0,0,0,.85)) drop-shadow(0 0 2px rgba(255,230,155,.24))!important;
+  opacity:1!important;
+  transform:none!important;
+}
+.wowRouteBoard .node.siteNodeAsset .nodeWar3Asset,
+.wowRouteBoard .node .siteNodeAsset{
+  max-width:104px!important;
+  max-height:78px!important;
+}
+.wowRouteBoard .node.unitNodeAsset,
+.wowRouteBoard .node .unitNodeAsset{
+  max-height:86px!important;
+}
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset{
+  filter:grayscale(.16) brightness(.9) saturate(.98) contrast(1.05) drop-shadow(0 3px 1px rgba(0,0,0,.78))!important;
+  opacity:.82!important;
+}
+.wowRouteBoard .node.done .nodeWar3Asset{
+  filter:grayscale(.68) brightness(.62) saturate(.75) drop-shadow(0 3px 1px rgba(0,0,0,.65))!important;
+  opacity:.62!important;
+}
+.wowRouteBoard .node.active .nodeWar3Asset{
+  filter:brightness(1.1) saturate(1.12) contrast(1.06) drop-shadow(0 3px 1px rgba(0,0,0,.86)) drop-shadow(0 0 4px rgba(255,223,96,.48))!important;
+  opacity:1!important;
+}
+.wowRouteBoard .node small,
+.wowRouteBoard .node:disabled small,
+.wowRouteBoard .node:not(.active):not(.done) small,
+.wowRouteBoard .node.active small{
+  display:block!important;
+  position:relative!important;
+  max-width:104px!important;
+  min-width:76px!important;
+  padding:4px 6px!important;
+  background:rgba(20,14,8,.88)!important;
+  border:1px solid rgba(236,191,91,.72)!important;
+  box-shadow:0 2px 0 rgba(0,0,0,.62),inset 0 0 0 1px rgba(255,242,180,.08)!important;
+  color:#fff0ae!important;
+  font-family:'Press Start 2P','Pixelify Sans',monospace!important;
+  font-size:7px!important;
+  line-height:1.35!important;
+  text-align:center!important;
+  text-transform:none!important;
+  white-space:normal!important;
+  overflow:hidden!important;
+  text-overflow:clip!important;
+  opacity:.9!important;
+  text-shadow:1px 1px 0 #000!important;
+}
+.wowRouteBoard .node:not(.active):not(.done) small,
+.wowRouteBoard .node:disabled small{opacity:.72!important;background:rgba(18,13,8,.72)!important;}
+.wowRouteBoard .node.done small{opacity:.5!important;}
+.wowRouteBoard .node.active small{
+  color:#fff7c6!important;
+  border-color:#fff0a4!important;
+  background:rgba(38,26,8,.95)!important;
+}
+.wowRouteBoard .mapPartySprites{display:none!important;}
+.routeLegend{
+  margin:0 0 6px!important;
+  min-height:28px!important;
+  display:flex!important;
+  flex-wrap:wrap!important;
+  justify-content:center!important;
+  gap:6px!important;
+  z-index:5!important;
+}
+.routeLegend span{
+  background:linear-gradient(180deg,rgba(47,31,13,.96),rgba(14,10,6,.96))!important;
+  border:1px solid #a47436!important;
+  box-shadow:0 2px 0 rgba(0,0,0,.65)!important;
+  color:#ffe6a3!important;
+  padding:4px 7px!important;
+  font-size:11px!important;
+  text-shadow:1px 1px #000!important;
+}
+@media(max-width:900px){
+  .pokelikeBoard.wowRouteBoard{width:min(100%,620px)!important;min-height:690px!important;height:calc(100dvh - 46px)!important;}
+  .wowRouteBoard .node{width:90px!important;height:82px!important;}
+  .wowRouteBoard .nodeDisc{height:60px!important;}
+  .wowRouteBoard .node .nodeWar3Asset{max-width:86px!important;max-height:66px!important;}
+  .wowRouteBoard .node small{font-size:6px!important;min-width:66px!important;max-width:92px!important;padding:3px 5px!important;}
+}
+
+/* Second WoW map readability pass: continuous map background, bigger path sprites, stronger paths. */
+.pokelikeBoard.wowRouteBoard{
+  background:
+    linear-gradient(180deg,rgba(4,3,2,.08),rgba(4,3,2,.22)),
+    var(--route-map) center center/cover no-repeat!important;
+}
+.wowRouteBoard:before{
+  background:
+    radial-gradient(ellipse at 50% 48%,rgba(255,226,148,.10),transparent 44%),
+    linear-gradient(90deg,rgba(0,0,0,.28),transparent 14%,transparent 86%,rgba(0,0,0,.30)),
+    linear-gradient(180deg,rgba(0,0,0,.20),transparent 18%,transparent 84%,rgba(0,0,0,.36))!important;
+}
+.wowRouteBoard .mapEdges line{
+  stroke:#070604!important;
+  stroke-width:1.35px!important;
+  stroke-dasharray:3 5!important;
+  opacity:.82!important;
+  filter:drop-shadow(0 0 1px rgba(255,224,132,.9)) drop-shadow(0 1px 0 rgba(0,0,0,.9))!important;
+}
+.wowRouteBoard .mapEdges line.reachable{
+  stroke:#ffe78d!important;
+  stroke-width:2px!important;
+  stroke-dasharray:4 4!important;
+  opacity:1!important;
+  filter:drop-shadow(0 0 3px rgba(255,235,136,.75)) drop-shadow(0 1px 0 rgba(0,0,0,.95))!important;
+}
+.wowRouteBoard .mapEdges line.chosen{
+  stroke:#fff7bd!important;
+  stroke-width:2.35px!important;
+  stroke-dasharray:none!important;
+}
+.wowRouteBoard .node{
+  width:126px!important;
+  height:112px!important;
+}
+.wowRouteBoard .nodeDisc{
+  height:82px!important;
+}
+.wowRouteBoard .node .nodeWar3Asset,
+.wowRouteBoard .node.active .nodeWar3Asset,
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset,
+.wowRouteBoard .node.done .nodeWar3Asset{
+  max-width:118px!important;
+  max-height:92px!important;
+  filter:drop-shadow(0 4px 0 rgba(0,0,0,.88)) drop-shadow(0 0 2px rgba(255,230,154,.32))!important;
+}
+.wowRouteBoard .node.siteNodeAsset .nodeWar3Asset,
+.wowRouteBoard .node .siteNodeAsset{
+  max-width:124px!important;
+  max-height:96px!important;
+}
+.wowRouteBoard .node.active .nodeWar3Asset{
+  filter:brightness(1.13) saturate(1.14) contrast(1.08) drop-shadow(0 4px 0 rgba(0,0,0,.9)) drop-shadow(0 0 5px rgba(255,225,89,.58))!important;
+}
+.wowRouteBoard .node:disabled .nodeWar3Asset,
+.wowRouteBoard .node:not(.active):not(.done) .nodeWar3Asset{
+  opacity:.78!important;
+  filter:grayscale(.12) brightness(.82) saturate(.9) contrast(1.08) drop-shadow(0 4px 0 rgba(0,0,0,.82))!important;
+}
+.wowRouteBoard .node small,
+.wowRouteBoard .node:disabled small,
+.wowRouteBoard .node:not(.active):not(.done) small,
+.wowRouteBoard .node.active small{
+  max-width:116px!important;
+  min-width:86px!important;
+  font-size:7px!important;
+  line-height:1.35!important;
+  padding:5px 7px!important;
+  background:rgba(12,8,4,.94)!important;
+  border-color:rgba(255,217,114,.88)!important;
+}
+@media(max-width:900px){
+  .wowRouteBoard .node{width:102px!important;height:92px!important;}
+  .wowRouteBoard .nodeDisc{height:68px!important;}
+  .wowRouteBoard .node .nodeWar3Asset{max-width:98px!important;max-height:78px!important;}
+}
+
+/* Keep the full six-step route inside the viewport after larger sprites. */
+.pokelikeBoard.wowRouteBoard{
+  min-height:680px!important;
+  height:min(900px, calc(100dvh - 64px))!important;
+}
+@media(max-width:900px){
+  .pokelikeBoard.wowRouteBoard{min-height:640px!important;height:min(820px, calc(100dvh - 78px))!important;}
+}
