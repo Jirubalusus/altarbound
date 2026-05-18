@@ -130,19 +130,61 @@ const PORTRAIT_OVERRIDES = {
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
 const NODE_ASSETS = {
-  // Validated one by one: battle encounters use the actual unit model; utility nodes use sourced HiveWorkshop building/object previews.
-  // Avoid misleading substitutes like showing a Headhunter/lancer for an Item Chest.
-  battle:{src:'war3-assets/route-icons/grunt.png', sourceSrc:'war3-assets/models/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
-  elite:{src:'war3-assets/route-icons/tauren_chief.png', sourceSrc:'war3-assets/models/tauren_chief.png', kind:'unit', validatedAs:'Tauren Chieftain'},
-  tavern:{src:'hive-assets/nodes-readable/tavern.png', sourceSrc:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
-  altar:{src:'hive-assets/nodes-readable/altar.png', sourceSrc:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Hero Altar / hero site'},
-  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
-  training:{src:'hive-assets/nodes-readable/training.png', sourceSrc:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training Facility / upgrade site'},
+  // Neutral/shared map objects: these stay semantic objects. Race/combat/recruit nodes are overridden below by selected race.
   item:{src:'hive-assets/nodes-readable/item.png', sourceSrc:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
   fountain:{src:'hive-assets/nodes-readable/fountain.png', sourceSrc:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
-  boss:{src:'hive-assets/nodes-readable/boss.png', sourceSrc:'hive-assets/nodes/boss.png', kind:'unit', validatedAs:'HiveWorkshop Old-school Lich King / boss encounter'},
-  tower:{src:'hive-assets/nodes-readable/tower.png', sourceSrc:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Square Tower / battle tower'}
+  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
+  battle:{src:'wow-assets/characters/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
+  elite:{src:'wow-assets/characters/tauren.png', kind:'unit', validatedAs:'Orc Tauren'},
+  tavern:{src:'wow-assets/characters/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
+  altar:{src:'wow-assets/characters/blademaster.png', kind:'hero', validatedAs:'Orc hero altar preview'},
+  training:{src:'wow-assets/characters/grunt_veteran.png', kind:'unit', validatedAs:'Orc training upgrade preview'},
+  boss:{src:'wow-assets/characters/tauren_chief.png', kind:'hero', validatedAs:'Orc boss preview'},
+  tower:{src:'wow-assets/characters/wolf_captain.png', kind:'unit', validatedAs:'Orc battle tower preview'}
 };
+const RACE_NODE_ASSETS = {
+  human:{
+    battle:{src:'wow-assets/characters/footman.png', kind:'unit', validatedAs:'Human Footman battle'},
+    elite:{src:'wow-assets/characters/gryphon.png', kind:'unit', validatedAs:'Human Gryphon elite battle'},
+    tavern:{src:'wow-assets/characters/rifleman.png', kind:'unit', validatedAs:'Human Tavern recruit preview'},
+    altar:{src:'wow-assets/characters/paladin.png', kind:'hero', validatedAs:'Human Altar hero preview'},
+    training:{src:'wow-assets/characters/captain_footman.png', kind:'unit', validatedAs:'Human trained unit preview'},
+    special:{src:'wow-assets/characters/archmage.png', kind:'hero', validatedAs:'Human special hero preview'},
+    boss:{src:'wow-assets/characters/mountain_king.png', kind:'hero', validatedAs:'Human boss preview'},
+    tower:{src:'wow-assets/characters/champion_knight.png', kind:'unit', validatedAs:'Human battle tower preview'}
+  },
+  orc:{
+    battle:{src:'wow-assets/characters/grunt.png', kind:'unit', validatedAs:'Orc Grunt battle'},
+    elite:{src:'wow-assets/characters/tauren.png', kind:'unit', validatedAs:'Orc Tauren elite battle'},
+    tavern:{src:'wow-assets/characters/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
+    altar:{src:'wow-assets/characters/blademaster.png', kind:'hero', validatedAs:'Orc Altar hero preview'},
+    training:{src:'wow-assets/characters/grunt_veteran.png', kind:'unit', validatedAs:'Orc trained unit preview'},
+    special:{src:'wow-assets/characters/shadow_hunter.png', kind:'hero', validatedAs:'Orc special hero preview'},
+    boss:{src:'wow-assets/characters/tauren_chief.png', kind:'hero', validatedAs:'Orc boss preview'},
+    tower:{src:'wow-assets/characters/wolf_captain.png', kind:'unit', validatedAs:'Orc battle tower preview'}
+  },
+  nightelf:{
+    battle:{src:'wow-assets/characters/archer.png', kind:'unit', validatedAs:'Night Elf Archer battle'},
+    elite:{src:'wow-assets/characters/chimaera.png', kind:'unit', validatedAs:'Night Elf Chimaera elite battle'},
+    tavern:{src:'wow-assets/characters/huntress.png', kind:'unit', validatedAs:'Night Elf Tavern recruit preview'},
+    altar:{src:'wow-assets/characters/demon_hunter.png', kind:'hero', validatedAs:'Night Elf Altar hero preview'},
+    training:{src:'wow-assets/characters/sentinel_archer.png', kind:'unit', validatedAs:'Night Elf trained unit preview'},
+    special:{src:'wow-assets/characters/keeper.png', kind:'hero', validatedAs:'Night Elf special hero preview'},
+    boss:{src:'wow-assets/characters/warden.png', kind:'hero', validatedAs:'Night Elf boss preview'},
+    tower:{src:'wow-assets/characters/elder_bear.png', kind:'unit', validatedAs:'Night Elf battle tower preview'}
+  },
+  undead:{
+    battle:{src:'wow-assets/characters/ghoul.png', kind:'unit', validatedAs:'Undead Ghoul battle'},
+    elite:{src:'wow-assets/characters/frost_wyrm.png', kind:'unit', validatedAs:'Undead Frost Wyrm elite battle'},
+    tavern:{src:'wow-assets/characters/crypt_fiend.png', kind:'unit', validatedAs:'Undead Tavern recruit preview'},
+    altar:{src:'wow-assets/characters/death_knight.png', kind:'hero', validatedAs:'Undead Altar hero preview'},
+    training:{src:'wow-assets/characters/frenzied_ghoul.png', kind:'unit', validatedAs:'Undead trained unit preview'},
+    special:{src:'wow-assets/characters/lich.png', kind:'hero', validatedAs:'Undead special hero preview'},
+    boss:{src:'wow-assets/characters/dreadlord.png', kind:'hero', validatedAs:'Undead boss preview'},
+    tower:{src:'wow-assets/characters/plague_abom.png', kind:'unit', validatedAs:'Undead battle tower preview'}
+  }
+};
+function nodeAssetFor(type, race){ return RACE_NODE_ASSETS[race]?.[type] || NODE_ASSETS[type] || NODE_ASSETS.battle; }
 const WOW_ROUTE_BACKDROPS = {
   human:'wow-map-backgrounds/route-clean-elwynn-forest.jpg',
   orc:'wow-map-backgrounds/route-clean-durotar.jpg',
@@ -167,13 +209,15 @@ function ItemIcon({item}){
   const src=item?.asset || (item?.name ? `wow-assets/items/${itemSlug(item.name)}.png` : '');
   return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'} data-source={item?.wowIcon||''}>{item?.name&&<img className="spriteIcon officialItemIcon" src={hostedAsset(src)} alt={item.name} onError={e=>{e.currentTarget.style.display='none'}}/>}</span>;
 }
-function NodeGlyph({type}){
-  const asset=NODE_ASSETS[type] || NODE_ASSETS.battle;
+function NodeGlyph({type, race}){
+  const asset=nodeAssetFor(type, race);
   return <img
-    className={`nodeGlyph nodeWar3Asset ${type} ${asset.kind==='unit'?'unitNodeAsset':'siteNodeAsset'}`}
+    className={`nodeGlyph nodeWar3Asset nodeFactionAsset ${type} ${race||'neutral'} ${asset.kind==='unit'||asset.kind==='hero'?'unitNodeAsset':'siteNodeAsset'}`}
     src={hostedAsset(asset.src)}
     alt={asset.validatedAs || nodeLabel[type] || type}
     title={asset.validatedAs || nodeLabel[type] || type}
+    data-race={race || 'neutral'}
+    data-asset-kind={asset.kind}
   />;
 }
 function mapPoint(n,len){
@@ -383,7 +427,7 @@ function MapView({game, openNode}){
       <div className="waterLane left"/><div className="waterLane right"/>
       <div className="coral coralA"/><div className="coral coralB"/><div className="dockGap left"/><div className="dockGap right"/>
       <svg className="mapEdges" viewBox="0 0 100 100" preserveAspectRatio="none">{edges.map(([a,b],idx)=>{ const p1=mapPoint(a,len), p2=mapPoint(b,len); const chosen=pathIds.has(a.id)&&pathIds.has(b.id); const reachable=activeNodes.some(n=>n.id===b.id); return <line key={idx} className={`${chosen?'chosen':''} ${reachable?'reachable':''}`} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;})}</svg>
-      {nodes.map(n=>{ const p=mapPoint(n,len); const active=activeNodes.some(a=>a.id===n.id); const chosen=pathIds.has(n.id); return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${chosen||n.step<game.nodeIndex?'done':''} ${active?'active':''}`} data-step={n.step} data-lane={n.lane} onClick={()=>openNode(n)} title={nodeLabel[n.type]}><span className="nodeDisc"><NodeGlyph type={n.type}/></span><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
+      {nodes.map(n=>{ const p=mapPoint(n,len); const active=activeNodes.some(a=>a.id===n.id); const chosen=pathIds.has(n.id); return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${chosen||n.step<game.nodeIndex?'done':''} ${active?'active':''}`} data-step={n.step} data-lane={n.lane} onClick={()=>openNode(n)} title={nodeLabel[n.type]}><span className="nodeDisc"><NodeGlyph type={n.type} race={game.race}/></span><small>{active?'NEXT · ':''}{nodeLabel[n.type]}</small></button>})}
       <div className="mapPartySprites">{game.units.slice(0,2).map((u,i)=><ModelSprite key={u.uid} id={u.id} small title={baseOf(u).name} side={i?'enemy':'ally'}/>)}</div>
       <div className="startMarker">?</div>
     </div>

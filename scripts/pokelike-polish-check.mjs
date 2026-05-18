@@ -92,10 +92,11 @@ const nodeAssetMetrics = await page.evaluate(() => {
     oldTopOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.waterLane,.coral,.dockGap,.startMarker')].find(el => getComputedStyle(el).display !== 'none'),
     routeLegendVisible: !![...document.querySelectorAll('.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
     usesWowMapBackground: getComputedStyle(document.querySelector('.wowRouteBoard') || document.querySelector('.pokelikeBoard')).backgroundImage.includes('/wow-map-backgrounds/route-clean-'),
-    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/war3-assets/models/') || src.includes('/war3-assets/route-icons/') || src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))),
+    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/wow-assets/characters/') || src.includes('/war3-assets/models/') || src.includes('/war3-assets/route-icons/') || src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))),
     illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes-readable/item.png') || /raider|headhunter|grunt/.test(src)).length,
-    nonGruntBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/war3-assets/route-icons/grunt.png')).length,
-    nonHiveSiteNodes: nodes.filter(n=>['tavern','altar','special','training','item','fountain','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!(src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))).length,
+    nonOrcBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/wow-assets/characters/grunt.png')).length,
+    nonFactionMapNodes: nodes.filter(n=>['battle','elite','tavern','altar','special','training','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/wow-assets/characters/')).length,
+    nonHiveObjectNodes: nodes.filter(n=>['item','fountain'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!(src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))).length,
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);
       return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
@@ -111,7 +112,7 @@ const nodeAssetMetrics = await page.evaluate(() => {
     }).length
   };
 });
-if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.oldTopOverlayVisible || !nodeAssetMetrics.routeLegendVisible || !nodeAssetMetrics.usesWowMapBackground || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.nonGruntBattleNodes || nodeAssetMetrics.nonHiveSiteNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use validated logical assets on a WoW route background with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.oldTopOverlayVisible || !nodeAssetMetrics.routeLegendVisible || !nodeAssetMetrics.usesWowMapBackground || nodeAssetMetrics.nonValidatedSources.length || nodeAssetMetrics.illogicalItemNodes || nodeAssetMetrics.nonOrcBattleNodes || nodeAssetMetrics.nonFactionMapNodes || nodeAssetMetrics.nonHiveObjectNodes || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must use race-dependent Warcraft/WoW assets on a WoW route background with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
