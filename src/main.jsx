@@ -77,16 +77,16 @@ const HEROES = {
 };
 
 const ITEMS = [
-  {name:'Claws of Attack', icon:'⚔️', desc:'+4 attack', atk:4},
-  {name:'Ring of Protection', icon:'💍', desc:'+2 armor', armor:2},
-  {name:'Boots of Speed', icon:'🥾', desc:'+12 speed', spd:12},
-  {name:'Orb of Fire', icon:'🔥', desc:'+2 attack, burn chance', atk:2, burn:true},
-  {name:'Pendant of Energy', icon:'🔷', desc:'Hero power fills faster', power:1.25},
-  {name:'Backstab Dagger', icon:'🗡️', desc:'Attacks the last enemy', targetLast:true},
-  {name:'Guardian Shield', icon:'🛡️', desc:'Protects your last unit from first hit', protectLast:true},
-  {name:'Healing Charm', icon:'💚', desc:'Small self heal each action', regen:5},
-  {name:'Spell Ward', icon:'🧿', desc:'+1 armor and resists curses', armor:1, cleanse:true},
-  {name:'War Drum', icon:'🥁', desc:'+2 attack to holder and next ally', atk:2}
+  {name:'Claws of Attack', asset:'wow-assets/items/claws-of-attack.png', wowIcon:'inv_misc_monsterclaw_03', desc:'+4 attack', atk:4},
+  {name:'Ring of Protection', asset:'wow-assets/items/ring-of-protection.png', wowIcon:'inv_jewelry_ring_01', desc:'+2 armor', armor:2},
+  {name:'Boots of Speed', asset:'wow-assets/items/boots-of-speed.png', wowIcon:'inv_boots_05', desc:'+12 speed', spd:12},
+  {name:'Orb of Fire', asset:'wow-assets/items/orb-of-fire.png', wowIcon:'inv_misc_orb_05', desc:'+2 attack, burn chance', atk:2, burn:true},
+  {name:'Pendant of Energy', asset:'wow-assets/items/pendant-of-energy.png', wowIcon:'inv_jewelry_talisman_06', desc:'Hero power fills faster', power:1.25},
+  {name:'Backstab Dagger', asset:'wow-assets/items/backstab-dagger.png', wowIcon:'inv_weapon_shortblade_05', desc:'Attacks the last enemy', targetLast:true},
+  {name:'Guardian Shield', asset:'wow-assets/items/guardian-shield.png', wowIcon:'inv_shield_05', desc:'Protects your last unit from first hit', protectLast:true},
+  {name:'Healing Charm', asset:'wow-assets/items/healing-charm.png', wowIcon:'inv_jewelry_talisman_03', desc:'Small self heal each action', regen:5},
+  {name:'Spell Ward', asset:'wow-assets/items/spell-ward.png', wowIcon:'spell_holy_magicalsentry', desc:'+1 armor and resists curses', armor:1, cleanse:true},
+  {name:'War Drum', asset:'wow-assets/items/war-drum.png', wowIcon:'inv_misc_drum_01', desc:'+2 attack to holder and next ally', atk:2}
 ];
 
 const UNIT_BY_RACE = Object.keys(UNITS).filter(k=>!UNITS[k].evolved).reduce((acc,k)=>{ const r=UNITS[k].race; (acc[r]??=[]).push(k); return acc;},{});
@@ -162,7 +162,10 @@ function hostedAsset(path){ return publicAsset(path); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[hostedAsset(`war3-assets/portraits/${id}.png`)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}>{!missing&&<img className="officialPortrait" src={sources[srcIndex]} alt="" onError={()=>setSrcIndex(i=>i+1)}/>}<i className="pixelHead" data-key={artKey(id)}/><em>{initials(label)}</em></span>; }
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[hostedAsset(`war3-assets/models/${id}.png`), hostedAsset(`sprites/models/${id}.png`)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img src={sources[srcIndex]} alt="" onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
-function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
+function ItemIcon({item}){
+  const src=item?.asset || (item?.name ? `wow-assets/items/${itemSlug(item.name)}.png` : '');
+  return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'} data-source={item?.wowIcon||''}>{item?.name&&<img className="spriteIcon officialItemIcon" src={hostedAsset(src)} alt={item.name} onError={e=>{e.currentTarget.style.display='none'}}/>}</span>;
+}
 function NodeGlyph({type}){
   const asset=NODE_ASSETS[type] || NODE_ASSETS.battle;
   return <img

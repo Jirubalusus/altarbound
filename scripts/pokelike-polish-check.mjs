@@ -22,6 +22,17 @@ async function assertNoBadImages(label) {
   if (bad.length) throw new Error(`${label}: broken images: ${bad.join(', ')}`);
 }
 
+const sourceText = await fs.readFile(path.resolve('src/main.jsx'), 'utf8');
+const wowItemRefs = [...sourceText.matchAll(/asset:'(wow-assets\/items\/[^']+\.png)'/g)].map(m => m[1]);
+const missingWowItems = [];
+for (const asset of wowItemRefs) {
+  try { await fs.access(path.resolve('public', asset)); }
+  catch { missingWowItems.push(asset); }
+}
+if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sprites/items') || sourceText.includes('item?.icon')) {
+  throw new Error(`Item cards must use sourced WoW/Warcraft icons, not generated sprites/emoji fallbacks: ${JSON.stringify({wowItemRefs:wowItemRefs.length, missingWowItems, usesSpritesItems:sourceText.includes('sprites/items'), usesItemIconFallback:sourceText.includes('item?.icon')})}`);
+}
+
 await page.goto(baseURL, { waitUntil: 'networkidle' });
 await page.evaluate(() => localStorage.setItem('altarbound_fast_mode','1'));
 await page.reload({ waitUntil: 'networkidle' });

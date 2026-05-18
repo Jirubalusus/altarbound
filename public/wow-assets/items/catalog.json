@@ -1,0 +1,82 @@
+[
+  {
+    "slug": "claws-of-attack",
+    "item": "Claws of Attack",
+    "wowIcon": "inv_misc_monsterclaw_03",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_monsterclaw_03.jpg",
+    "asset": "wow-assets/items/claws-of-attack.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "ring-of-protection",
+    "item": "Ring of Protection",
+    "wowIcon": "inv_jewelry_ring_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_ring_01.jpg",
+    "asset": "wow-assets/items/ring-of-protection.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "boots-of-speed",
+    "item": "Boots of Speed",
+    "wowIcon": "inv_boots_05",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_boots_05.jpg",
+    "asset": "wow-assets/items/boots-of-speed.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "orb-of-fire",
+    "item": "Orb of Fire",
+    "wowIcon": "inv_misc_orb_05",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_orb_05.jpg",
+    "asset": "wow-assets/items/orb-of-fire.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "pendant-of-energy",
+    "item": "Pendant of Energy",
+    "wowIcon": "inv_jewelry_talisman_06",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_talisman_06.jpg",
+    "asset": "wow-assets/items/pendant-of-energy.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "backstab-dagger",
+    "item": "Backstab Dagger",
+    "wowIcon": "inv_weapon_shortblade_05",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_05.jpg",
+    "asset": "wow-assets/items/backstab-dagger.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "guardian-shield",
+    "item": "Guardian Shield",
+    "wowIcon": "inv_shield_05",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_shield_05.jpg",
+    "asset": "wow-assets/items/guardian-shield.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "healing-charm",
+    "item": "Healing Charm",
+    "wowIcon": "inv_jewelry_talisman_03",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_jewelry_talisman_03.jpg",
+    "asset": "wow-assets/items/healing-charm.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "spell-ward",
+    "item": "Spell Ward",
+    "wowIcon": "spell_holy_magicalsentry",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/spell_holy_magicalsentry.jpg",
+    "asset": "wow-assets/items/spell-ward.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  },
+  {
+    "slug": "war-drum",
+    "item": "War Drum",
+    "wowIcon": "inv_misc_drum_01",
+    "sourceUrl": "https://wow.zamimg.com/images/wow/icons/large/inv_misc_drum_01.jpg",
+    "asset": "wow-assets/items/war-drum.png",
+    "note": "Sourced WoW/Wowhead icon; converted from JPG to PNG for app use."
+  }
+]
