@@ -133,6 +133,7 @@ function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={title||UNITS[id]?.name||HEROES[id]?.name}><i className="pixelHead" data-key={artKey(id)}/><em>{initials(title||UNITS[id]?.name||HEROES[id]?.name||id)}</em></span>; }
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.icon||''}</span>; }
 function NodeGlyph({type}){ return <span className={`nodeGlyph ${NODE_GLYPHS[type]||'sword'}`} />; }
+function mapPoint(n,len){ const lanes=[22,50,78]; const wobble=[0,8,-5,6,-8,4,-4,0]; const y=88-(n.step*(76/Math.max(1,len-1))); const x=lanes[n.row]+(wobble[n.step]||0); return {x:clamp(x,10,90), y:clamp(y,8,92)}; }
 function initials(name='?'){ return name.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
 
 const nodeLabel = {battle:'Battle', elite:'Elite Battle', tavern:'Tavern', altar:'Altar of Heroes', special:'Tavern of Legends', training:'Training Grounds', item:'Item Chest', fountain:'Fountain', boss:'Boss', tower:'Battle Tower'};
@@ -276,7 +277,26 @@ function SettingsView({fastMode,setFastMode,onBack}){ return <div className="pag
 function RaceSelect({onPick}){ return <div className="page"><h1>Choose Your Race!</h1><div className="cards">{Object.entries(RACES).map(([id,r])=><button className="pickCard" key={id} onClick={()=>onPick(id)}><Portrait id={r.starter} large title={UNITS[r.starter].name}/><h2 style={{color:r.color}}>{r.name}</h2><p>Starter: {UNITS[r.starter].name}</p><p>{r.style}</p></button>)}</div></div> }
 function Shell({game, children, reorder, onSettings, fastMode}){ const equipped=[...game.units.flatMap(u=>[u.item]),...game.heroes.flatMap(h=>[h.item,h.item2])].filter(Boolean); return <div className="game wcFrame"><aside className="sidebar leftPanel"><div className="topBtns"><button>Codex</button><button>Achievements</button><button onClick={onSettings}>Settings</button><button onClick={()=>location.reload()}>↻</button></div>{fastMode&&<div className="fastBadge small">⚡ FAST</div>}<h3>TEAM</h3><div className="miniList">{game.units.map((u,i)=><Mini key={u.uid} c={u} onUp={()=>i>0&&reorder('unit',i,i-1)} onDown={()=>i<game.units.length-1&&reorder('unit',i,i+1)}/>)}</div><h3>HEROES</h3><div className="miniList">{game.heroes.length?game.heroes.map((h,i)=><Mini key={h.uid} c={h} hero onUp={()=>i>0&&reorder('hero',i,i-1)} onDown={()=>i<game.heroes.length-1&&reorder('hero',i,i+1)}/>):<p className="muted panelMuted">No heroes. Find an altar.</p>}</div><h3>BADGES</h3><div className="badges">{game.badges.map(b=><span key={b}>{b}</span>)}</div></aside><main className="main boardFrame">{children}</main><aside className="rightPanel"><h3>ITEMS</h3><div className="itemRack">{equipped.length?equipped.slice(0,8).map((it,i)=><ItemIcon key={it.name+i} item={it}/>):<p>Bag empty</p>}</div><h3>RUN</h3><p className="runStat">Level {game.level}</p><p className="runStat">Wins {game.defeated}</p></aside></div> }
 function Mini({c,onUp,onDown}){ const b=baseOf(c); return <div className={`mini ${c.hp<=0?'dead':''}`}><Portrait id={c.id} tiny title={b.name}/><div><b>{b.name}</b><small>Lv{c.level} {c.kind==='hero'?'Hero':b.role}</small><div className="hp"><i style={{width:`${100*c.hp/c.maxHp}%`}}/></div></div><div className="order"><button onClick={onUp}>↑</button><button onClick={onDown}>↓</button></div></div> }
-function MapView({game, openNode}){ return <div className="mapScreen"><div className="mapHeader"><h1>Level {game.level} Path</h1><p>Choose the next encounter. Every fifth level becomes a Battle Tower.</p></div><div className="map grassBoard">{game.map.map((row,ri)=><div className="mapRow" key={ri}>{row.map((n,i)=><button key={n.id} disabled={i!==game.nodeIndex} className={`node ${n.type} ${i<game.nodeIndex?'done':''} ${i===game.nodeIndex?'active':''}`} onClick={()=>openNode(n.type)}><NodeGlyph type={n.type}/><small>{nodeLabel[n.type]}</small></button>)}</div>)}</div></div> }
+function MapView({game, openNode}){
+  const len=game.map[0]?.length||1;
+  const nodes=game.map.flat();
+  const edges=[];
+  for(let step=0; step<len-1; step++){
+    const a=nodes.filter(n=>n.step===step), b=nodes.filter(n=>n.step===step+1);
+    a.forEach(n1=>b.forEach(n2=>{ if(Math.abs(n1.row-n2.row)<=1) edges.push([n1,n2]); }));
+  }
+  return <div className="mapScreen pokelikeExact">
+    <div className="mapHeader"><h1>Level {game.level} Path</h1><p>Choose the next encounter. Every fifth level becomes a Battle Tower.</p></div>
+    <div className="pokelikeBoard">
+      <div className="boardTopRoom"><span className="roomPic"/><span className="roomDoor"/><span className="roomMachine"/><span className="roomVial"/></div>
+      <div className="waterLane left"/><div className="waterLane right"/>
+      <div className="coral coralA"/><div className="coral coralB"/><div className="dockGap left"/><div className="dockGap right"/>
+      <svg className="mapEdges" viewBox="0 0 100 100" preserveAspectRatio="none">{edges.map(([a,b],idx)=>{ const p1=mapPoint(a,len), p2=mapPoint(b,len); return <line key={idx} x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} />;})}</svg>
+      {nodes.map(n=>{ const p=mapPoint(n,len); const active=n.step===game.nodeIndex; return <button key={n.id} disabled={!active} style={{left:`${p.x}%`,top:`${p.y}%`}} className={`node ${n.type} ${n.step<game.nodeIndex?'done':''} ${active?'active':''}`} onClick={()=>openNode(n.type)} title={nodeLabel[n.type]}><NodeGlyph type={n.type}/><small>{nodeLabel[n.type]}</small></button>})}
+      <div className="startMarker">?</div>
+    </div>
+  </div>
+}
 function ChoiceView({choice,game,onUnit,onHero,equipItem,train,finish}){
   if(choice.type==='training') return <div><h1>Training Grounds</h1><p>Select one of your units/heroes to improve. Disabled entries have no available upgrade.</p><div className="cards compact">{[...game.units,...game.heroes].map(c=><button key={c.uid} disabled={!canTrain(c)} className="pickCard" onClick={()=>train(c.uid)}><Portrait id={c.id} large title={baseOf(c).name}/><h2>{fullName(c)} Lv{c.level}</h2><p>{trainingText(c)}</p></button>)}</div><button onClick={finish}>Skip</button></div>;
   if(choice.type==='item') return <div><h1>{choice.title}</h1><p>{choice.subtitle}</p><div className="cards compact">{choice.options.map((it,i)=><div className="pickCard" key={it.name}><ItemIcon item={it}/><h2>{it.name}</h2><p>{it.desc}</p><div className="equipGrid">{[...game.units,...game.heroes].map(c=><button key={c.uid} onClick={()=>equipItem(it,c.uid,'item')}>{baseOf(c).name}</button>)}{game.heroes.map(h=><button key={h.uid+'2'} onClick={()=>equipItem(it,h.uid,'item2')}>{baseOf(h).name} slot 2</button>)}</div></div>)}</div></div>;
