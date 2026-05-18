@@ -61,13 +61,23 @@ const routeStart = await page.evaluate(() => {
 });
 if (JSON.stringify(routeStart.byStep) !== JSON.stringify({0:2,1:3,2:4,3:3,4:2,5:1})) throw new Error(`Route is not diamond 2-3-4-3-2-1: ${JSON.stringify(routeStart.byStep)}`);
 if (routeStart.activeCount !== 2) throw new Error(`Initial active nodes should be exactly 2, got ${routeStart.activeCount}`);
-const nodeAssetMetrics = await page.evaluate(() => ({
-  nodes: document.querySelectorAll('.node').length,
-  war3Assets: document.querySelectorAll('.node .nodeWar3Asset').length,
-  oldSpriteIcons: document.querySelectorAll('.node .spriteNode').length,
-  topOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.routeLegend')].find(el => getComputedStyle(el).display !== 'none')
-}));
-if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible) throw new Error(`Map nodes are not pure Warcraft asset sprites: ${JSON.stringify(nodeAssetMetrics)}`);
+const nodeAssetMetrics = await page.evaluate(() => {
+  const nodes=[...document.querySelectorAll('.node')];
+  const imgs=nodes.map(n=>n.querySelector('.nodeWar3Asset')).filter(Boolean);
+  const disabledImgs=nodes.filter(n=>n.disabled).map(n=>n.querySelector('.nodeWar3Asset')).filter(Boolean);
+  return {
+    nodes: nodes.length,
+    war3Assets: imgs.length,
+    oldSpriteIcons: document.querySelectorAll('.node .spriteNode').length,
+    topOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
+    nonOfficialSources: imgs.map(img=>img.src).filter(src=>!src.includes('/war3-assets/models/')),
+    hiddenFutureAssets: disabledImgs.filter(img=>{
+      const cs=getComputedStyle(img);
+      return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
+    }).length
+  };
+});
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonOfficialSources.length || nodeAssetMetrics.hiddenFutureAssets) throw new Error(`Map nodes are not visible official Warcraft model sprites: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');
@@ -101,7 +111,7 @@ if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw 
 await assertNoBadImages('battle');
 await shot('04-battle');
 
-await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 20000 }).catch(() => {});
+await page.waitForFunction(() => !document.querySelector('.pokelikeBattle'), null, { timeout: 45000 }).catch(() => {});
 await page.waitForTimeout(500);
 const bodyText = await page.locator('body').innerText();
 if (bodyText.includes('Victory Reward') || bodyText.includes('Choose one reward')) {

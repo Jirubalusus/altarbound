@@ -130,8 +130,10 @@ const PORTRAIT_OVERRIDES = {
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
 const NODE_MODELS = {
-  battle:'grunt', elite:'tauren', tavern:'shaman', altar:'blademaster', special:'naga',
-  training:'grunt_veteran', item:'raider', fountain:'keeper', boss:'death_knight', tower:'frost_wyrm'
+  // Route nodes intentionally use only available Warcraft III model assets from public/war3-assets/models.
+  // Different node types still read differently through model choice + labels, but never fall back to CSS/emoji art.
+  battle:'grunt', elite:'tauren_chief', tavern:'shaman', altar:'blademaster', special:'raider',
+  training:'grunt_veteran', item:'headhunter', fountain:'storm_shaman', boss:'blademaster', tower:'tauren_chief'
 };
 function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
@@ -143,12 +145,11 @@ function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-')
 function ItemIcon({item}){ return <span className={`wcItem ${item?.name?'':'empty'}`} title={item?.name||'Empty'}>{item?.name&&<img className="spriteIcon" src={hostedAsset(`sprites/items/${itemSlug(item.name)}.png`)} alt="" onError={e=>{e.currentTarget.style.display='none'}}/>}<b>{item?.icon||''}</b></span>; }
 function NodeGlyph({type}){
   const model=NODE_MODELS[type];
-  const isItem=false;
-  const sources=[hostedAsset(`sprites/models/${model}.png`), hostedAsset(`war3-assets/models/${model}.png`), hostedAsset(`sprites/${type}.png`)];
+  const sources=[hostedAsset(`war3-assets/models/${model}.png`)];
   const [srcIndex,setSrcIndex]=useState(0);
   useEffect(()=>setSrcIndex(0),[type]);
   const src=sources[Math.min(srcIndex,sources.length-1)];
-  return <img className={`nodeGlyph nodeWar3Asset ${type} ${isItem?'itemNodeAsset':'unitNodeAsset'}`} src={src} alt="" onError={()=>setSrcIndex(i=>Math.min(i+1,sources.length-1))}/>;
+  return <img className={`nodeGlyph nodeWar3Asset ${type} unitNodeAsset`} src={src} alt="" onError={()=>setSrcIndex(i=>Math.min(i+1,sources.length-1))}/>;
 }
 function mapPoint(n,len){
   const lane = n.lane ?? n.row;
