@@ -74,10 +74,19 @@ const nodeAssetMetrics = await page.evaluate(() => {
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);
       return cs.visibility==='hidden' || cs.display==='none' || Number(cs.opacity) < 0.75;
+    }).length,
+    generatedNodeChrome: nodes.filter(n=>{
+      const d=n.querySelector('.nodeDisc');
+      const nodeBefore=getComputedStyle(n,'::before');
+      const nodeAfter=getComputedStyle(n,'::after');
+      const discBefore=d ? getComputedStyle(d,'::before') : null;
+      const discAfter=d ? getComputedStyle(d,'::after') : null;
+      const visible = ps => ps && ps.display !== 'none' && ps.content !== 'none';
+      return visible(nodeBefore) || visible(nodeAfter) || visible(discBefore) || visible(discAfter);
     }).length
   };
 });
-if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonOfficialSources.length || nodeAssetMetrics.hiddenFutureAssets) throw new Error(`Map nodes are not visible official Warcraft model sprites: ${JSON.stringify(nodeAssetMetrics)}`);
+if (nodeAssetMetrics.war3Assets !== nodeAssetMetrics.nodes || nodeAssetMetrics.oldSpriteIcons !== 0 || nodeAssetMetrics.topOverlayVisible || nodeAssetMetrics.nonOfficialSources.length || nodeAssetMetrics.hiddenFutureAssets || nodeAssetMetrics.generatedNodeChrome) throw new Error(`Map nodes must be sprite-only Warcraft assets with no generated circles/peanas: ${JSON.stringify(nodeAssetMetrics)}`);
 const maxNodeCenterError = Math.max(...routeStart.positions.map(p => Math.max(p.errX, p.errY)));
 if (maxNodeCenterError > 4) throw new Error(`Route node discs are not centered on the mathematical grid; max error ${maxNodeCenterError.toFixed(2)}px: ${JSON.stringify(routeStart.positions)}`);
 await shot('03-map');

@@ -1200,3 +1200,102 @@ body:after{display:none!important;}
   opacity:.72!important;
   filter:grayscale(.35) brightness(.78) saturate(1) contrast(1.08) drop-shadow(0 4px 2px rgba(0,0,0,.42))!important;
 }
+
+/* Sprite-only route nodes: absolutely no assistant-made circles, pucks, halos, peanas or marker badges. */
+.node,
+.node:hover,
+.node:focus,
+.node:active,
+.node:disabled,
+.node:disabled:hover,
+.node:disabled:focus,
+.node:disabled:active{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  transform:translate(-50%,-50%)!important;
+  overflow:visible!important;
+}
+.node::before,
+.node::after,
+.node:hover::before,
+.node:hover::after,
+.node:focus::before,
+.node:focus::after,
+.node:active::before,
+.node:active::after,
+.node:disabled::before,
+.node:disabled::after,
+.node.active::before,
+.node.active::after,
+.node.done::before,
+.node.done::after,
+.nodeDisc::before,
+.nodeDisc::after,
+.node.active .nodeDisc::before,
+.node.active .nodeDisc::after,
+.node:disabled .nodeDisc::before,
+.node:disabled .nodeDisc::after,
+.node.done .nodeDisc::before,
+.node.done .nodeDisc::after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+}
+.nodeDisc,
+.node.active .nodeDisc,
+.node:disabled .nodeDisc,
+.node.done .nodeDisc{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  filter:none!important;
+  opacity:1!important;
+  overflow:visible!important;
+}
+.node .nodeWar3Asset,
+.node.active .nodeWar3Asset,
+.node:disabled .nodeWar3Asset,
+.node:not(.active):not(.done) .nodeWar3Asset,
+.node.done .nodeWar3Asset{
+  mix-blend-mode:normal!important;
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  border-radius:0!important;
+  padding:0!important;
+  object-fit:contain!important;
+}
+.node .nodeWar3Asset{
+  filter:none!important;
+  opacity:1!important;
+}
+.node.active .nodeWar3Asset{
+  filter:brightness(1.14) saturate(1.14) contrast(1.08)!important;
+  opacity:1!important;
+}
+.node:disabled .nodeWar3Asset,
+.node:not(.active):not(.done) .nodeWar3Asset{
+  filter:grayscale(.28) brightness(.82) saturate(.9) contrast(1.04)!important;
+  opacity:.82!important;
+}
+.node.done .nodeWar3Asset{
+  filter:grayscale(.72) brightness(.58) saturate(.72)!important;
+  opacity:.58!important;
+}
+.node small{
+  background:transparent!important;
+  border:0!important;
+  outline:0!important;
+  box-shadow:none!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.75)!important;
+  color:#fff3b2!important;
+}
