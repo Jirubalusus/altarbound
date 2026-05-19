@@ -4012,3 +4012,86 @@ body:after{display:none!important;}
 }
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile[style]:before,
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile[style]:after{display:none!important;content:none!important;}
+
+/* Character polish pass: use generated assets as real battle sprites, not tiny framed icons. */
+.modelSprite .officialCharacterIcon.unitModelImage{
+  border:0!important;
+  outline:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+  object-fit:contain!important;
+  width:100%!important;
+  height:100%!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  image-rendering:auto!important;
+  filter:drop-shadow(0 9px 7px rgba(0,0,0,.62)) drop-shadow(0 1px 0 rgba(255,236,170,.18)) saturate(1.12) contrast(1.08)!important;
+}
+.modelSprite.enemy .officialCharacterIcon.unitModelImage{transform:scaleX(-1)!important;}
+.wcPortrait .officialCharacterIcon.officialPortrait{
+  object-fit:contain!important;
+  padding:4px!important;
+  background:radial-gradient(circle at 50% 68%,#c8c29a 0 42%,#8f936e 78%,#4b4a34 100%)!important;
+  border:2px solid #4c4322!important;
+  outline:1px solid #d6c784!important;
+  box-shadow:0 3px 0 #050403,inset 0 0 16px rgba(0,0,0,.28)!important;
+}
+.pokelikeBattle .arenaStage{
+  overflow:visible!important;
+}
+.pokelikeBattle .arenaStage .modelSprite,
+.pokelikeBattle .modelBattleCard .arenaStage .modelSprite{
+  width:190px!important;
+  height:154px!important;
+  overflow:visible!important;
+  place-items:end center!important;
+}
+.pokelikeBattle .arenaStage .modelSprite .unitModelImage,
+.pokelikeBattle .modelBattleCard .arenaStage .modelSprite .unitModelImage{
+  max-width:190px!important;
+  max-height:154px!important;
+}
+.pokelikeBattle .modelBattleCard{
+  grid-template-columns:minmax(0,1fr) 186px!important;
+  min-height:174px!important;
+}
+.pokelikeBattle .modelBattleCard .arenaStage{
+  min-height:136px!important;
+  height:136px!important;
+  align-self:end!important;
+  display:grid!important;
+  place-items:end center!important;
+  overflow:visible!important;
+}
+.pickCard>.modelSprite.small,
+.starterCard>.modelSprite.small{
+  width:136px!important;
+  height:132px!important;
+  overflow:visible!important;
+}
+.pickCard>.modelSprite.small .unitModelImage,
+.starterCard>.modelSprite.small .unitModelImage{
+  max-width:132px!important;
+  max-height:132px!important;
+}
+.mapPartySprites .modelSprite{
+  width:62px!important;
+  height:66px!important;
+  overflow:visible!important;
+}
+.mapPartySprites .modelSprite .unitModelImage{
+  max-width:62px!important;
+  max-height:66px!important;
+}
+.wcPortrait.large{
+  width:112px!important;
+  height:112px!important;
+}
+.wcPortrait:not(.large):not(.tiny){
+  width:98px!important;
+  height:98px!important;
+}
+.wcPortrait.tiny{
+  width:58px!important;
+  height:58px!important;
+}
