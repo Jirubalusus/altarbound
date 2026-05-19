@@ -134,7 +134,7 @@ const NODE_ASSETS = {
   item:{src:'hive-assets/nodes-readable/item.png', sourceSrc:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
   fountain:{src:'hive-assets/nodes-readable/fountain.png', sourceSrc:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
   special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
-  battle:{src:'wow-assets/character-faces/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
+  battle:{src:'warcraft3-assets/portraits/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
   elite:{src:'wow-assets/character-faces/tauren.png', kind:'unit', validatedAs:'Orc Tauren'},
   tavern:{src:'wow-assets/character-faces/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
   altar:{src:'wow-assets/character-faces/blademaster.png', kind:'hero', validatedAs:'Orc hero altar preview'},
@@ -154,7 +154,7 @@ const RACE_NODE_ASSETS = {
     tower:{src:'wow-assets/character-faces/champion_knight.png', kind:'unit', validatedAs:'Human battle tower preview'}
   },
   orc:{
-    battle:{src:'wow-assets/character-faces/grunt.png', kind:'unit', validatedAs:'Orc Grunt battle'},
+    battle:{src:'warcraft3-assets/portraits/grunt.png', kind:'unit', validatedAs:'Orc Grunt battle'},
     elite:{src:'wow-assets/character-faces/tauren.png', kind:'unit', validatedAs:'Orc Tauren elite battle'},
     tavern:{src:'wow-assets/character-faces/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
     altar:{src:'wow-assets/character-faces/blademaster.png', kind:'hero', validatedAs:'Orc Altar hero preview'},
@@ -201,7 +201,10 @@ function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 const FIREBASE_HOSTING_ASSET_ROOT = 'https://altarbound-660da.web.app/';
 function hostedAsset(path){ return publicAsset(path); }
-function characterAsset(id){ return hostedAsset(`wow-assets/character-faces/${id}.png`); }
+const CHARACTER_ASSET_OVERRIDES = {
+  grunt:'warcraft3-assets/portraits/grunt.png'
+};
+function characterAsset(id){ return hostedAsset(CHARACTER_ASSET_OVERRIDES[id] || `wow-assets/character-faces/${id}.png`); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}>{!missing&&<img className="officialPortrait officialCharacterIcon" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<em>{initials(label)}</em>}</span>; }
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img className="officialCharacterIcon" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }

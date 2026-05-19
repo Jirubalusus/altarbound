@@ -49,8 +49,14 @@ const nonFaceCharacterIcons = characterCatalog.filter(entry => bannedWeaponOrSpe
 if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sprites/items') || sourceText.includes('item?.icon')) {
   throw new Error(`Item cards must use sourced WoW/Warcraft icons, not generated sprites/emoji fallbacks: ${JSON.stringify({wowItemRefs:wowItemRefs.length, missingWowItems, usesSpritesItems:sourceText.includes('sprites/items'), usesItemIconFallback:sourceText.includes('item?.icon')})}`);
 }
-if (characterCatalog.length < 56 || missingCharacterAssets.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
-  throw new Error(`All units/heroes must use sourced face/portrait WoW/Warcraft character assets, not weapons/spells or generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
+const warcraftPortraitOverrides = ['public/warcraft3-assets/portraits/grunt.png'];
+const missingWarcraftPortraits = [];
+for (const asset of warcraftPortraitOverrides) {
+  try { await fs.access(path.resolve(asset)); }
+  catch { missingWarcraftPortraits.push(asset); }
+}
+if (characterCatalog.length < 56 || missingCharacterAssets.length || missingWarcraftPortraits.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
+  throw new Error(`All units/heroes must use sourced face/portrait WoW/Warcraft character assets, not weapons/spells or generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, missingWarcraftPortraits, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
 }
 
 await page.goto(baseURL, { waitUntil: 'networkidle' });
@@ -71,6 +77,8 @@ await page.getByRole('button', { name: /NORMAL MODE/i }).click();
 await page.waitForSelector('.starterCard');
 await assertNoBadImages('starter');
 await shot('02-race-select');
+const raceGruntPortrait = await page.evaluate(() => [...document.querySelectorAll('.officialCharacterIcon')].find(img => img.alt === 'Grunt')?.src || 'missing');
+if (!raceGruntPortrait.includes('/warcraft3-assets/portraits/grunt.png')) throw new Error(`Race select Grunt must use classic Warcraft III BTNGrunt portrait: ${raceGruntPortrait}`);
 
 await page.getByRole('button', { name: /Orc Starter|Orc/i }).first().click();
 await page.waitForSelector('.pokelikeBoard');
@@ -111,10 +119,10 @@ const nodeAssetMetrics = await page.evaluate(() => {
     oldTopOverlayVisible: !![...document.querySelectorAll('.boardTopRoom,.waterLane,.coral,.dockGap,.startMarker')].find(el => getComputedStyle(el).display !== 'none'),
     routeLegendVisible: !![...document.querySelectorAll('.routeLegend')].find(el => getComputedStyle(el).display !== 'none'),
     usesWowMapBackground: getComputedStyle(document.querySelector('.wowRouteBoard') || document.querySelector('.pokelikeBoard')).backgroundImage.includes('/wow-map-backgrounds/route-clean-'),
-    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/wow-assets/character-faces/') || src.includes('/wow-assets/characters/') || src.includes('/war3-assets/models/') || src.includes('/war3-assets/route-icons/') || src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))),
+    nonValidatedSources: imgs.map(img=>img.src).filter(src=>!(src.includes('/warcraft3-assets/portraits/') || src.includes('/wow-assets/character-faces/') || src.includes('/wow-assets/characters/') || src.includes('/war3-assets/models/') || src.includes('/war3-assets/route-icons/') || src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))),
     illogicalItemNodes: nodes.filter(n=>n.classList.contains('item')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/hive-assets/nodes-readable/item.png') || /raider|headhunter|grunt/.test(src)).length,
-    nonOrcBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/wow-assets/character-faces/grunt.png')).length,
-    nonFactionMapNodes: nodes.filter(n=>['battle','elite','tavern','altar','special','training','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/wow-assets/character-faces/') || src.includes('/wow-assets/characters/')).length,
+    nonOrcBattleNodes: nodes.filter(n=>n.classList.contains('battle')).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!src.includes('/warcraft3-assets/portraits/grunt.png')).length,
+    nonFactionMapNodes: nodes.filter(n=>['battle','elite','tavern','altar','special','training','boss','tower'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!(src.includes('/warcraft3-assets/portraits/') || src.includes('/wow-assets/character-faces/')) || src.includes('/wow-assets/characters/')).length,
     nonHiveObjectNodes: nodes.filter(n=>['item','fountain'].some(cls=>n.classList.contains(cls))).map(n=>n.querySelector('.nodeWar3Asset')?.src || '').filter(src=>!(src.includes('/hive-assets/nodes/') || src.includes('/hive-assets/nodes-readable/'))).length,
     hiddenFutureAssets: disabledImgs.filter(img=>{
       const cs=getComputedStyle(img);

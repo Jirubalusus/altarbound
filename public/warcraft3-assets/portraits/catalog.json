@@ -1,0 +1,25 @@
+{
+  "assets": [
+    {
+      "id": "grunt",
+      "file": "grunt.png",
+      "source": "Warcraft Wiki",
+      "sourcePage": "https://warcraft.wiki.gg/wiki/Grunt_(Warcraft_III)",
+      "sourceImage": "https://warcraft.wiki.gg/images/BTNGrunt.png?e14832",
+      "originalName": "BTNGrunt.png",
+      "assetStyle": "Warcraft III classic command-card portrait",
+      "notes": "Chosen Grunt portrait. Replaces generic WoW orc head after user correction."
+    },
+    {
+      "id": "grunt_reforged_candidate",
+      "file": "grunt-reforged-candidate.png",
+      "source": "Warcraft Wiki",
+      "sourcePage": "https://warcraft.wiki.gg/wiki/Grunt_(Warcraft_III)",
+      "sourceImage": "https://warcraft.wiki.gg/images/thumb/BTNGrunt-Reforged.png/64px-BTNGrunt-Reforged.png?a4c182",
+      "originalName": "BTNGrunt-Reforged.png",
+      "assetStyle": "Warcraft III Reforged portrait candidate",
+      "notes": "Kept as alternate candidate only."
+    }
+  ],
+  "licenseNote": "Prototype/reference use. Warcraft assets are protected by their owners; review rights before commercial/public distribution."
+}
