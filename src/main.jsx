@@ -455,10 +455,11 @@ function BattleView({battle,setBattle,onEnd,fastMode}){
   useEffect(()=>{ if(!battle?.running) return; const t=setInterval(()=>setBattle(b=>stepBattle(b)),fastMode?45:160); return()=>clearInterval(t); },[battle?.running,fastMode]);
   useEffect(()=>{ if(battle?.won||battle?.lost){ const t=setTimeout(()=>onEnd(battle.won,battle),fastMode?260:800); return()=>clearTimeout(t); }},[battle?.won,battle?.lost,fastMode]);
   const allies=battle.ally, enemies=battle.enemy;
-  return <div className={`battlePage pokelikeBattle appScreenTransition battleType-${battle.type||'battle'} ${battle.won?'battleWon':battle.lost?'battleLost':''}`}><div className="aaaBackdrop battleFX"><span/><span/><span/></div><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><BattleSide title="YOUR TEAM" units={allies}/><BattleSide title="ENEMY" units={enemies} enemy/></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
+  return <div className={`battlePage pokelikeBattle appScreenTransition battleType-${battle.type||'battle'} ${battle.won?'battleWon':battle.lost?'battleLost':''} ${battle.fx?`hasCombatFx fx-${battle.fx.kind}`:''}`}><div className="aaaBackdrop battleFX"><span/><span/><span/></div><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><BattleSide title="YOUR TEAM" units={allies} fx={battle.fx}/><BattleSide title="ENEMY" units={enemies} enemy fx={battle.fx}/></div><CombatFxOverlay fx={battle.fx}/><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
 }
-function BattleSide({title,units,enemy=false}){ return <section className={`battlePanel ${enemy?'enemySide':'allySide'}`}><h2>{title}</h2><div className="battleRoster">{units.map((c,i)=><BattleCard key={c.uid} c={c} enemy={enemy} active={c.hp>0 && i===units.findIndex(x=>x.hp>0)}/>)}</div></section>; }
-function BattleCard({c,enemy,active}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); const ready=c.speed>=80&&c.hp>0; const hurt=hp>0&&hp<36; return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${active?'activeFighter':''} ${ready?'readyFighter':''} ${hurt?'hurtFighter':''} ${c.hp<=0?'dead':''}`}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/><span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
+function BattleSide({title,units,enemy=false,fx}){ return <section className={`battlePanel ${enemy?'enemySide':'allySide'}`}><h2>{title}</h2><div className="battleRoster">{units.map((c,i)=><BattleCard key={c.uid} c={c} enemy={enemy} active={c.hp>0 && i===units.findIndex(x=>x.hp>0)} fx={fx}/>)}</div></section>; }
+function BattleCard({c,enemy,active,fx}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); const ready=c.speed>=80&&c.hp>0; const hurt=hp>0&&hp<36; const isActor=fx?.actorUid===c.uid, isTarget=fx?.targetUid===c.uid || fx?.targetUids?.includes(c.uid); return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${active?'activeFighter':''} ${ready?'readyFighter':''} ${hurt?'hurtFighter':''} ${isActor?'fxActor':''} ${isTarget?`fxTarget fxTarget-${fx.kind}`:''} ${c.hp<=0?'dead':''}`} data-fighter-uid={c.uid}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/>{isTarget&&<span key={`${fx.id}-impact`} className={`combatImpact impact-${fx.kind}`} aria-hidden="true"><i/><i/><i/></span>}<span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
+function CombatFxOverlay({fx}){ if(!fx) return null; return <div key={fx.id} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''}`} aria-hidden="true"><span className="fxTrail"><i/><i/><i/><i/><i/></span><span className="fxProjectile"><i/><i/><i/></span><span className="fxLabel">{fx.label}</span></div>; }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }
 function stepBattle(b){
@@ -478,28 +479,58 @@ function stepBattle(b){
   if(item.regen) realActor.hp=clamp(realActor.hp+item.regen,0,realActor.maxHp);
   if(realActor.kind==='hero'){
     realActor.power += Math.round(22*((realActor.item?.power)||1));
-    if(realActor.power>=powerMax(realActor)){ castHero(realActor, own, opp, log); realActor.power=0; return {...b, ally, enemy, log:log.slice(-12), tick:b.tick+1}; }
+    if(realActor.power>=powerMax(realActor)){ const fx=castHero(realActor, own, opp, log, b.tick+1); realActor.power=0; return {...b, ally, enemy, fx, log:log.slice(-12), tick:b.tick+1}; }
   }
-  actUnit(realActor, own, opp, log);
-  return {...b, ally, enemy, log:log.slice(-12), tick:b.tick+1};
+  const fx=actUnit(realActor, own, opp, log, b.tick+1);
+  return {...b, ally, enemy, fx, log:log.slice(-12), tick:b.tick+1};
 }
 function firstAlive(arr){ return arr.find(x=>x.hp>0); }
 function lastAlive(arr){ return [...arr].reverse().find(x=>x.hp>0); }
-function actUnit(actor, own, opp, log){
-  const b=baseOf(actor); const target=(actor.item?.targetLast||b.targetLast)?lastAlive(opp):firstAlive(opp); if(!target) return;
+function actUnit(actor, own, opp, log, fxSeed=0){
+  const b=baseOf(actor); const target=(actor.item?.targetLast||b.targetLast)?lastAlive(opp):firstAlive(opp); if(!target) return null;
   let dmg=Math.max(1, stats(actor).atk - Math.floor(stats(target).armor*1.2));
   if(actor.kind==='unit' && actor.abilityRank>0) dmg+=actor.abilityRank*2;
-  if(b.ability?.includes('Heal')||b.role==='Healer') { const wounded=own.filter(x=>x.hp>0).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0]; if(wounded && wounded.hp<wounded.maxHp){ const heal=12+actor.level*3+(actor.abilityRank*5); wounded.hp=clamp(wounded.hp+heal,0,wounded.maxHp); log.push(`${b.name} heals ${baseOf(wounded).name} for ${heal}.`); return; }}
+  if(b.ability?.includes('Heal')||b.role==='Healer') { const wounded=own.filter(x=>x.hp>0).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0]; if(wounded && wounded.hp<wounded.maxHp){ const heal=12+actor.level*3+(actor.abilityRank*5); wounded.hp=clamp(wounded.hp+heal,0,wounded.maxHp); log.push(`${b.name} heals ${baseOf(wounded).name} for ${heal}.`); return makeCombatFx(actor, wounded, 'holy', b.ability||'Heal', fxSeed); }}
   target.hp=clamp(target.hp-dmg,0,target.maxHp); log.push(`${b.name} hits ${baseOf(target).name} for ${dmg}.`);
+  const fxKind=actor.item?.burn?'fireball':unitFxKind(actor,b);
   if(actor.item?.burn && target.hp>0){ target.hp=clamp(target.hp-4,0,target.maxHp); log.push(`${baseOf(target).name} burns.`); }
+  return makeCombatFx(actor, target, fxKind, b.ability||b.role, fxSeed);
 }
-function castHero(h, own, opp, log){
+function castHero(h, own, opp, log, fxSeed=0){
   const name=selectedSkillName(h), hb=HEROES[h.id];
-  if(/Light|Heal|Wave|Tranquility/.test(name)){ const wounded=own.filter(x=>x.hp>0).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0]; const heal=30+h.level*5+(h.ultimateRank*20); if(wounded){ wounded.hp=clamp(wounded.hp+heal,0,wounded.maxHp); log.push(`${hb.name} casts ${name}: ${baseOf(wounded).name} heals ${heal}.`);} return; }
-  if(/Resurrection|Animate/.test(name)){ const dead=own.find(x=>x.hp<=0); if(dead){ dead.hp=Math.round(dead.maxHp*(0.35+0.15*h.ultimateRank)); log.push(`${hb.name} casts ${name}: ${baseOf(dead).name} returns!`);} else castDamage(h,opp,log,name); return; }
-  if(/Shield|Aura|Voodoo|Avatar|Metamorphosis|Evasion|Armor/.test(name)){ h.hp=clamp(h.hp+25+h.level*4,0,h.maxHp); h.speed+=25; log.push(`${hb.name} uses ${name} and fortifies.`); return; }
-  castDamage(h,opp,log,name);
+  if(/Light|Heal|Wave|Tranquility/.test(name)){ const wounded=own.filter(x=>x.hp>0).sort((a,b)=>a.hp/a.maxHp-b.hp/b.maxHp)[0]; const heal=30+h.level*5+(h.ultimateRank*20); if(wounded){ wounded.hp=clamp(wounded.hp+heal,0,wounded.maxHp); log.push(`${hb.name} casts ${name}: ${baseOf(wounded).name} heals ${heal}.`); return makeCombatFx(h,wounded,spellFxKind(name),'Heal',fxSeed);} return null; }
+  if(/Resurrection|Animate/.test(name)){ const dead=own.find(x=>x.hp<=0); if(dead){ dead.hp=Math.round(dead.maxHp*(0.35+0.15*h.ultimateRank)); log.push(`${hb.name} casts ${name}: ${baseOf(dead).name} returns!`); return makeCombatFx(h,dead,'resurrect',name,fxSeed);} return castDamage(h,opp,log,name,fxSeed); }
+  if(/Shield|Aura|Voodoo|Avatar|Metamorphosis|Evasion|Armor/.test(name)){ h.hp=clamp(h.hp+25+h.level*4,0,h.maxHp); h.speed+=25; log.push(`${hb.name} uses ${name} and fortifies.`); return makeCombatFx(h,h,spellFxKind(name),name,fxSeed); }
+  return castDamage(h,opp,log,name,fxSeed);
 }
-function castDamage(h, opp, log, name){ const hb=HEROES[h.id]; const targets=opp.filter(x=>x.hp>0); const n=/Storm|Blizzard|Starfall|Bladestorm|Earthquake|Decay|Volcano|Swarm|Knives/.test(name)?Math.min(4,targets.length):1; sample(targets,n).forEach(t=>{ const dmg=24+h.level*4+(h.selectedSkill===3?18:0); t.hp=clamp(t.hp-dmg,0,t.maxHp); log.push(`${hb.name} casts ${name} on ${baseOf(t).name} for ${dmg}.`); }); }
+function castDamage(h, opp, log, name, fxSeed=0){ const hb=HEROES[h.id]; const targets=opp.filter(x=>x.hp>0); const n=/Storm|Blizzard|Starfall|Bladestorm|Earthquake|Decay|Volcano|Swarm|Knives/.test(name)?Math.min(4,targets.length):1; const hit=sample(targets,n); hit.forEach(t=>{ const dmg=24+h.level*4+(h.selectedSkill===3?18:0); t.hp=clamp(t.hp-dmg,0,t.maxHp); log.push(`${hb.name} casts ${name} on ${baseOf(t).name} for ${dmg}.`); }); return makeCombatFx(h,hit[0],spellFxKind(name),name,fxSeed,hit.map(t=>t.uid),n>1); }
+function unitFxKind(actor,b){
+  const text=`${b.name} ${b.role} ${b.ability||''} ${(b.tags||[]).join(' ')}`;
+  if(/Rifle|Sharpshooter|Headshot|Long Rifles/.test(text)) return 'bullet';
+  if(/Archer|Arrow|Marksmanship|Spear|Headhunter|Troll|Ranged/.test(text)) return 'arrow';
+  if(/Shaman|Storm|Lightning|Bloodlust/.test(text)) return 'lightning';
+  if(/Dryad|Poison|Nature|Chimaera|Corrosive/.test(text)) return 'nature';
+  if(/Necromancer|Cripple|Disease|Plague|Abomination|Ghoul|Undead|Cannibalize|Frenzy/.test(text)) return 'shadow';
+  if(/Frost|Freezing|Wyrm/.test(text)) return 'frost';
+  if(/Priest|Holy|Heal/.test(text)) return 'holy';
+  if(/Tauren|Pulverize|Stomp|Charge|Knight|Raider|Ensnare/.test(text)) return 'earth';
+  return 'slash';
+}
+function spellFxKind(name=''){
+  if(/Fire|Flame|Phoenix|Inferno|Volcano|Breath/.test(name)) return 'fireball';
+  if(/Blizzard|Frost/.test(name)) return 'frost';
+  if(/Water|Tornado|Wave/.test(name)) return 'waterfall';
+  if(/Lightning|Thunder|Storm|Shockwave|Earthquake/.test(name)) return 'lightning';
+  if(/Starfall|Searing|Moon|Trueshot/.test(name)) return 'starfall';
+  if(/Knife|Knives|Blade|Bash|Critical|Avatar|Wind Walk/.test(name)) return 'slash';
+  if(/Death|Decay|Coil|Swarm|Locust|Shadow|Silence|Black|Life Drain|Animate|Vengeance/.test(name)) return 'shadow';
+  if(/Light|Heal|Tranquility|Resurrection|Shield|Aura|Armor/.test(name)) return 'holy';
+  if(/Entangling|Nature|Thorns|Force|Bear|Stampede/.test(name)) return 'nature';
+  if(/Voodoo|Hex|Serpent|Banish|Mana|Arcane|Metamorphosis/.test(name)) return 'arcane';
+  return 'impact';
+}
+function makeCombatFx(actor,target,kind,label,seed=0,targetUids=null,area=false){
+  return {id:`fx-${seed}-${actor.uid}-${target?.uid||'self'}-${kind}`, kind, label, area, actorUid:actor.uid, targetUid:target?.uid, targetUids, fromSide:actor.side||'ally', toSide:target?.side||((actor.side==='ally')?'enemy':'ally')};
+}
 
 createRoot(document.getElementById('root')).render(<App/>);

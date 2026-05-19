@@ -3120,3 +3120,117 @@ body:after{display:none!important;}
   .battlePage.pokelikeBattle .modelBattleCard>.fighterName{left:14px!important;right:14px!important;}
   .battlePage.pokelikeBattle .modelBattleCard>.hp{left:22px!important;right:22px!important;}
 }
+
+/* Professional Pokelike combat attack FX: projectiles, falls, impacts and caster feedback. */
+.battlePage.pokelikeBattle .combatFxOverlay{
+  position:absolute!important;
+  left:9%!important;
+  right:9%!important;
+  top:124px!important;
+  height:252px!important;
+  z-index:12!important;
+  pointer-events:none!important;
+  overflow:visible!important;
+  --fx-main:#ffb341;
+  --fx-hot:#fff0a0;
+  --fx-shadow:rgba(79,29,8,.45);
+  --fx-start:25%;
+  --fx-end:75%;
+}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-from-enemy{--fx-start:75%;--fx-end:25%;}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-to-ally{--fx-end:25%;}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-to-enemy{--fx-end:75%;}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-fireball{--fx-main:#ff6a16;--fx-hot:#ffe083;--fx-shadow:rgba(128,22,0,.55);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-waterfall{--fx-main:#58c8ff;--fx-hot:#d8fbff;--fx-shadow:rgba(21,75,123,.42);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-frost{--fx-main:#96ecff;--fx-hot:#ecffff;--fx-shadow:rgba(32,105,150,.42);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-lightning{--fx-main:#fff65a;--fx-hot:#ffffff;--fx-shadow:rgba(99,76,0,.45);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-nature{--fx-main:#63ff7d;--fx-hot:#e6ffd5;--fx-shadow:rgba(18,92,29,.45);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-shadow{--fx-main:#b05cff;--fx-hot:#f4ccff;--fx-shadow:rgba(45,4,68,.55);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-holy,.battlePage.pokelikeBattle .combatFxOverlay.fx-resurrect{--fx-main:#ffe88e;--fx-hot:#fffdf0;--fx-shadow:rgba(123,87,16,.45);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-arcane{--fx-main:#7ed2ff;--fx-hot:#fff0ff;--fx-shadow:rgba(49,27,118,.45);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-arrow,.battlePage.pokelikeBattle .combatFxOverlay.fx-bullet{--fx-main:#f0d28a;--fx-hot:#fffbd0;--fx-shadow:rgba(75,43,18,.42);}
+.battlePage.pokelikeBattle .combatFxOverlay.fx-earth{--fx-main:#d79b4d;--fx-hot:#ffe0a0;--fx-shadow:rgba(73,45,16,.55);}
+.battlePage.pokelikeBattle .fxProjectile{
+  position:absolute!important;
+  left:var(--fx-start)!important;
+  top:92px!important;
+  width:34px!important;
+  height:34px!important;
+  transform:translate(-50%,-50%)!important;
+  animation:altarFxProjectile .62s cubic-bezier(.18,.72,.18,1) both!important;
+  filter:drop-shadow(0 0 10px var(--fx-main)) drop-shadow(0 3px 0 rgba(0,0,0,.24))!important;
+}
+.battlePage.pokelikeBattle .fxProjectile:before{
+  content:""!important;
+  position:absolute!important;
+  inset:4px!important;
+  border-radius:50%!important;
+  background:radial-gradient(circle at 32% 28%,var(--fx-hot) 0 18%,var(--fx-main) 22% 58%,rgba(106,34,6,.88) 66% 100%)!important;
+  box-shadow:0 0 16px var(--fx-main),0 0 30px var(--fx-shadow)!important;
+}
+.battlePage.pokelikeBattle .fxProjectile i{position:absolute!important;display:block!important;border-radius:50%!important;background:var(--fx-main)!important;box-shadow:0 0 10px var(--fx-main)!important;opacity:.85!important;}
+.battlePage.pokelikeBattle .fxProjectile i:nth-child(1){width:16px!important;height:9px!important;left:-12px!important;top:14px!important;animation:altarFxEmber .5s both!important;}
+.battlePage.pokelikeBattle .fxProjectile i:nth-child(2){width:10px!important;height:10px!important;left:-24px!important;top:18px!important;animation:altarFxEmber .52s .05s both!important;}
+.battlePage.pokelikeBattle .fxProjectile i:nth-child(3){width:7px!important;height:7px!important;left:-36px!important;top:8px!important;animation:altarFxEmber .48s .1s both!important;}
+.battlePage.pokelikeBattle .fxTrail{position:absolute!important;left:var(--fx-start)!important;top:92px!important;width:45%;height:2px!important;transform:translateY(-50%);opacity:.78!important;animation:altarFxTrail .62s both!important;}
+.battlePage.pokelikeBattle .fxTrail i{position:absolute!important;right:0!important;width:8px!important;height:8px!important;border-radius:50%!important;background:var(--fx-main)!important;box-shadow:0 0 8px var(--fx-main)!important;}
+.battlePage.pokelikeBattle .fxTrail i:nth-child(1){right:8%;top:-3px}.battlePage.pokelikeBattle .fxTrail i:nth-child(2){right:21%;top:4px}.battlePage.pokelikeBattle .fxTrail i:nth-child(3){right:34%;top:-7px}.battlePage.pokelikeBattle .fxTrail i:nth-child(4){right:49%;top:2px}.battlePage.pokelikeBattle .fxTrail i:nth-child(5){right:64%;top:-4px}
+.battlePage.pokelikeBattle .fx-from-enemy .fxProjectile i{left:auto!important;right:-12px!important;}
+.battlePage.pokelikeBattle .fx-from-enemy .fxProjectile i:nth-child(2){right:-24px!important}.battlePage.pokelikeBattle .fx-from-enemy .fxProjectile i:nth-child(3){right:-36px!important}
+.battlePage.pokelikeBattle .fxLabel{
+  position:absolute!important;
+  left:50%!important;
+  top:10px!important;
+  transform:translateX(-50%)!important;
+  max-width:360px!important;
+  padding:5px 10px!important;
+  color:#fff5bd!important;
+  font-family:'Press Start 2P',monospace!important;
+  font-size:8px!important;
+  text-shadow:2px 2px #000!important;
+  background:rgba(10,8,5,.55)!important;
+  border:1px solid rgba(255,225,132,.35)!important;
+  border-radius:3px!important;
+  animation:altarFxLabel .74s both!important;
+}
+.battlePage.pokelikeBattle .fx-waterfall .fxProjectile,
+.battlePage.pokelikeBattle .fx-frost .fxProjectile,
+.battlePage.pokelikeBattle .fx-starfall .fxProjectile{
+  left:var(--fx-end)!important;
+  top:-18px!important;
+  width:62px!important;
+  height:118px!important;
+  animation:altarFxDrop .82s cubic-bezier(.18,.72,.18,1) both!important;
+}
+.battlePage.pokelikeBattle .fx-waterfall .fxProjectile:before{inset:0 14px!important;border-radius:14px!important;background:linear-gradient(180deg,rgba(231,255,255,.95),rgba(86,203,255,.9) 36%,rgba(44,119,240,.18))!important;box-shadow:0 0 18px #8fe7ff!important;}
+.battlePage.pokelikeBattle .fx-frost .fxProjectile:before{inset:4px!important;border-radius:0!important;background:linear-gradient(180deg,rgba(245,255,255,.96),rgba(116,232,255,.58),transparent),repeating-linear-gradient(90deg,transparent 0 9px,rgba(255,255,255,.9) 10px 12px,transparent 13px 20px)!important;clip-path:polygon(50% 0,58% 30%,95% 38%,64% 58%,72% 100%,50% 72%,28% 100%,36% 58%,5% 38%,42% 30%)!important;}
+.battlePage.pokelikeBattle .fx-starfall .fxProjectile:before{inset:4px!important;border-radius:0!important;background:var(--fx-hot)!important;clip-path:polygon(50% 0,61% 36%,98% 36%,68% 57%,79% 94%,50% 70%,21% 94%,32% 57%,2% 36%,39% 36%)!important;box-shadow:0 0 22px #fff39a!important;}
+.battlePage.pokelikeBattle .fx-waterfall .fxTrail,.battlePage.pokelikeBattle .fx-frost .fxTrail,.battlePage.pokelikeBattle .fx-starfall .fxTrail{display:none!important;}
+.battlePage.pokelikeBattle .fx-lightning .fxProjectile:before{inset:0!important;border-radius:0!important;background:linear-gradient(180deg,var(--fx-hot),var(--fx-main))!important;clip-path:polygon(62% 0,37% 43%,57% 43%,34% 100%,82% 34%,60% 34%,78% 0)!important;box-shadow:0 0 20px #fff86e!important;}
+.battlePage.pokelikeBattle .fx-arrow .fxProjectile:before{inset:11px 0!important;border-radius:2px!important;background:linear-gradient(90deg,#442c14 0 22%,var(--fx-hot) 23% 78%,#b98537 79% 100%)!important;clip-path:polygon(0 40%,72% 40%,72% 0,100% 50%,72% 100%,72% 60%,0 60%)!important;}
+.battlePage.pokelikeBattle .fx-bullet .fxProjectile{width:22px!important;height:22px!important}.battlePage.pokelikeBattle .fx-bullet .fxProjectile:before{background:radial-gradient(circle,var(--fx-hot),#e2a448 52%,transparent 66%)!important;}
+.battlePage.pokelikeBattle .fx-slash .fxProjectile,.battlePage.pokelikeBattle .fx-earth .fxProjectile,.battlePage.pokelikeBattle .fx-impact .fxProjectile{left:var(--fx-end)!important;animation:altarFxMelee .5s both!important;}
+.battlePage.pokelikeBattle .fx-slash .fxProjectile:before{inset:0!important;border-radius:0!important;background:linear-gradient(135deg,transparent 0 36%,var(--fx-hot) 39% 48%,var(--fx-main) 49% 58%,transparent 61% 100%)!important;box-shadow:none!important;}
+.battlePage.pokelikeBattle .fx-earth .fxProjectile:before{inset:5px!important;border-radius:3px!important;background:linear-gradient(135deg,#ffe0a0,#b36c28 52%,#553113)!important;clip-path:polygon(50% 0,100% 32%,80% 100%,18% 100%,0 30%)!important;}
+.battlePage.pokelikeBattle .fx-nature .fxProjectile:before{inset:3px!important;border-radius:0!important;background:radial-gradient(circle at 44% 44%,var(--fx-hot),var(--fx-main) 55%,transparent 62%)!important;clip-path:polygon(50% 0,65% 28%,98% 20%,74% 50%,96% 80%,60% 72%,50% 100%,40% 72%,4% 80%,26% 50%,2% 20%,35% 28%)!important;}
+.battlePage.pokelikeBattle .fx-shadow .fxProjectile:before,.battlePage.pokelikeBattle .fx-arcane .fxProjectile:before,.battlePage.pokelikeBattle .fx-holy .fxProjectile:before,.battlePage.pokelikeBattle .fx-resurrect .fxProjectile:before{inset:1px!important;border-radius:50%!important;background:radial-gradient(circle,var(--fx-hot) 0 18%,var(--fx-main) 25% 52%,transparent 66%),conic-gradient(from 30deg,transparent,var(--fx-main),transparent,var(--fx-main),transparent)!important;}
+.battlePage.pokelikeBattle .combatImpact{position:absolute!important;left:50%!important;top:50%!important;width:116px!important;height:92px!important;transform:translate(-50%,-50%)!important;z-index:8!important;pointer-events:none!important;animation:altarImpactPop .7s both!important;--impact:#ffb341;--impact-hot:#fff0a0;}
+.battlePage.pokelikeBattle .impact-fireball{--impact:#ff6818;--impact-hot:#ffe48f}.battlePage.pokelikeBattle .impact-waterfall{--impact:#58c8ff;--impact-hot:#efffff}.battlePage.pokelikeBattle .impact-frost{--impact:#9aefff;--impact-hot:#fff}.battlePage.pokelikeBattle .impact-lightning{--impact:#fff65a;--impact-hot:#fff}.battlePage.pokelikeBattle .impact-shadow{--impact:#b05cff;--impact-hot:#f5d2ff}.battlePage.pokelikeBattle .impact-nature{--impact:#63ff7d;--impact-hot:#f0ffe3}.battlePage.pokelikeBattle .impact-holy,.battlePage.pokelikeBattle .impact-resurrect{--impact:#ffe88e;--impact-hot:#fffdf0}.battlePage.pokelikeBattle .impact-earth{--impact:#d79b4d;--impact-hot:#ffe0a0}.battlePage.pokelikeBattle .impact-arcane{--impact:#7ed2ff;--impact-hot:#fff0ff}
+.battlePage.pokelikeBattle .combatImpact:before{content:""!important;position:absolute!important;inset:16px!important;border-radius:50%!important;background:radial-gradient(circle,var(--impact-hot) 0 12%,var(--impact) 24% 42%,transparent 63%)!important;box-shadow:0 0 22px var(--impact)!important;}
+.battlePage.pokelikeBattle .combatImpact i{position:absolute!important;left:50%!important;top:50%!important;width:10px!important;height:10px!important;border-radius:50%!important;background:var(--impact)!important;box-shadow:0 0 10px var(--impact)!important;animation:altarImpactShard .64s both!important;}
+.battlePage.pokelikeBattle .combatImpact i:nth-child(1){--dx:-46px;--dy:-26px}.battlePage.pokelikeBattle .combatImpact i:nth-child(2){--dx:42px;--dy:-18px;animation-delay:.04s!important}.battlePage.pokelikeBattle .combatImpact i:nth-child(3){--dx:8px;--dy:34px;animation-delay:.08s!important}
+.battlePage.pokelikeBattle .fxTarget-waterfall .combatImpact:after,.battlePage.pokelikeBattle .fxTarget-frost .combatImpact:after,.battlePage.pokelikeBattle .fxTarget-starfall .combatImpact:after{content:""!important;position:absolute!important;left:50%!important;top:-74px!important;width:72px!important;height:122px!important;transform:translateX(-50%)!important;background:linear-gradient(180deg,var(--impact-hot),var(--impact) 45%,transparent)!important;opacity:.88!important;filter:blur(.2px) drop-shadow(0 0 10px var(--impact))!important;clip-path:polygon(36% 0,64% 0,74% 78%,50% 100%,26% 78%)!important;animation:altarWaterColumn .82s both!important;}
+.battlePage.pokelikeBattle .fxActor .unitModelImage{animation:altarCasterKick .42s ease-out both!important;}
+.battlePage.pokelikeBattle .fxTarget .unitModelImage{animation:altarTargetHit .44s ease-out both!important;}
+@keyframes altarFxProjectile{0%{left:var(--fx-start);top:112px;opacity:0;transform:translate(-50%,-50%) scale(.56)}14%{opacity:1}100%{left:var(--fx-end);top:86px;opacity:1;transform:translate(-50%,-50%) scale(1.04)}}
+@keyframes altarFxTrail{0%{opacity:0;transform:translateY(-50%) scaleX(.18);transform-origin:var(--fx-start) center}30%{opacity:.9}100%{opacity:0;transform:translateY(-50%) scaleX(1)}}
+@keyframes altarFxDrop{0%{top:-34px;opacity:0;transform:translate(-50%,-50%) scaleY(.55)}18%{opacity:1}72%{opacity:1}100%{top:90px;opacity:0;transform:translate(-50%,-50%) scaleY(1.12)}}
+@keyframes altarFxMelee{0%{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(-12deg)}25%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.65) rotate(18deg)}}
+@keyframes altarFxEmber{0%{opacity:1;transform:translate(0,0) scale(1)}100%{opacity:0;transform:translate(-18px,10px) scale(.2)}}
+@keyframes altarFxLabel{0%{opacity:0;transform:translate(-50%,-8px)}18%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-14px)}}
+@keyframes altarImpactPop{0%{opacity:0;transform:translate(-50%,-50%) scale(.35)}20%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) scale(1.25)}}
+@keyframes altarImpactShard{0%{opacity:1;transform:translate(-50%,-50%) scale(1)}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.2)}}
+@keyframes altarWaterColumn{0%{opacity:0;transform:translateX(-50%) translateY(-24px) scaleY(.35)}20%{opacity:.95}100%{opacity:0;transform:translateX(-50%) translateY(42px) scaleY(1.05)}}
+@keyframes altarCasterKick{0%{transform:translateX(0) scale(1)}35%{transform:translateX(8px) scale(1.04)}100%{transform:translateX(0) scale(1)}}
+@keyframes altarTargetHit{0%{filter:brightness(1) saturate(1)}30%{filter:brightness(1.85) saturate(1.4);transform:translateX(-4px)}65%{transform:translateX(4px)}100%{filter:brightness(1) saturate(1);transform:translateX(0)}}
+@media(max-width:900px){.battlePage.pokelikeBattle .combatFxOverlay{left:4%!important;right:4%!important;top:154px!important;height:470px!important;--fx-start:50%;--fx-end:50%;}.battlePage.pokelikeBattle .combatFxOverlay.fx-from-enemy{top:444px!important}.battlePage.pokelikeBattle .fxProjectile{animation:altarFxDrop .62s both!important}.battlePage.pokelikeBattle .fxTrail{display:none!important}}
