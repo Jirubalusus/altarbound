@@ -461,6 +461,10 @@ function BattleSide({title,units,enemy=false,fx}){ return <section className={`b
 function BattleCard({c,enemy,active,fx}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); const ready=c.speed>=80&&c.hp>0; const hurt=hp>0&&hp<36; const isActor=fx?.actorUid===c.uid, isTarget=fx?.targetUid===c.uid || fx?.targetUids?.includes(c.uid); const actionKind=fx?.kind||'slash'; return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${active?'activeFighter':''} ${ready?'readyFighter':''} ${hurt?'hurtFighter':''} ${isActor?'fxActor':''} ${isTarget?`fxTarget fxTarget-${actionKind}`:''} ${c.hp<=0?'dead':''}`} data-fighter-uid={c.uid}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/>{isActor&&<span key={`${fx.id}-action`} className={`combatAction action-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}{isTarget&&<span key={`${fx.id}-impact`} className={`combatImpact impact-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}<span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
 function CombatFxOverlay({fx}){
   const ref=useRef(null);
+  const moverRef=useRef(null);
+  const projectileRef=useRef(null);
+  const trailRef=useRef(null);
+  const sparkRef=useRef(null);
   const [styleState,setStyleState]=useState(null);
   useLayoutEffect(()=>{
     if(!fx||!ref.current) return;
@@ -495,10 +499,47 @@ function CombatFxOverlay({fx}){
       '--travel-dir':fromEnemy?-1:1
     }});
   },[fx?.id,fx?.actorUid,fx?.targetUid]);
+  useEffect(()=>{
+    if(!fx||fx.kind!=='slash'||styleState?.id!==fx.id) return;
+    const mover=moverRef.current, projectile=projectileRef.current, trail=trailRef.current, spark=sparkRef.current;
+    if(!mover||!projectile) return;
+    const {dx,dy,dir}=styleState.coords;
+    let raf=0;
+    const dur=1260;
+    const start=performance.now();
+    const clamp01=v=>Math.max(0,Math.min(1,v));
+    const paint=now=>{
+      const raw=clamp01((now-start)/dur);
+      const p=raw;
+      const arc=Math.sin(Math.PI*p);
+      const x=dx*p;
+      const y=dy*p-22*arc;
+      const rot=-48+238*p;
+      const scale=.78+.16*Math.sin(Math.PI*p)+.04*p;
+      const opacity=raw<.045?raw/.045:raw>.965?Math.max(0,(1-raw)/.035):1;
+      mover.style.opacity=String(opacity);
+      mover.style.transform=`translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0)`;
+      projectile.style.transform=`translate(-50%,-50%) scaleX(${dir}) rotate(${rot.toFixed(2)}deg) scale(${scale.toFixed(3)})`;
+      projectile.style.filter=raw>.12&&raw<.88?'drop-shadow(0 5px 3px rgba(0,0,0,.42)) drop-shadow(0 0 12px rgba(255,211,112,.62)) brightness(1.12) saturate(1.12)':'drop-shadow(0 5px 3px rgba(0,0,0,.36))';
+      if(trail){
+        const trailOpacity=Math.max(0,Math.min(.88,Math.sin(Math.PI*raw)*1.05));
+        trail.style.opacity=String(trailOpacity);
+        trail.style.transform=`translate(-50%,-50%) scaleX(${dir}) rotate(${(-30+150*p).toFixed(2)}deg) scale(${(.68+.28*Math.sin(Math.PI*p)).toFixed(3)})`;
+      }
+      if(spark){
+        const sparkOpacity=raw<.42?0:raw>.9?Math.max(0,(1-raw)/.1):.78;
+        spark.style.opacity=String(sparkOpacity);
+        spark.style.transform=`translate(-50%,-50%) scaleX(${dir}) rotate(${(20+110*p).toFixed(2)}deg) scale(${(.65+.43*p).toFixed(3)})`;
+      }
+      if(raw<1) raf=requestAnimationFrame(paint);
+    };
+    raf=requestAnimationFrame(paint);
+    return()=>cancelAnimationFrame(raf);
+  },[fx?.id,fx?.kind,styleState?.id]);
   if(!fx) return null;
   const measured=styleState?.id===fx.id;
   const style=measured?styleState.style:undefined;
-  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxCssSmooth':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span className="fxSlashTrail"/><span className="fxSlashSpark"><i/><i/><i/></span></>}<span key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
+  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxRafSmooth':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span ref={moverRef} key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span ref={trailRef} className="fxSlashTrail"/><span ref={sparkRef} className="fxSlashSpark"><i/><i/><i/></span></>}<span ref={projectileRef} key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }

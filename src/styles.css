@@ -3811,3 +3811,84 @@ body:after{display:none!important;}
   58%{opacity:.75;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(68deg) scale(.92)}
   100%{opacity:0;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(112deg) scale(1.08)}
 }
+
+/* Ultra-smooth axe pass: imperative RAF writes transform directly, no CSS keyframe segments. */
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash.fxMeasured{
+  overflow:visible!important;
+  z-index:190!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxMover{
+  position:absolute!important;
+  left:var(--start-x)!important;
+  top:var(--start-y)!important;
+  width:0!important;
+  height:0!important;
+  overflow:visible!important;
+  opacity:0;
+  z-index:200!important;
+  pointer-events:none!important;
+  transform:translate3d(0,0,0);
+  will-change:transform,opacity!important;
+  animation:none!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxMover>.fxProjectile{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  width:70px!important;
+  height:70px!important;
+  background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-raf-smooth-1') center/contain no-repeat!important;
+  opacity:.98;
+  z-index:5!important;
+  image-rendering:auto!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-48deg) scale(.78);
+  transform-origin:52% 58%!important;
+  filter:drop-shadow(0 5px 3px rgba(0,0,0,.36));
+  will-change:transform,filter!important;
+  animation:none!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxMover>.fxProjectile:before,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxMover>.fxProjectile:after{display:none!important;content:none!important;}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxSlashTrail{
+  position:absolute!important;
+  left:0!important;
+  top:0!important;
+  width:142px!important;
+  height:76px!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-30deg) scale(.68);
+  transform-origin:22% 55%!important;
+  border-radius:50%!important;
+  z-index:4!important;
+  opacity:0;
+  background:
+    radial-gradient(ellipse at 82% 50%,rgba(255,255,218,.82) 0 6%,rgba(255,218,109,.46) 7% 14%,rgba(255,174,58,.16) 15% 24%,transparent 42%),
+    conic-gradient(from 210deg at 20% 56%,transparent 0 16deg,rgba(255,246,190,0) 18deg,rgba(255,249,205,.78) 28deg,rgba(255,205,92,.40) 38deg,rgba(255,168,46,0) 54deg,transparent 70deg 360deg)!important;
+  filter:blur(.15px) drop-shadow(0 0 8px rgba(255,214,98,.48))!important;
+  clip-path:polygon(6% 48%,15% 34%,38% 21%,70% 18%,96% 38%,100% 52%,78% 43%,49% 39%,22% 46%,8% 62%)!important;
+  will-change:transform,opacity!important;
+  animation:none!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxSlashTrail:after{
+  content:""!important;
+  position:absolute!important;
+  left:24px!important;
+  top:34px!important;
+  width:104px!important;
+  height:6px!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,255,218,.88),rgba(255,207,93,.26),transparent)!important;
+  box-shadow:0 0 9px rgba(255,225,126,.50)!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxRafSmooth.fx-slash .fxSlashSpark{
+  position:absolute!important;
+  left:22px!important;
+  top:2px!important;
+  width:96px!important;
+  height:70px!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(20deg) scale(.65);
+  pointer-events:none!important;
+  z-index:3!important;
+  opacity:0;
+  will-change:transform,opacity!important;
+  animation:none!important;
+}
