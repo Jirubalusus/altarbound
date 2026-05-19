@@ -19,8 +19,8 @@ const framePaths = [];
 const started = Date.now();
 while (Date.now() - started < 14000 && samples.length < 14) {
   const s = await page.evaluate(() => {
-    const mover = document.querySelector('.combatFxOverlay.fxJsDriven.fx-slash.fxMeasured .fxMover');
-    const axe = document.querySelector('.combatFxOverlay.fxJsDriven.fx-slash.fxMeasured .fxMover>.fxProjectile');
+    const mover = document.querySelector('.combatFxOverlay.fx-slash.fxMeasured .fxMover');
+    const axe = document.querySelector('.combatFxOverlay.fx-slash.fxMeasured .fxMover>.fxProjectile');
     const grid = document.querySelector('.battleGrid');
     if (!mover || !axe || !grid) return null;
     const mr = mover.getBoundingClientRect();
