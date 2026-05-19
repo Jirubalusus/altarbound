@@ -3408,34 +3408,16 @@ body:after{display:none!important;}
 }
 .battlePage.pokelikeBattle .battleGrid .fxProjectile i{display:none!important;}
 .battlePage.pokelikeBattle .battleGrid .fx-slash .fxProjectile{
-  width:86px!important;
-  height:86px!important;
-  animation:altarAxeTravel .62s cubic-bezier(.18,.72,.18,1) both!important;
+  width:124px!important;
+  height:124px!important;
+  background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-warcraft-1') center/contain no-repeat!important;
+  animation:altarAxeTravel .68s cubic-bezier(.18,.72,.18,1) both!important;
+  filter:drop-shadow(0 6px 3px rgba(0,0,0,.46)) drop-shadow(0 0 10px rgba(255,213,120,.45))!important;
 }
-.battlePage.pokelikeBattle .battleGrid .fx-slash .fxProjectile:before{
-  content:""!important;
-  position:absolute!important;
-  left:32px!important;
-  top:11px!important;
-  width:13px!important;
-  height:62px!important;
-  border-radius:7px!important;
-  background:linear-gradient(90deg,#4b2d16,#a26731 42%,#f2c27a 55%,#5b3518)!important;
-  transform:rotate(-34deg)!important;
-  box-shadow:0 2px 0 rgba(0,0,0,.34)!important;
-  clip-path:none!important;
-}
+.battlePage.pokelikeBattle .battleGrid .fx-slash .fxProjectile:before,
 .battlePage.pokelikeBattle .battleGrid .fx-slash .fxProjectile:after{
-  content:""!important;
-  position:absolute!important;
-  left:38px!important;
-  top:5px!important;
-  width:42px!important;
-  height:34px!important;
-  background:linear-gradient(135deg,#fff7d5 0 20%,#cfd2c8 21% 52%,#656b67 53% 100%)!important;
-  clip-path:polygon(0 34%,56% 0,100% 12%,84% 58%,44% 100%,16% 82%)!important;
-  transform:rotate(-24deg)!important;
-  filter:drop-shadow(0 0 6px rgba(255,238,180,.6))!important;
+  display:none!important;
+  content:none!important;
 }
 .battlePage.pokelikeBattle .battleGrid .fx-claw .fxProjectile{width:90px!important;height:70px!important;animation:altarCrossTravel .48s ease-out both!important;}
 .battlePage.pokelikeBattle .battleGrid .fx-claw .fxProjectile:before,
