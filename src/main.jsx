@@ -130,61 +130,20 @@ const PORTRAIT_OVERRIDES = {
 };
 const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar', special:'star', training:'helm', item:'chest', fountain:'rune', boss:'crown', tower:'tower'};
 const NODE_ASSETS = {
-  // Neutral/shared map objects: these stay semantic objects. Race/combat/recruit nodes are overridden below by selected race.
+  // Route nodes must describe the action/site, not preview a specific unit.
+  // Combat/recruit rewards still show concrete units inside choice/battle screens.
+  battle:{src:'sprites/battle.png', kind:'symbol', validatedAs:'Generic battle marker'},
+  elite:{src:'sprites/elite.png', kind:'symbol', validatedAs:'Generic elite battle marker'},
+  tavern:{src:'hive-assets/nodes-readable/tavern.png', sourceSrc:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
+  altar:{src:'hive-assets/nodes-readable/altar.png', sourceSrc:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Altar / hero site'},
+  training:{src:'hive-assets/nodes-readable/training.png', sourceSrc:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training / upgrade site'},
   item:{src:'hive-assets/nodes-readable/item.png', sourceSrc:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
   fountain:{src:'hive-assets/nodes-readable/fountain.png', sourceSrc:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
-  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special recruit site'},
-  battle:{src:'warcraft3-assets/portraits/grunt.png', kind:'unit', validatedAs:'Orc Grunt'},
-  elite:{src:'wow-assets/character-faces/tauren.png', kind:'unit', validatedAs:'Orc Tauren'},
-  tavern:{src:'wow-assets/character-faces/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
-  altar:{src:'wow-assets/character-faces/blademaster.png', kind:'hero', validatedAs:'Orc hero altar preview'},
-  training:{src:'wow-assets/character-faces/grunt_veteran.png', kind:'unit', validatedAs:'Orc training upgrade preview'},
-  boss:{src:'wow-assets/character-faces/tauren_chief.png', kind:'hero', validatedAs:'Orc boss preview'},
-  tower:{src:'wow-assets/character-faces/wolf_captain.png', kind:'unit', validatedAs:'Orc battle tower preview'}
+  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special site'},
+  boss:{src:'sprites/boss.png', kind:'symbol', validatedAs:'Generic boss marker'},
+  tower:{src:'hive-assets/nodes-readable/tower.png', sourceSrc:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Tower / gauntlet site'}
 };
-const RACE_NODE_ASSETS = {
-  human:{
-    battle:{src:'wow-assets/character-faces/footman.png', kind:'unit', validatedAs:'Human Footman battle'},
-    elite:{src:'wow-assets/character-faces/gryphon.png', kind:'unit', validatedAs:'Human Gryphon elite battle'},
-    tavern:{src:'wow-assets/character-faces/rifleman.png', kind:'unit', validatedAs:'Human Tavern recruit preview'},
-    altar:{src:'wow-assets/character-faces/paladin.png', kind:'hero', validatedAs:'Human Altar hero preview'},
-    training:{src:'wow-assets/character-faces/captain_footman.png', kind:'unit', validatedAs:'Human trained unit preview'},
-    special:{src:'wow-assets/character-faces/archmage.png', kind:'hero', validatedAs:'Human special hero preview'},
-    boss:{src:'wow-assets/character-faces/mountain_king.png', kind:'hero', validatedAs:'Human boss preview'},
-    tower:{src:'wow-assets/character-faces/champion_knight.png', kind:'unit', validatedAs:'Human battle tower preview'}
-  },
-  orc:{
-    battle:{src:'warcraft3-assets/portraits/grunt.png', kind:'unit', validatedAs:'Orc Grunt battle'},
-    elite:{src:'wow-assets/character-faces/tauren.png', kind:'unit', validatedAs:'Orc Tauren elite battle'},
-    tavern:{src:'wow-assets/character-faces/headhunter.png', kind:'unit', validatedAs:'Orc Tavern recruit preview'},
-    altar:{src:'wow-assets/character-faces/blademaster.png', kind:'hero', validatedAs:'Orc Altar hero preview'},
-    training:{src:'wow-assets/character-faces/grunt_veteran.png', kind:'unit', validatedAs:'Orc trained unit preview'},
-    special:{src:'wow-assets/character-faces/shadow_hunter.png', kind:'hero', validatedAs:'Orc special hero preview'},
-    boss:{src:'wow-assets/character-faces/tauren_chief.png', kind:'hero', validatedAs:'Orc boss preview'},
-    tower:{src:'wow-assets/character-faces/wolf_captain.png', kind:'unit', validatedAs:'Orc battle tower preview'}
-  },
-  nightelf:{
-    battle:{src:'wow-assets/character-faces/archer.png', kind:'unit', validatedAs:'Night Elf Archer battle'},
-    elite:{src:'wow-assets/character-faces/chimaera.png', kind:'unit', validatedAs:'Night Elf Chimaera elite battle'},
-    tavern:{src:'wow-assets/character-faces/huntress.png', kind:'unit', validatedAs:'Night Elf Tavern recruit preview'},
-    altar:{src:'wow-assets/character-faces/demon_hunter.png', kind:'hero', validatedAs:'Night Elf Altar hero preview'},
-    training:{src:'wow-assets/character-faces/sentinel_archer.png', kind:'unit', validatedAs:'Night Elf trained unit preview'},
-    special:{src:'wow-assets/character-faces/keeper.png', kind:'hero', validatedAs:'Night Elf special hero preview'},
-    boss:{src:'wow-assets/character-faces/warden.png', kind:'hero', validatedAs:'Night Elf boss preview'},
-    tower:{src:'wow-assets/character-faces/elder_bear.png', kind:'unit', validatedAs:'Night Elf battle tower preview'}
-  },
-  undead:{
-    battle:{src:'wow-assets/character-faces/ghoul.png', kind:'unit', validatedAs:'Undead Ghoul battle'},
-    elite:{src:'wow-assets/character-faces/frost_wyrm.png', kind:'unit', validatedAs:'Undead Frost Wyrm elite battle'},
-    tavern:{src:'wow-assets/character-faces/crypt_fiend.png', kind:'unit', validatedAs:'Undead Tavern recruit preview'},
-    altar:{src:'wow-assets/character-faces/death_knight.png', kind:'hero', validatedAs:'Undead Altar hero preview'},
-    training:{src:'wow-assets/character-faces/frenzied_ghoul.png', kind:'unit', validatedAs:'Undead trained unit preview'},
-    special:{src:'wow-assets/character-faces/lich.png', kind:'hero', validatedAs:'Undead special hero preview'},
-    boss:{src:'wow-assets/character-faces/dreadlord.png', kind:'hero', validatedAs:'Undead boss preview'},
-    tower:{src:'wow-assets/character-faces/plague_abom.png', kind:'unit', validatedAs:'Undead battle tower preview'}
-  }
-};
-function nodeAssetFor(type, race){ return RACE_NODE_ASSETS[race]?.[type] || NODE_ASSETS[type] || NODE_ASSETS.battle; }
+function nodeAssetFor(type){ return NODE_ASSETS[type] || NODE_ASSETS.battle; }
 const WOW_ROUTE_BACKDROPS = {
   human:'wow-map-backgrounds/route-clean-elwynn-forest.jpg',
   orc:'wow-map-backgrounds/route-clean-durotar.jpg',
