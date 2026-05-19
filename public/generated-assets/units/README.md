@@ -38,3 +38,15 @@ Generated with Hermes image generation on 2026-05-19 using `gpt-image-2-high`. U
 ## `undead-ghoul-facing-right-3d-model.*`
 
 Generated with Hermes image generation on 2026-05-19 using `gpt-image-2-high`. Used as a race-level undead unit fallback so combat does not fall back to face icons.
+
+## `orc-grunt-pokemon-style-facing-right.*`
+
+Generated with Hermes image generation on 2026-05-19 using `gpt-image-2-high` for the current Grunt iteration.
+
+Purpose: smaller Pokémon-like/pixel-chibi Grunt prototype, replacing the more realistic semi-3D Grunt while we iterate only this unit before replicating the style.
+
+Notes:
+- Facing **right** for ally side; enemy side is mirrored in CSS.
+- Runtime asset: `orc-grunt-pokemon-style-facing-right.webp`
+- Full PNG cutout: `orc-grunt-pokemon-style-facing-right.png`
+- Source: `orc-grunt-pokemon-style-facing-right-source.png`

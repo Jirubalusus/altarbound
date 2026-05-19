@@ -176,8 +176,8 @@ const CHARACTER_ASSET_OVERRIDES = {
   grunt:'warcraft3-assets/portraits/grunt.png'
 };
 const MODEL_ASSET_OVERRIDES = {
-  grunt:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
-  grunt_veteran:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
+  grunt:'generated-assets/units/orc-grunt-pokemon-style-facing-right.webp',
+  grunt_veteran:'generated-assets/units/orc-grunt-pokemon-style-facing-right.webp',
   archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
   sentinel_archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
   sharpshooter:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
@@ -189,7 +189,7 @@ function modelAsset(id){
   const race=UNITS[id]?.race;
   const raceFallback={
     human:'generated-assets/units/human-footman-facing-right-3d-model.webp',
-    orc:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
+    orc:'generated-assets/units/orc-grunt-pokemon-style-facing-right.webp',
     nightelf:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
     undead:'generated-assets/units/undead-ghoul-facing-right-3d-model.webp'
   };

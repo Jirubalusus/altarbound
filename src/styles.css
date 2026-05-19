@@ -2263,3 +2263,27 @@ body:after{display:none!important;}
 .pokelikeBattle .enemySide .arenaStage .modelSprite[title="Ghoul"] img,
 .pokelikeBattle .enemySide .arenaStage .modelSprite[title="Frenzied Ghoul"] img,
 .pokelikeBattle .enemySide .arenaStage .modelSprite[title="Necromancer"] img{transform:translateY(-2px) scaleX(-1) scale(.9)!important;}
+
+/* Iteration: Grunt only — smaller Pokémon-like sprite, less realistic/3D. */
+.pokelikeBattle .arenaStage .modelSprite[title="Grunt"],
+.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"]{
+  width:132px!important;
+  height:104px!important;
+}
+.pokelikeBattle .arenaStage .modelSprite[title="Grunt"] img,
+.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  image-rendering:pixelated!important;
+  max-width:128px!important;
+  max-height:100px!important;
+  transform:translateY(8px) scale(.72)!important;
+  filter:drop-shadow(0 5px 0 rgba(34,53,24,.28)) saturate(1.16) contrast(1.06)!important;
+}
+.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt"] img,
+.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(8px) scaleX(-1) scale(.72)!important;
+}
+.pokelikeBattle .arenaStage:before{
+  height:34px!important;
+  width:132px!important;
+  bottom:18px!important;
+}
