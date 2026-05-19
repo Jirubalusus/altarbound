@@ -455,11 +455,11 @@ function BattleView({battle,setBattle,onEnd,fastMode}){
   useEffect(()=>{ if(!battle?.running) return; const t=setInterval(()=>setBattle(b=>stepBattle(b)),fastMode?45:160); return()=>clearInterval(t); },[battle?.running,fastMode]);
   useEffect(()=>{ if(battle?.won||battle?.lost){ const t=setTimeout(()=>onEnd(battle.won,battle),fastMode?260:800); return()=>clearTimeout(t); }},[battle?.won,battle?.lost,fastMode]);
   const allies=battle.ally, enemies=battle.enemy;
-  return <div className={`battlePage pokelikeBattle appScreenTransition battleType-${battle.type||'battle'} ${battle.won?'battleWon':battle.lost?'battleLost':''} ${battle.fx?`hasCombatFx fx-${battle.fx.kind}`:''}`}><div className="aaaBackdrop battleFX"><span/><span/><span/></div><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><BattleSide title="YOUR TEAM" units={allies} fx={battle.fx}/><BattleSide title="ENEMY" units={enemies} enemy fx={battle.fx}/><CombatFxOverlay fx={battle.fx}/></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
+  return <div className={`battlePage pokelikeBattle appScreenTransition battleType-${battle.type||'battle'} ${battle.won?'battleWon':battle.lost?'battleLost':''} ${battle.fx?`hasCombatFx fx-${battle.fx.kind}`:''}`}><div className="aaaBackdrop battleFX"><span/><span/><span/></div><h1>{nodeLabel[battle.type]}</h1><div className="battleHeader"><button onClick={()=>setBattle(b=>({...b,running:!b.running}))}>{battle.running?'PAUSE':'RESUME'}</button>{fastMode&&<span className="fastBadge small">⚡ FAST MODE</span>}</div><div className="battleGrid"><BattleSide title="YOUR TEAM" units={allies} fx={battle.fx}/><BattleSide title="ENEMY" units={enemies} enemy fx={battle.fx}/><CombatFxOverlay fx={battle.fx} fastMode={fastMode}/></div><div className="log">{battle.log.slice(-8).map((l,i)=><p key={i}>{l}</p>)}</div></div>
 }
 function BattleSide({title,units,enemy=false,fx}){ return <section className={`battlePanel ${enemy?'enemySide':'allySide'}`}><h2>{title}</h2><div className="battleRoster">{units.map((c,i)=><BattleCard key={c.uid} c={c} enemy={enemy} active={c.hp>0 && i===units.findIndex(x=>x.hp>0)} fx={fx}/>)}</div></section>; }
 function BattleCard({c,enemy,active,fx}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); const ready=c.speed>=80&&c.hp>0; const hurt=hp>0&&hp<36; const isActor=fx?.actorUid===c.uid, isTarget=fx?.targetUid===c.uid || fx?.targetUids?.includes(c.uid); const actionKind=fx?.kind||'slash'; return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${active?'activeFighter':''} ${ready?'readyFighter':''} ${hurt?'hurtFighter':''} ${isActor?'fxActor':''} ${isTarget?`fxTarget fxTarget-${actionKind}`:''} ${c.hp<=0?'dead':''}`} data-fighter-uid={c.uid}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/>{isActor&&<span key={`${fx.id}-action`} className={`combatAction action-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}{isTarget&&<span key={`${fx.id}-impact`} className={`combatImpact impact-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}<span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
-function CombatFxOverlay({fx}){
+function CombatFxOverlay({fx,fastMode=false}){
   const ref=useRef(null);
   const moverRef=useRef(null);
   const projectileRef=useRef(null);
@@ -505,7 +505,7 @@ function CombatFxOverlay({fx}){
     if(!mover||!projectile) return;
     const {dx,dy,dir}=styleState.coords;
     let raf=0;
-    const dur=1260;
+    const dur=fastMode?360:1260;
     const start=performance.now();
     const clamp01=v=>Math.max(0,Math.min(1,v));
     const paint=now=>{
@@ -535,11 +535,11 @@ function CombatFxOverlay({fx}){
     };
     raf=requestAnimationFrame(paint);
     return()=>cancelAnimationFrame(raf);
-  },[fx?.id,fx?.kind,styleState?.id]);
+  },[fx?.id,fx?.kind,styleState?.id,fastMode]);
   if(!fx) return null;
   const measured=styleState?.id===fx.id;
   const style=measured?styleState.style:undefined;
-  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxRafSmooth':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span ref={moverRef} key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span ref={trailRef} className="fxSlashTrail"/><span ref={sparkRef} className="fxSlashSpark"><i/><i/><i/></span></>}<span ref={projectileRef} key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
+  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxRafSmooth':''} ${fastMode?'fxFastMode':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span ref={moverRef} key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span ref={trailRef} className="fxSlashTrail"/><span ref={sparkRef} className="fxSlashSpark"><i/><i/><i/></span></>}<span ref={projectileRef} key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }

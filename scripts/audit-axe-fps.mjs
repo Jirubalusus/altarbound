@@ -2,12 +2,15 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
-const base = process.argv[2] || 'http://127.0.0.1:5178/?v=axe-fps-audit';
+const fast = process.argv.includes('--fast');
+const base = process.argv.find(a => /^https?:/.test(a)) || 'http://127.0.0.1:5178/?v=axe-fps-audit';
 const outDir = path.resolve('artifacts/axe-fx-fps');
 fs.mkdirSync(outDir, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1365, height: 768 }, deviceScaleFactor: 1 });
+if (fast) await page.addInitScript(() => localStorage.setItem('altarbound_fast_mode','1'));
+else await page.addInitScript(() => localStorage.setItem('altarbound_fast_mode','0'));
 await page.goto(base, { waitUntil: 'networkidle' });
 await page.getByRole('button', { name: /NORMAL MODE/ }).click();
 await page.getByRole('button', { name: /Orc/ }).click();
@@ -23,12 +26,13 @@ const result = await page.evaluate(async () => {
     if (mover && Number(getComputedStyle(mover).opacity || 0) > 0.08) break;
     await new Promise(r => setTimeout(r, 12));
   }
+  const lockedMover = document.querySelector(selector);
   const samples = [];
   const sampleStart = performance.now();
   return await new Promise(resolve => {
     function tick(now) {
-      const mover = document.querySelector(selector);
-      const axe = document.querySelector(axeSelector);
+      const mover = lockedMover;
+      const axe = mover?.querySelector('.fxProjectile');
       const grid = document.querySelector('.battleGrid');
       if (mover && axe && grid) {
         const mr = mover.getBoundingClientRect();
@@ -48,6 +52,7 @@ const result = await page.evaluate(async () => {
           axeAnim: getComputedStyle(axe).animationName
         });
       }
+      if (document.querySelector(selector) !== lockedMover) return resolve(samples);
       if (now - sampleStart < 1050) requestAnimationFrame(tick);
       else resolve(samples);
     }

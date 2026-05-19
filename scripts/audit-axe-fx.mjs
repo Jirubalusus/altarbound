@@ -2,12 +2,15 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
-const base = process.argv[2] || 'http://127.0.0.1:5178/?v=axe-polish-audit';
+const fast = process.argv.includes('--fast');
+const base = process.argv.find(a => /^https?:/.test(a)) || 'http://127.0.0.1:5178/?v=axe-polish-audit';
 const outDir = path.resolve('artifacts/axe-fx-audit');
 fs.mkdirSync(outDir, { recursive: true });
 
 const browser = await chromium.launch({ headless: true });
 const page = await browser.newPage({ viewport: { width: 1365, height: 768 }, deviceScaleFactor: 1 });
+if (fast) await page.addInitScript(() => localStorage.setItem('altarbound_fast_mode','1'));
+else await page.addInitScript(() => localStorage.setItem('altarbound_fast_mode','0'));
 await page.goto(base, { waitUntil: 'networkidle' });
 await page.getByRole('button', { name: /NORMAL MODE/ }).click();
 await page.getByRole('button', { name: /Orc/ }).click();
