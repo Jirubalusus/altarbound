@@ -132,15 +132,16 @@ const NODE_GLYPHS = {battle:'sword', elite:'skull', tavern:'mug', altar:'altar',
 const NODE_ASSETS = {
   // Route nodes must describe the action/site, not preview a specific unit.
   // Combat/recruit rewards still show concrete units inside choice/battle screens.
-  battle:{src:'sprites/battle-crossed-swords.png', kind:'symbol', validatedAs:'Crossed swords battle marker'},
-  elite:{src:'sprites/elite-crossed-swords-crown.png', kind:'symbol', validatedAs:'Crossed swords with crown elite battle marker'},
-  tavern:{src:'hive-assets/nodes-readable/tavern.png', sourceSrc:'hive-assets/nodes/tavern.png', kind:'site', validatedAs:'HiveWorkshop Tavern / recruit site'},
-  altar:{src:'hive-assets/nodes-readable/altar.png', sourceSrc:'hive-assets/nodes/altar.png', kind:'site', validatedAs:'HiveWorkshop Altar / hero site'},
-  training:{src:'hive-assets/nodes-readable/training.png', sourceSrc:'hive-assets/nodes/training.png', kind:'site', validatedAs:'HiveWorkshop Training / upgrade site'},
-  item:{src:'hive-assets/nodes-readable/item.png', sourceSrc:'hive-assets/nodes/item.png', kind:'site', validatedAs:'HiveWorkshop Medium Old Chest / loot site'},
-  fountain:{src:'hive-assets/nodes-readable/fountain.png', sourceSrc:'hive-assets/nodes/fountain.png', kind:'site', validatedAs:'HiveWorkshop Fountain / heal site'},
-  special:{src:'hive-assets/nodes-readable/special.png', sourceSrc:'hive-assets/nodes/special.png', kind:'site', validatedAs:'HiveWorkshop Mercenary Camp / special site'},
-  tower:{src:'hive-assets/nodes-readable/tower.png', sourceSrc:'hive-assets/nodes/tower.png', kind:'site', validatedAs:'HiveWorkshop Tower / gauntlet site'}
+  battle:{src:'generated-assets/board-nodes/battle.webp', kind:'symbol', validatedAs:'Original battle marker: crossed steel swords on a grass/stone route pedestal'},
+  elite:{src:'generated-assets/board-nodes/elite.webp', kind:'symbol', validatedAs:'Original elite marker: crowned skull and crossed blades on a gold route pedestal'},
+  tavern:{src:'generated-assets/board-nodes/tavern.webp', kind:'site', validatedAs:'Original tavern/recruit node: small Warcraft-like inn'},
+  altar:{src:'generated-assets/board-nodes/altar.webp', kind:'site', validatedAs:'Original altar/hero node: stone rune altar'},
+  training:{src:'generated-assets/board-nodes/training.webp', kind:'site', validatedAs:'Original training node: barracks and target sign'},
+  item:{src:'generated-assets/board-nodes/item.webp', kind:'site', validatedAs:'Original item node: treasure chest on route pedestal'},
+  fountain:{src:'generated-assets/board-nodes/fountain.webp', kind:'site', validatedAs:'Original fountain/heal node: moonwell fountain'},
+  special:{src:'generated-assets/board-nodes/special.webp', kind:'site', validatedAs:'Original special event node: purple portal camp'},
+  tower:{src:'generated-assets/board-nodes/tower.webp', kind:'site', validatedAs:'Original tower gauntlet node: stone watchtower'},
+  boss:{src:'generated-assets/board-nodes/boss.webp', kind:'symbol', validatedAs:'Original boss marker: dark crown gate, not a character portrait'}
 };
 const FINAL_BOSS_HERO_BY_RACE = {
   human:'paladin',       // Uther-style final champion
@@ -149,11 +150,6 @@ const FINAL_BOSS_HERO_BY_RACE = {
   undead:'death_knight'  // Arthas-style final death knight
 };
 function nodeAssetFor(type, race){
-  if(type==='boss'){
-    const heroId=FINAL_BOSS_HERO_BY_RACE[race] || 'dark_ranger';
-    const hero=HEROES[heroId];
-    return {src:GENERATED_CHARACTER_ASSETS[heroId] || `wow-assets/character-faces/${heroId}.png`, kind:'hero', validatedAs:`Final boss: ${hero?.name || heroId}`};
-  }
   return NODE_ASSETS[type] || NODE_ASSETS.battle;
 }
 const WOW_ROUTE_BACKDROPS = {

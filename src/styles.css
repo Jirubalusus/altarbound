@@ -4122,3 +4122,68 @@ body:after{display:none!important;}
   object-position:center bottom!important;
   background:transparent!important;
 }
+
+/* Original board-node sprite pass: one coherent generated set, readable future nodes, no mixed Hive/emoji/icon styles. */
+.node .nodeWar3Asset,
+.node .nodeWar3Asset.siteNodeAsset,
+.node .nodeWar3Asset.unitNodeAsset{
+  width:76px!important;
+  height:86px!important;
+  max-width:76px!important;
+  max-height:86px!important;
+  bottom:2px!important;
+  object-fit:contain!important;
+  image-rendering:auto!important;
+  background:transparent!important;
+  border:0!important;
+  border-radius:0!important;
+  padding:0!important;
+  box-shadow:none!important;
+  filter:drop-shadow(0 5px 2px rgba(0,0,0,.48)) saturate(1.08) contrast(1.06)!important;
+}
+.node.battle .nodeWar3Asset,
+.node.elite .nodeWar3Asset,
+.node.boss .nodeWar3Asset,
+.node.tower .nodeWar3Asset,
+.node.tavern .nodeWar3Asset,
+.node.training .nodeWar3Asset,
+.node.item .nodeWar3Asset,
+.node.altar .nodeWar3Asset,
+.node.fountain .nodeWar3Asset,
+.node.special .nodeWar3Asset{
+  width:78px!important;
+  height:88px!important;
+  max-width:78px!important;
+  max-height:88px!important;
+}
+.nodeDisc:before{
+  width:68px!important;
+  height:21px!important;
+  bottom:3px!important;
+  background:radial-gradient(ellipse at center,rgba(18,50,24,.52) 0 42%,rgba(27,82,39,.22) 43% 70%,transparent 71%)!important;
+}
+.nodeDisc:after{
+  display:none!important;
+}
+.node.active .nodeWar3Asset{
+  animation:nodeIdleBob 1.35s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 10px rgba(255,230,95,.96)) drop-shadow(0 5px 2px rgba(0,0,0,.52)) saturate(1.17) contrast(1.08)!important;
+}
+.node.done .nodeWar3Asset{
+  opacity:.72!important;
+  filter:grayscale(.25) brightness(.8) drop-shadow(0 4px 2px rgba(0,0,0,.35))!important;
+}
+.node:disabled .nodeWar3Asset,
+.node:not(.active):not(.done) .nodeWar3Asset{
+  opacity:.68!important;
+  filter:grayscale(.28) brightness(.78) saturate(.78) drop-shadow(0 4px 2px rgba(0,0,0,.34))!important;
+}
+.node:disabled .nodeDisc:before,
+.node:not(.active):not(.done) .nodeDisc:before{
+  opacity:.72!important;
+  filter:none!important;
+}
+.node.active:after{
+  top:0!important;
+  right:2px!important;
+}

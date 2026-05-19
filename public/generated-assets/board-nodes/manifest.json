@@ -1,0 +1,12 @@
+{
+  "battle": "generated-assets/board-nodes/battle.webp",
+  "elite": "generated-assets/board-nodes/elite.webp",
+  "tavern": "generated-assets/board-nodes/tavern.webp",
+  "altar": "generated-assets/board-nodes/altar.webp",
+  "training": "generated-assets/board-nodes/training.webp",
+  "item": "generated-assets/board-nodes/item.webp",
+  "fountain": "generated-assets/board-nodes/fountain.webp",
+  "special": "generated-assets/board-nodes/special.webp",
+  "tower": "generated-assets/board-nodes/tower.webp",
+  "boss": "generated-assets/board-nodes/boss.webp"
+}
