@@ -152,7 +152,7 @@ function nodeAssetFor(type, race){
   if(type==='boss'){
     const heroId=FINAL_BOSS_HERO_BY_RACE[race] || 'dark_ranger';
     const hero=HEROES[heroId];
-    return {src:`wow-assets/character-faces/${heroId}.png`, kind:'hero', validatedAs:`Final boss: ${hero?.name || heroId}`};
+    return {src:GENERATED_CHARACTER_ASSETS[heroId] || `wow-assets/character-faces/${heroId}.png`, kind:'hero', validatedAs:`Final boss: ${hero?.name || heroId}`};
   }
   return NODE_ASSETS[type] || NODE_ASSETS.battle;
 }
@@ -172,16 +172,69 @@ function artKey(id){ return (PORTRAIT_OVERRIDES[id]||id).replace(/_/g,' '); }
 function publicAsset(path){ return `${import.meta.env.BASE_URL || '/'}${path}`.replace(/\/+/g,'/'); }
 const FIREBASE_HOSTING_ASSET_ROOT = 'https://altarbound-660da.web.app/';
 function hostedAsset(path){ return publicAsset(path); }
+const GENERATED_CHARACTER_ASSETS = {
+  "footman": "generated-assets/characters/footman.webp",
+  "captain_footman": "generated-assets/characters/captain_footman.webp",
+  "rifleman": "generated-assets/characters/rifleman.webp",
+  "sharpshooter": "generated-assets/characters/sharpshooter.webp",
+  "priest": "generated-assets/characters/priest.webp",
+  "high_priest": "generated-assets/characters/high_priest.webp",
+  "knight": "generated-assets/characters/knight.webp",
+  "champion_knight": "generated-assets/characters/champion_knight.webp",
+  "gryphon": "generated-assets/characters/gryphon.webp",
+  "grunt": "generated-assets/characters/grunt.webp",
+  "grunt_veteran": "generated-assets/characters/grunt_veteran.webp",
+  "headhunter": "generated-assets/characters/headhunter.webp",
+  "berserker": "generated-assets/characters/berserker.webp",
+  "shaman": "generated-assets/characters/shaman.webp",
+  "storm_shaman": "generated-assets/characters/storm_shaman.webp",
+  "raider": "generated-assets/characters/raider.webp",
+  "wolf_captain": "generated-assets/characters/wolf_captain.webp",
+  "tauren": "generated-assets/characters/tauren.webp",
+  "archer": "generated-assets/characters/archer.webp",
+  "sentinel_archer": "generated-assets/characters/sentinel_archer.webp",
+  "huntress": "generated-assets/characters/huntress.webp",
+  "moon_huntress": "generated-assets/characters/moon_huntress.webp",
+  "dryad": "generated-assets/characters/dryad.webp",
+  "elder_dryad": "generated-assets/characters/elder_dryad.webp",
+  "druid_claw": "generated-assets/characters/druid_claw.webp",
+  "elder_bear": "generated-assets/characters/elder_bear.webp",
+  "chimaera": "generated-assets/characters/chimaera.webp",
+  "ghoul": "generated-assets/characters/ghoul.webp",
+  "frenzied_ghoul": "generated-assets/characters/frenzied_ghoul.webp",
+  "crypt_fiend": "generated-assets/characters/crypt_fiend.webp",
+  "crypt_reaver": "generated-assets/characters/crypt_reaver.webp",
+  "necromancer": "generated-assets/characters/necromancer.webp",
+  "dark_necromancer": "generated-assets/characters/dark_necromancer.webp",
+  "abomination": "generated-assets/characters/abomination.webp",
+  "plague_abom": "generated-assets/characters/plague_abom.webp",
+  "frost_wyrm": "generated-assets/characters/frost_wyrm.webp",
+  "paladin": "generated-assets/characters/paladin.webp",
+  "archmage": "generated-assets/characters/archmage.webp",
+  "mountain_king": "generated-assets/characters/mountain_king.webp",
+  "blood_mage": "generated-assets/characters/blood_mage.webp",
+  "blademaster": "generated-assets/characters/blademaster.webp",
+  "far_seer": "generated-assets/characters/far_seer.webp",
+  "tauren_chief": "generated-assets/characters/tauren_chief.webp",
+  "shadow_hunter": "generated-assets/characters/shadow_hunter.webp",
+  "demon_hunter": "generated-assets/characters/demon_hunter.webp",
+  "keeper": "generated-assets/characters/keeper.webp",
+  "priestess": "generated-assets/characters/priestess.webp",
+  "warden": "generated-assets/characters/warden.webp",
+  "death_knight": "generated-assets/characters/death_knight.webp",
+  "dreadlord": "generated-assets/characters/dreadlord.webp",
+  "lich": "generated-assets/characters/lich.webp",
+  "crypt_lord": "generated-assets/characters/crypt_lord.webp",
+  "naga": "generated-assets/characters/naga.webp",
+  "panda": "generated-assets/characters/panda.webp",
+  "beastmaster": "generated-assets/characters/beastmaster.webp",
+  "dark_ranger": "generated-assets/characters/dark_ranger.webp"
+};
 const CHARACTER_ASSET_OVERRIDES = {
-  grunt:'warcraft3-assets/portraits/grunt.png'
+  ...GENERATED_CHARACTER_ASSETS
 };
 const MODEL_ASSET_OVERRIDES = {
-  grunt:'generated-assets/units/orc-grunt-pro-pokelike-facing-right.webp',
-  grunt_veteran:'generated-assets/units/orc-grunt-pro-pokelike-facing-right.webp',
-  archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
-  sentinel_archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
-  sharpshooter:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
-  huntress:'generated-assets/units/elf-archer-facing-right-3d-model.webp'
+  ...GENERATED_CHARACTER_ASSETS
 };
 function characterAsset(id){ return hostedAsset(CHARACTER_ASSET_OVERRIDES[id] || `wow-assets/character-faces/${id}.png`); }
 function modelAsset(id){
@@ -539,7 +592,7 @@ function CombatFxOverlay({fx,fastMode=false}){
   if(!fx) return null;
   const measured=styleState?.id===fx.id;
   const style=measured?styleState.style:undefined;
-  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxRafSmooth':''} ${fastMode?'fxFastMode':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span ref={moverRef} key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span ref={trailRef} className="fxSlashTrail"/><span ref={sparkRef} className="fxSlashSpark"><i/><i/><i/></span></>}<span ref={projectileRef} key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
+  return <div ref={ref} key={fx.id} style={style} data-actor-id={fx.actorId||''} data-target-id={fx.targetId||''} className={`combatFxOverlay fx-${fx.kind} fx-actor-${fx.actorId||'unknown'} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxRafSmooth':''} ${fastMode?'fxFastMode':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span ref={moverRef} key={`${fx.id}-mover`} className="fxMover">{fx.kind==='slash'&&<><span ref={trailRef} className="fxSlashTrail"/><span ref={sparkRef} className="fxSlashSpark"><i/><i/><i/></span></>}<span ref={projectileRef} key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }
@@ -612,7 +665,7 @@ function spellFxKind(name=''){
   return 'impact';
 }
 function makeCombatFx(actor,target,kind,label,seed=0,targetUids=null,area=false){
-  return {id:`fx-${seed}-${actor.uid}-${target?.uid||'self'}-${kind}`, kind, label, area, actorUid:actor.uid, targetUid:target?.uid, targetUids, fromSide:actor.side||'ally', toSide:target?.side||((actor.side==='ally')?'enemy':'ally')};
+  return {id:`fx-${seed}-${actor.uid}-${target?.uid||'self'}-${kind}`, kind, label, area, actorId:actor.id, targetId:target?.id, actorUid:actor.uid, targetUid:target?.uid, targetUids, fromSide:actor.side||'ally', toSide:target?.side||((actor.side==='ally')?'enemy':'ally')};
 }
 
 createRoot(document.getElementById('root')).render(<App/>);

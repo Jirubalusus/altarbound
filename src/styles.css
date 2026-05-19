@@ -3892,3 +3892,123 @@ body:after{display:none!important;}
   will-change:transform,opacity!important;
   animation:none!important;
 }
+
+/* Generated original character sprites + Warcraft-3-like attack assets pass. */
+.battlePage.pokelikeBattle .unitModelImage,
+.wcPortrait .officialPortrait{
+  image-rendering:auto!important;
+  object-fit:contain!important;
+  filter:drop-shadow(0 7px 7px rgba(0,0,0,.55)) saturate(1.08) contrast(1.05)!important;
+}
+.battlePage.pokelikeBattle .modelSprite{overflow:visible!important;}
+.battlePage.pokelikeBattle .modelSprite .unitModelImage{max-width:128%!important;max-height:128%!important;}
+.battlePage.pokelikeBattle .modelSprite.small .unitModelImage{max-width:120%!important;max-height:120%!important;}
+
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile{
+  background-position:center!important;
+  background-size:contain!important;
+  background-repeat:no-repeat!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile:before,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile:after{
+  opacity:.92;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-grunt .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-grunt_veteran .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/orc-war-axe-vfx.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-blademaster .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-warden .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-huntress .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-moon_huntress .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-moon-glaive.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-mountain_king .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-gryphon .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-storm-hammer.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-arrow .fxMover>.fxProjectile{
+  width:112px!important;height:54px!important;background-image:url('/generated-assets/effects/fx-arrow-archer.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-headhunter .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-berserker .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-dryad .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-elder_dryad .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-spear-troll.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-bullet .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-rifleman .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-sharpshooter .fxMover>.fxProjectile{
+  width:70px!important;height:42px!important;background-image:url('/generated-assets/effects/fx-rifle-bullet.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-claw .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-ghoul .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-frenzied_ghoul .fxMover>.fxProjectile{
+  width:110px!important;height:76px!important;background-image:url('/generated-assets/effects/fx-ghoul-claws.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-lightning .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-shaman .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-storm_shaman .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-far_seer .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-naga .fxMover>.fxProjectile{
+  width:84px!important;height:84px!important;background-image:url('/generated-assets/effects/fx-shaman-lightning.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-holy .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-priest .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-high_priest .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-paladin .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-holy-light.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-shadow .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-necromancer .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-dark_necromancer .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-death_knight .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-dreadlord .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-dark_ranger .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-shadow-skull.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-arcane .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-shadow_hunter .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-demon_hunter .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-blood_mage .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-arcane-rune.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-nature .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-keeper .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-druid_claw .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-elder_bear .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-beastmaster .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-nature-leaf.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-fireball .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-blood_mage .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-panda .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-fireball.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-frost .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-frost_wyrm .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-lich .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-frost-shard.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-earth .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-tauren .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-tauren_chief .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-raider .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-wolf_captain .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-knight .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-champion_knight .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-earth-impact.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-abomination .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-plague_abom .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-crypt_fiend .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-crypt_reaver .fxMover>.fxProjectile,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-actor-crypt_lord .fxMover>.fxProjectile{
+  background-image:url('/generated-assets/effects/fx-plague-cloud.png?v=all-units-1')!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile[style],
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile{
+  filter:drop-shadow(0 5px 4px rgba(0,0,0,.42)) drop-shadow(0 0 13px rgba(255,220,130,.44));
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile[style]:before,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile[style]:after{display:none!important;content:none!important;}
