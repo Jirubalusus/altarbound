@@ -3020,3 +3020,20 @@ body:after{display:none!important;}
     linear-gradient(180deg,rgba(0,0,0,.10) 0 18%,transparent 36% 66%,rgba(0,0,0,.24) 100%)!important;
 }
 .battlePage.pokelikeBattle .modelBattleCard>*{z-index:3!important;}
+
+/* User correction: remove biome platform; keep only the Warcraft backdrop so the unit reads naturally over the scene. */
+.battlePage.pokelikeBattle .arenaStage:before,
+.battlePage.pokelikeBattle .arenaStage:after{
+  display:none!important;
+  content:none!important;
+  background:none!important;
+  box-shadow:none!important;
+}
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(10px) scale(.76)!important;
+}
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(10px) scaleX(-1) scale(.76)!important;
+}
