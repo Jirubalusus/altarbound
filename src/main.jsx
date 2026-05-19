@@ -461,7 +461,7 @@ function BattleSide({title,units,enemy=false,fx}){ return <section className={`b
 function BattleCard({c,enemy,active,fx}){ const b=baseOf(c); const hp=Math.max(0,100*c.hp/c.maxHp); const s=stats(c); const ready=c.speed>=80&&c.hp>0; const hurt=hp>0&&hp<36; const isActor=fx?.actorUid===c.uid, isTarget=fx?.targetUid===c.uid || fx?.targetUids?.includes(c.uid); const actionKind=fx?.kind||'slash'; return <div className={`battleCard modelBattleCard ${enemy?'enemy':''} ${active?'activeFighter':''} ${ready?'readyFighter':''} ${hurt?'hurtFighter':''} ${isActor?'fxActor':''} ${isTarget?`fxTarget fxTarget-${actionKind}`:''} ${c.hp<=0?'dead':''}`} data-fighter-uid={c.uid}><div className="fighterName"><b>{b.name} Lv{c.level}</b><span>{c.hp}/{c.maxHp}</span></div><div className="hp"><i style={{width:`${hp}%`}}/></div><div className="arenaStage"><ModelSprite id={c.id} side={enemy?'enemy':'ally'} title={b.name}/>{isActor&&<span key={`${fx.id}-action`} className={`combatAction action-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}{isTarget&&<span key={`${fx.id}-impact`} className={`combatImpact impact-${actionKind}`} aria-hidden="true"><i/><i/><i/></span>}<span className="spriteShadow"/></div><div className="speed"><i style={{width:`${Math.min(100,c.speed)}%`}}/></div>{c.kind==='hero'&&<div className="power"><i style={{width:`${Math.min(100,100*c.power/powerMax(c))}%`}}/><small>{selectedSkillName(c)}</small></div>}<small>ATK {s.atk} ARM {s.armor} SPE {s.spd} {c.item&&` · ${c.item.name}`}</small></div> }
 function CombatFxOverlay({fx}){
   const ref=useRef(null);
-  const [style,setStyle]=useState(null);
+  const [styleState,setStyleState]=useState(null);
   useLayoutEffect(()=>{
     if(!fx||!ref.current) return;
     const grid=ref.current.closest('.battleGrid');
@@ -474,10 +474,30 @@ function CombatFxOverlay({fx}){
     const startY=(a.top+a.height*.52)-g.top;
     const endX=(fromEnemy?t.right-18:t.left+18)-g.left;
     const endY=(t.top+t.height*.5)-g.top;
-    setStyle({'--start-x':`${startX}px`,'--start-y':`${startY}px`,'--end-x':`${endX}px`,'--end-y':`${endY}px`,'--travel-dir':fromEnemy?-1:1});
+    setStyleState({id:fx.id, style:{
+      '--start-x':`${startX}px`,
+      '--start-y':`${startY}px`,
+      '--end-x':`${endX}px`,
+      '--end-y':`${endY}px`,
+      '--dx':`${endX-startX}px`,
+      '--dy':`${endY-startY}px`,
+      '--axe-x08':`${(endX-startX)*.08}px`,
+      '--axe-y08':`${(endY-startY)*.08-10}px`,
+      '--axe-x42':`${(endX-startX)*.42}px`,
+      '--axe-y42':`${(endY-startY)*.42-28}px`,
+      '--axe-x78':`${(endX-startX)*.78}px`,
+      '--axe-y78':`${(endY-startY)*.78-16}px`,
+      '--axe-x96':`${(endX-startX)*.96}px`,
+      '--axe-y96':`${(endY-startY)*.96-4}px`,
+      '--axe-x103':`${(endX-startX)*1.03}px`,
+      '--axe-y103':`${(endY-startY)*1.03+4}px`,
+      '--travel-dir':fromEnemy?-1:1
+    }});
   },[fx?.id,fx?.actorUid,fx?.targetUid]);
   if(!fx) return null;
-  return <div ref={ref} key={fx.id} style={style||undefined} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${style?'fxMeasured':''}`} aria-hidden="true"><span className="fxPath"><i/><i/><i/></span><span className="fxProjectile"><i/><i/><i/></span></div>;
+  const measured=styleState?.id===fx.id;
+  const style=measured?styleState.style:undefined;
+  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }
