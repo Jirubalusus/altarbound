@@ -3439,3 +3439,104 @@ body:after{display:none!important;}
 @media(max-width:900px){
   .battlePage.pokelikeBattle .battleGrid .combatFxOverlay{display:none!important;}
 }
+
+/* Polish pass: no stacked battle cards; projectiles travel from the real actor card to the real target card. */
+.battlePage.pokelikeBattle .battlePanel{
+  overflow:hidden!important;
+}
+.battlePage.pokelikeBattle .battleRoster{
+  gap:12px!important;
+  overflow:auto!important;
+  padding:2px 4px 8px!important;
+}
+.battlePage.pokelikeBattle .allySide .modelBattleCard,
+.battlePage.pokelikeBattle .enemySide .modelBattleCard,
+.battlePage.pokelikeBattle .allySide .modelBattleCard:nth-child(n+2),
+.battlePage.pokelikeBattle .enemySide .modelBattleCard:nth-child(n+2){
+  margin:0!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  margin-top:0!important;
+  z-index:auto!important;
+  transform:none!important;
+}
+.battlePage.pokelikeBattle .modelBattleCard{
+  position:relative!important;
+  flex:0 0 auto!important;
+  transform:none!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay{
+  inset:0!important;
+  z-index:90!important;
+  overflow:hidden!important;
+  opacity:0!important;
+  --start-x:26%;
+  --start-y:42%;
+  --end-x:74%;
+  --end-y:42%;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured{opacity:1!important;}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay .fxProjectile{
+  left:var(--start-x)!important;
+  top:var(--start-y)!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir))!important;
+  animation:altarRealTravel .78s cubic-bezier(.18,.72,.18,1) both!important;
+  will-change:left,top,transform,opacity!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxProjectile{
+  width:112px!important;
+  height:112px!important;
+  background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-warcraft-2') center/contain no-repeat!important;
+  animation:altarRealAxeTravel .92s cubic-bezier(.16,.78,.16,1) both!important;
+  filter:drop-shadow(0 7px 4px rgba(0,0,0,.55)) drop-shadow(0 0 12px rgba(255,206,104,.42))!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-arrow .fxProjectile{animation-duration:.72s!important;}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-claw .fxProjectile{animation-duration:.68s!important;}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay .fxPath{
+  left:var(--start-x)!important;
+  top:var(--start-y)!important;
+  width:220px!important;
+  height:14px!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir))!important;
+  transform-origin:left center!important;
+  animation:altarRealPath .78s ease-out both!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxPath{
+  width:280px!important;
+  opacity:.42!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxPath:before{
+  content:""!important;
+  position:absolute!important;
+  left:0!important;
+  top:6px!important;
+  width:100%!important;
+  height:3px!important;
+  background:linear-gradient(90deg,rgba(255,230,150,.0),rgba(255,230,150,.55),rgba(255,230,150,0))!important;
+  box-shadow:0 0 10px rgba(255,218,105,.45)!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxProjectile:before,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxProjectile:after{display:none!important;content:none!important;}
+.battlePage.pokelikeBattle .fxActor .unitModelImage{animation:altarCasterAttackForward .5s ease-out both!important;}
+.battlePage.pokelikeBattle .enemy.fxActor .unitModelImage{animation:altarCasterAttackBack .5s ease-out both!important;}
+@keyframes altarRealTravel{
+  0%{left:var(--start-x);top:var(--start-y);opacity:0;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) scale(.72)}
+  10%{opacity:1}
+  78%{opacity:1}
+  100%{left:var(--end-x);top:var(--end-y);opacity:0;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) scale(1.03)}
+}
+@keyframes altarRealAxeTravel{
+  0%{left:var(--start-x);top:var(--start-y);opacity:0;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-120deg) scale(.56)}
+  8%{opacity:1;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-65deg) scale(.72)}
+  46%{opacity:1;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(120deg) scale(.95)}
+  82%{opacity:1}
+  100%{left:var(--end-x);top:var(--end-y);opacity:0;transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(330deg) scale(1.12)}
+}
+@keyframes altarRealPath{
+  0%{opacity:0;clip-path:inset(0 100% 0 0)}
+  18%{opacity:.58;clip-path:inset(0 62% 0 0)}
+  78%{opacity:.35;clip-path:inset(0 0 0 0)}
+  100%{opacity:0;clip-path:inset(0 0 0 100%)}
+}
+@keyframes altarCasterAttackForward{0%{transform:translateX(0) scale(1)}36%{transform:translateX(14px) scale(1.055)}100%{transform:translateX(0) scale(1)}}
+@keyframes altarCasterAttackBack{0%{transform:translateX(0) scale(1)}36%{transform:translateX(-14px) scale(1.055)}100%{transform:translateX(0) scale(1)}}
