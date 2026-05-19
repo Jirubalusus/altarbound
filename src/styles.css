@@ -3037,3 +3037,59 @@ body:after{display:none!important;}
 .battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
   transform:translateY(10px) scaleX(-1) scale(.76)!important;
 }
+
+/* Professional Grunt pass: sharper Pokelike/Warcraft chibi cutout, slightly larger than the first draft but still compact. */
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"],
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"]{
+  width:150px!important;
+  height:116px!important;
+}
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  max-width:142px!important;
+  max-height:112px!important;
+  image-rendering:auto!important;
+  transform:translateY(7px) scale(.82)!important;
+  filter:drop-shadow(0 7px 0 rgba(0,0,0,.28)) drop-shadow(0 0 5px rgba(255,238,170,.08)) saturate(1.13) contrast(1.04)!important;
+}
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(7px) scaleX(-1) scale(.82)!important;
+}
+
+/* Professional Grunt placement: give the sprite breathing room so it is not tucked under the card edge. */
+.battlePage.pokelikeBattle .modelBattleCard{
+  min-height:198px!important;
+}
+.battlePage.pokelikeBattle .arenaStage{
+  top:52px!important;
+  bottom:10px!important;
+  place-items:center!important;
+}
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"],
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"]{
+  width:164px!important;
+  height:132px!important;
+}
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  max-width:158px!important;
+  max-height:128px!important;
+  transform:translateY(-4px) scale(.88)!important;
+}
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(-4px) scaleX(-1) scale(.88)!important;
+}
+
+/* Fine tune: keep the whole professional Grunt inside the card. */
+.battlePage.pokelikeBattle .modelBattleCard{min-height:218px!important;}
+.battlePage.pokelikeBattle .arenaStage{top:54px!important;bottom:22px!important;}
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(-18px) scale(.86)!important;
+}
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt"] img,
+.battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
+  transform:translateY(-18px) scaleX(-1) scale(.86)!important;
+}

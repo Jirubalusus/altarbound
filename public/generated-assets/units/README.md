@@ -50,3 +50,15 @@ Notes:
 - Runtime asset: `orc-grunt-pokemon-style-facing-right.webp`
 - Full PNG cutout: `orc-grunt-pokemon-style-facing-right.png`
 - Source: `orc-grunt-pokemon-style-facing-right-source.png`
+
+## `orc-grunt-pro-pokelike-facing-right.*`
+
+Generated with Hermes image generation on 2026-05-19 using `gpt-image-2-high` for the professional Grunt iteration.
+
+Purpose: upgraded Pokelike/Warcraft chibi full-body Grunt, with clearer armor, axe, silhouette and a more finished production look than `orc-grunt-pokemon-style-facing-right`.
+
+Notes:
+- Facing **right** for ally side; enemy side is mirrored in CSS.
+- Runtime asset: `orc-grunt-pro-pokelike-facing-right.webp`
+- Full PNG cutout: `orc-grunt-pro-pokelike-facing-right.png`
+- Preview: `orc-grunt-pro-pokelike-preview.png`
