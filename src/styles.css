@@ -3477,8 +3477,8 @@ body:after{display:none!important;}
 }
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured{opacity:1!important;}
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay .fxProjectile{
-  left:var(--start-x)!important;
-  top:var(--start-y)!important;
+  left:var(--start-x);
+  top:var(--start-y);
   transform:translate(-50%,-50%) scaleX(var(--travel-dir));
   animation:altarRealTravel .78s cubic-bezier(.18,.72,.18,1) both!important;
   will-change:left,top,transform,opacity!important;
@@ -3486,8 +3486,8 @@ body:after{display:none!important;}
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash .fxProjectile{
   width:118px!important;
   height:118px!important;
-  left:var(--start-x)!important;
-  top:var(--start-y)!important;
+  left:var(--start-x);
+  top:var(--start-y);
   background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-warcraft-3') center/contain no-repeat!important;
   animation:altarRealAxeChop .96s cubic-bezier(.14,.76,.15,1) both!important;
   filter:drop-shadow(0 7px 4px rgba(0,0,0,.55)) drop-shadow(0 0 14px rgba(255,206,104,.52))!important;
@@ -3496,8 +3496,8 @@ body:after{display:none!important;}
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-arrow .fxProjectile{animation-duration:.72s!important;}
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-claw .fxProjectile{animation-duration:.68s!important;}
 .battlePage.pokelikeBattle .battleGrid .combatFxOverlay .fxPath{
-  left:var(--start-x)!important;
-  top:var(--start-y)!important;
+  left:var(--start-x);
+  top:var(--start-y);
   width:220px!important;
   height:14px!important;
   transform:translate(-50%,-50%) scaleX(var(--travel-dir));
@@ -3552,3 +3552,70 @@ body:after{display:none!important;}
 }
 @keyframes altarCasterAttackForward{0%{transform:translateX(0) scale(1)}36%{transform:translateX(14px) scale(1.055)}100%{transform:translateX(0) scale(1)}}
 @keyframes altarCasterAttackBack{0%{transform:translateX(0) scale(1)}36%{transform:translateX(-14px) scale(1.055)}100%{transform:translateX(0) scale(1)}}
+
+/* Definitive Grunt axe pass: move a wrapper between measured cards; spin/chop the axe inside it. */
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover{
+  position:absolute!important;
+  left:var(--start-x);
+  top:var(--start-y);
+  width:0!important;
+  height:0!important;
+  z-index:96!important;
+  pointer-events:none!important;
+  will-change:left,top,opacity!important;
+  animation:altarFxMover .78s cubic-bezier(.18,.72,.18,1) both!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash.fxMeasured .fxMover{
+  animation:altarAxeMover .98s cubic-bezier(.13,.76,.12,1) both!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxMeasured .fxMover>.fxProjectile{
+  left:0!important;
+  top:0!important;
+  position:absolute!important;
+  transform:translate(-50%,-50%) scaleX(var(--travel-dir));
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash.fxMeasured .fxMover>.fxProjectile{
+  width:126px!important;
+  height:126px!important;
+  background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-warcraft-4') center/contain no-repeat!important;
+  animation:altarAxeSpinChop .98s cubic-bezier(.13,.76,.12,1) both!important;
+  filter:drop-shadow(0 7px 4px rgba(0,0,0,.55)) drop-shadow(0 0 15px rgba(255,211,112,.56))!important;
+  transform-origin:52% 58%!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash.fxMeasured .fxMover>.fxProjectile:before,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash.fxMeasured .fxMover>.fxProjectile:after{display:none!important;content:none!important;}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fx-slash.fxMeasured .fxPath{
+  transform:translate(-50%,-50%) rotate(var(--path-angle,0deg))!important;
+}
+@keyframes altarFxMover{
+  0%{left:var(--start-x);top:var(--start-y);opacity:0}
+  12%{opacity:1}
+  78%{opacity:1}
+  100%{left:var(--end-x);top:var(--end-y);opacity:0}
+}
+@keyframes altarAxeMover{
+  0%{left:var(--start-x);top:var(--start-y);opacity:0}
+  9%{left:var(--axe-x08);top:var(--axe-y08);opacity:1}
+  35%{left:var(--axe-x42);top:var(--axe-y42);opacity:1}
+  63%{left:var(--axe-x78);top:var(--axe-y78);opacity:1}
+  79%{left:var(--axe-x96);top:var(--axe-y96);opacity:1}
+  89%{left:var(--end-x);top:var(--end-y);opacity:1}
+  100%{left:var(--axe-x103);top:var(--axe-y103);opacity:0}
+}
+@keyframes altarAxeSpinChop{
+  0%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-112deg) scale(.62);filter:brightness(.95) saturate(1)}
+  12%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(-70deg) scale(.78)}
+  37%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(16deg) scale(1)}
+  64%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(118deg) scale(1.10)}
+  80%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(190deg) scale(1.20);filter:brightness(1.2) saturate(1.15)}
+  89%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(248deg) scale(1.28);filter:brightness(1.52) saturate(1.32)}
+  100%{transform:translate(-50%,-50%) scaleX(var(--travel-dir)) rotate(292deg) scale(.9);filter:brightness(1) saturate(1)}
+}
+
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxJsDriven .fxMover,
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxJsDriven .fxProjectile{
+  animation:none!important;
+}
+.battlePage.pokelikeBattle .battleGrid .combatFxOverlay.fxJsDriven.fx-slash .fxMover>.fxProjectile{
+  background:url('/generated-assets/effects/orc-war-axe-vfx.png?v=axe-warcraft-js-1') center/contain no-repeat!important;
+}

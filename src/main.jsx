@@ -462,6 +462,20 @@ function BattleCard({c,enemy,active,fx}){ const b=baseOf(c); const hp=Math.max(0
 function CombatFxOverlay({fx}){
   const ref=useRef(null);
   const [styleState,setStyleState]=useState(null);
+  const [progress,setProgress]=useState(0);
+  useEffect(()=>{
+    if(!fx) return;
+    let raf=0, start=performance.now();
+    const dur=fx.kind==='slash'?980:780;
+    const loop=now=>{
+      const p=Math.min(1,(now-start)/dur);
+      setProgress(p);
+      if(p<1) raf=requestAnimationFrame(loop);
+    };
+    setProgress(0);
+    raf=requestAnimationFrame(loop);
+    return()=>cancelAnimationFrame(raf);
+  },[fx?.id,fx?.kind]);
   useLayoutEffect(()=>{
     if(!fx||!ref.current) return;
     const grid=ref.current.closest('.battleGrid');
@@ -474,30 +488,44 @@ function CombatFxOverlay({fx}){
     const startY=(a.top+a.height*.52)-g.top;
     const endX=(fromEnemy?t.right-18:t.left+18)-g.left;
     const endY=(t.top+t.height*.5)-g.top;
-    setStyleState({id:fx.id, style:{
+    const dx=endX-startX, dy=endY-startY;
+    setStyleState({id:fx.id, coords:{startX,startY,endX,endY,dx,dy,dir:fromEnemy?-1:1}, style:{
       '--start-x':`${startX}px`,
       '--start-y':`${startY}px`,
       '--end-x':`${endX}px`,
       '--end-y':`${endY}px`,
-      '--dx':`${endX-startX}px`,
-      '--dy':`${endY-startY}px`,
-      '--axe-x08':`${(endX-startX)*.08}px`,
-      '--axe-y08':`${(endY-startY)*.08-10}px`,
-      '--axe-x42':`${(endX-startX)*.42}px`,
-      '--axe-y42':`${(endY-startY)*.42-28}px`,
-      '--axe-x78':`${(endX-startX)*.78}px`,
-      '--axe-y78':`${(endY-startY)*.78-16}px`,
-      '--axe-x96':`${(endX-startX)*.96}px`,
-      '--axe-y96':`${(endY-startY)*.96-4}px`,
-      '--axe-x103':`${(endX-startX)*1.03}px`,
-      '--axe-y103':`${(endY-startY)*1.03+4}px`,
+      '--dx':`${dx}px`,
+      '--dy':`${dy}px`,
+      '--axe-x08':`${startX+dx*.08}px`,
+      '--axe-y08':`${startY+dy*.08-10}px`,
+      '--axe-x42':`${startX+dx*.42}px`,
+      '--axe-y42':`${startY+dy*.42-28}px`,
+      '--axe-x78':`${startX+dx*.78}px`,
+      '--axe-y78':`${startY+dy*.78-16}px`,
+      '--axe-x96':`${startX+dx*.96}px`,
+      '--axe-y96':`${startY+dy*.96-4}px`,
+      '--axe-x103':`${startX+dx*1.03}px`,
+      '--axe-y103':`${startY+dy*1.03+4}px`,
       '--travel-dir':fromEnemy?-1:1
     }});
   },[fx?.id,fx?.actorUid,fx?.targetUid]);
   if(!fx) return null;
   const measured=styleState?.id===fx.id;
   const style=measured?styleState.style:undefined;
-  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-projectile`} className="fxProjectile"><i/><i/><i/></span></>}</div>;
+  let moverStyle, projectileStyle;
+  if(measured && fx.kind==='slash'){
+    const c=styleState.coords;
+    const p=Math.max(0,Math.min(1,progress));
+    const arc=Math.sin(Math.PI*p);
+    const x=c.startX+c.dx*p;
+    const y=c.startY+c.dy*p-34*arc;
+    const rotate=-112+404*p;
+    const scale=p<.12?.62+1.3*p:p>.84?1.28-(p-.84)*2.1:0.78+p*.55;
+    const opacity=p<.06?p/.06:p>.92?Math.max(0,(1-p)/.08):1;
+    moverStyle={left:`${x}px`,top:`${y}px`,opacity};
+    projectileStyle={transform:`translate(-50%,-50%) scaleX(${c.dir}) rotate(${rotate}deg) scale(${scale})`,filter:p>.78?'brightness(1.45) saturate(1.28)':undefined};
+  }
+  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxJsDriven':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-mover`} className="fxMover" style={moverStyle}><span key={`${fx.id}-projectile`} className="fxProjectile" style={projectileStyle}><i/><i/><i/></span></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }
