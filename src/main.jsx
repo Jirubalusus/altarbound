@@ -484,10 +484,10 @@ function CombatFxOverlay({fx}){
     if(!grid||!actor||!target) return;
     const g=grid.getBoundingClientRect(), a=actor.getBoundingClientRect(), t=target.getBoundingClientRect();
     const fromEnemy=(fx.fromSide||'ally')==='enemy';
-    const startX=(fromEnemy?a.left+18:a.right-18)-g.left;
-    const startY=(a.top+a.height*.52)-g.top;
-    const endX=(fromEnemy?t.right-18:t.left+18)-g.left;
-    const endY=(t.top+t.height*.5)-g.top;
+    const startX=(fromEnemy?a.left+a.width*.38:a.right-a.width*.38)-g.left;
+    const startY=(a.top+a.height*.46)-g.top;
+    const endX=(fromEnemy?t.right-t.width*.35:t.left+t.width*.35)-g.left;
+    const endY=(t.top+t.height*.46)-g.top;
     const dx=endX-startX, dy=endY-startY;
     setStyleState({id:fx.id, coords:{startX,startY,endX,endY,dx,dy,dir:fromEnemy?-1:1}, style:{
       '--start-x':`${startX}px`,
@@ -516,16 +516,18 @@ function CombatFxOverlay({fx}){
   if(measured && fx.kind==='slash'){
     const c=styleState.coords;
     const p=Math.max(0,Math.min(1,progress));
-    const arc=Math.sin(Math.PI*p);
-    const x=c.startX+c.dx*p;
-    const y=c.startY+c.dy*p-34*arc;
-    const rotate=-112+404*p;
-    const scale=p<.12?.62+1.3*p:p>.84?1.28-(p-.84)*2.1:0.78+p*.55;
-    const opacity=p<.06?p/.06:p>.92?Math.max(0,(1-p)/.08):1;
-    moverStyle={left:`${x}px`,top:`${y}px`,opacity};
-    projectileStyle={transform:`translate(-50%,-50%) scaleX(${c.dir}) rotate(${rotate}deg) scale(${scale})`,filter:p>.78?'brightness(1.45) saturate(1.28)':undefined};
+    const ease=p<.5?2*p*p:1-Math.pow(-2*p+2,2)/2;
+    const arc=Math.sin(Math.PI*ease);
+    const x=c.startX+c.dx*ease;
+    const y=c.startY+c.dy*ease-24*arc;
+    const rotate=-54+248*ease;
+    const scale=.76+.18*Math.sin(Math.PI*ease)+(.08*ease);
+    const opacity=p<.05?p/.05:p>.94?Math.max(0,(1-p)/.06):1;
+    const blur=p>.12&&p<.86?'drop-shadow(0 5px 3px rgba(0,0,0,.42)) drop-shadow(0 0 12px rgba(255,211,112,.62)) brightness(1.12) saturate(1.12)':'drop-shadow(0 5px 3px rgba(0,0,0,.38))';
+    moverStyle={left:`${x}px`,top:`${y}px`,opacity,'--swing-rot':`${rotate}deg`,'--swing-scale':scale};
+    projectileStyle={transform:`translate(-50%,-50%) scaleX(${c.dir}) rotate(${rotate}deg) scale(${scale})`,filter:blur};
   }
-  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxJsDriven':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-mover`} className="fxMover" style={moverStyle}><span key={`${fx.id}-projectile`} className="fxProjectile" style={projectileStyle}><i/><i/><i/></span></span></>}</div>;
+  return <div ref={ref} key={fx.id} style={style} className={`combatFxOverlay fx-${fx.kind} fx-from-${fx.fromSide||'ally'} fx-to-${fx.toSide||'enemy'} ${fx.area?'fx-area':''} ${measured?'fxMeasured':''} ${fx.kind==='slash'?'fxJsDriven':''}`} aria-hidden="true">{measured&&<><span key={`${fx.id}-path`} className="fxPath"><i/><i/><i/></span><span key={`${fx.id}-mover`} className="fxMover" style={moverStyle}>{fx.kind==='slash'&&<><span className="fxSlashTrail"/><span className="fxSlashSpark"><i/><i/><i/></span></>}<span key={`${fx.id}-projectile`} className="fxProjectile" style={projectileStyle}><i/><i/><i/></span></span></>}</div>;
 }
 function powerMax(h){ return h.selectedSkill===3?160:100; }
 function selectedSkillName(h){ const b=HEROES[h.id]; return h.selectedSkill===3?b.ultimate:b.skills[h.selectedSkill]; }
