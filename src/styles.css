@@ -4095,3 +4095,30 @@ body:after{display:none!important;}
   width:58px!important;
   height:58px!important;
 }
+
+/* Anti-clipping pass: character sprites must never be cut by card/panel overflow. */
+.battlePage.pokelikeBattle .battleGrid,
+.battlePage.pokelikeBattle .battlePanel,
+.battlePage.pokelikeBattle .battleRoster,
+.battlePage.pokelikeBattle .modelBattleCard,
+.battlePage.pokelikeBattle .arenaStage,
+.battlePage.pokelikeBattle .modelSprite,
+.pickCard,
+.pickCard>.modelSprite,
+.starterCard,
+.starterCard>.modelSprite,
+.mapPartySprites,
+.mapPartySprites .modelSprite{
+  overflow:visible!important;
+}
+.battlePage.pokelikeBattle .modelBattleCard::after,
+.battlePage.pokelikeBattle .battlePanel::after,
+.pickCard::after,
+.starterCard::after{
+  pointer-events:none!important;
+}
+.battlePage.pokelikeBattle .modelSprite .unitModelImage{
+  object-fit:contain!important;
+  object-position:center bottom!important;
+  background:transparent!important;
+}
