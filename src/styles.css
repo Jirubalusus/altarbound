@@ -3093,3 +3093,30 @@ body:after{display:none!important;}
 .battlePage.pokelikeBattle .enemySide .arenaStage .modelSprite[title="Grunt Veteran"] img{
   transform:translateY(-18px) scaleX(-1) scale(.86)!important;
 }
+
+/* Nameplate containment: the global motion layer makes card children relative;
+   force the name/HP HUD back to absolute so it cannot spill past the card frame. */
+.battlePage.pokelikeBattle .modelBattleCard>.fighterName{
+  position:absolute!important;
+  top:7px!important;
+  left:16px!important;
+  right:16px!important;
+  width:auto!important;
+  max-width:none!important;
+  height:22px!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+.battlePage.pokelikeBattle .modelBattleCard>.hp{
+  position:absolute!important;
+  top:35px!important;
+  left:24px!important;
+  right:24px!important;
+  width:auto!important;
+  box-sizing:border-box!important;
+  overflow:hidden!important;
+}
+@media(max-width:900px){
+  .battlePage.pokelikeBattle .modelBattleCard>.fighterName{left:14px!important;right:14px!important;}
+  .battlePage.pokelikeBattle .modelBattleCard>.hp{left:22px!important;right:22px!important;}
+}
