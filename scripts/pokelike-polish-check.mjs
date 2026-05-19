@@ -51,6 +51,7 @@ if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sp
 }
 const warcraftPortraitOverrides = ['public/warcraft3-assets/portraits/grunt.png'];
 const generatedCombatModels = ['public/generated-assets/units/orc-grunt-pokemon-style-facing-right.webp','public/generated-assets/units/elf-archer-facing-right-3d-model.webp','public/generated-assets/units/human-footman-facing-right-3d-model.webp','public/generated-assets/units/undead-ghoul-facing-right-3d-model.webp'];
+const generatedBattleBackgrounds = ['public/generated-assets/battle-backgrounds/barrens-card-bg.webp','public/generated-assets/battle-backgrounds/elwynn-card-bg.webp','public/generated-assets/battle-backgrounds/undead-card-bg.webp'];
 const missingWarcraftPortraits = [];
 for (const asset of warcraftPortraitOverrides) {
   try { await fs.access(path.resolve(asset)); }
@@ -61,8 +62,13 @@ for (const asset of generatedCombatModels) {
   try { await fs.access(path.resolve(asset)); }
   catch { missingGeneratedCombatModels.push(asset); }
 }
-if (characterCatalog.length < 56 || missingCharacterAssets.length || missingWarcraftPortraits.length || missingGeneratedCombatModels.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
-  throw new Error(`All units/heroes must use sourced portraits for portrait slots and full-body combat models for battle/model slots: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, missingWarcraftPortraits, missingGeneratedCombatModels, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
+const missingGeneratedBattleBackgrounds = [];
+for (const asset of generatedBattleBackgrounds) {
+  try { await fs.access(path.resolve(asset)); }
+  catch { missingGeneratedBattleBackgrounds.push(asset); }
+}
+if (characterCatalog.length < 56 || missingCharacterAssets.length || missingWarcraftPortraits.length || missingGeneratedCombatModels.length || missingGeneratedBattleBackgrounds.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
+  throw new Error(`All units/heroes must use sourced portraits for portrait slots and full-body combat models for battle/model slots, with generated Warcraft-style battle backdrops: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, missingWarcraftPortraits, missingGeneratedCombatModels, missingGeneratedBattleBackgrounds, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
 }
 
 await page.goto(baseURL, { waitUntil: 'networkidle' });
