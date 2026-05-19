@@ -175,9 +175,14 @@ function hostedAsset(path){ return publicAsset(path); }
 const CHARACTER_ASSET_OVERRIDES = {
   grunt:'warcraft3-assets/portraits/grunt.png'
 };
+const MODEL_ASSET_OVERRIDES = {
+  grunt:'generated-assets/units/orc-grunt-generated-model.webp',
+  grunt_veteran:'generated-assets/units/orc-grunt-generated-model.webp'
+};
 function characterAsset(id){ return hostedAsset(CHARACTER_ASSET_OVERRIDES[id] || `wow-assets/character-faces/${id}.png`); }
+function modelAsset(id){ return hostedAsset(MODEL_ASSET_OVERRIDES[id] || `wow-assets/characters/${id}.png`); }
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}>{!missing&&<img className="officialPortrait officialCharacterIcon" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<em>{initials(label)}</em>}</span>; }
-function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img className="officialCharacterIcon" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
+function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[modelAsset(id),characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img className="officialCharacterIcon unitModelImage" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
 function ItemIcon({item}){
   const src=item?.asset || (item?.name ? `wow-assets/items/${itemSlug(item.name)}.png` : '');

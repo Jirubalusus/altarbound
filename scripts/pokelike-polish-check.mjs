@@ -50,13 +50,19 @@ if (wowItemRefs.length < 10 || missingWowItems.length || sourceText.includes('sp
   throw new Error(`Item cards must use sourced WoW/Warcraft icons, not generated sprites/emoji fallbacks: ${JSON.stringify({wowItemRefs:wowItemRefs.length, missingWowItems, usesSpritesItems:sourceText.includes('sprites/items'), usesItemIconFallback:sourceText.includes('item?.icon')})}`);
 }
 const warcraftPortraitOverrides = ['public/warcraft3-assets/portraits/grunt.png'];
+const generatedCombatModels = ['public/generated-assets/units/orc-grunt-generated-model.webp'];
 const missingWarcraftPortraits = [];
 for (const asset of warcraftPortraitOverrides) {
   try { await fs.access(path.resolve(asset)); }
   catch { missingWarcraftPortraits.push(asset); }
 }
-if (characterCatalog.length < 56 || missingCharacterAssets.length || missingWarcraftPortraits.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
-  throw new Error(`All units/heroes must use sourced face/portrait WoW/Warcraft character assets, not weapons/spells or generated/local model placeholders: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, missingWarcraftPortraits, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
+const missingGeneratedCombatModels = [];
+for (const asset of generatedCombatModels) {
+  try { await fs.access(path.resolve(asset)); }
+  catch { missingGeneratedCombatModels.push(asset); }
+}
+if (characterCatalog.length < 56 || missingCharacterAssets.length || missingWarcraftPortraits.length || missingGeneratedCombatModels.length || nonFaceCharacterIcons.length || sourceText.includes('sprites/models/') || sourceText.includes('war3-assets/portraits/')) {
+  throw new Error(`All units/heroes must use sourced portraits for portrait slots and full-body combat models for battle/model slots: ${JSON.stringify({characterAssets:characterCatalog.length, missingCharacterAssets, missingWarcraftPortraits, missingGeneratedCombatModels, nonFaceCharacterIcons, usesSpriteModels:sourceText.includes('sprites/models/'), usesOldPortraits:sourceText.includes('war3-assets/portraits/')})}`);
 }
 
 await page.goto(baseURL, { waitUntil: 'networkidle' });
@@ -77,8 +83,10 @@ await page.getByRole('button', { name: /NORMAL MODE/i }).click();
 await page.waitForSelector('.starterCard');
 await assertNoBadImages('starter');
 await shot('02-race-select');
-const raceGruntPortrait = await page.evaluate(() => [...document.querySelectorAll('.officialCharacterIcon')].find(img => img.alt === 'Grunt')?.src || 'missing');
-if (!raceGruntPortrait.includes('/warcraft3-assets/portraits/grunt.png')) throw new Error(`Race select Grunt must use classic Warcraft III BTNGrunt portrait: ${raceGruntPortrait}`);
+const raceGruntModel = await page.evaluate(() => [...document.querySelectorAll('.starterCard .unitModelImage')].find(img => img.alt === 'Grunt')?.src || 'missing');
+if (!raceGruntModel.includes('/generated-assets/units/orc-grunt-generated-model.webp')) throw new Error(`Race select Grunt must use the generated full-body Grunt model, not a face portrait: ${raceGruntModel}`);
+const raceGruntPortrait = await page.evaluate(() => [...document.querySelectorAll('.wcPortrait .officialPortrait')].find(img => img.alt === 'Grunt')?.src || 'missing');
+if (raceGruntPortrait !== 'missing' && !raceGruntPortrait.includes('/warcraft3-assets/portraits/grunt.png')) throw new Error(`Grunt portrait slots must keep classic Warcraft III BTNGrunt portrait: ${raceGruntPortrait}`);
 
 await page.getByRole('button', { name: /Orc Starter|Orc/i }).first().click();
 await page.waitForSelector('.pokelikeBoard');
@@ -181,9 +189,12 @@ await page.waitForSelector('.pokelikeBattle');
 await page.waitForSelector('.battleRoster .modelBattleCard');
 const battleMetrics = await page.evaluate(() => ({
   panels: [...document.querySelectorAll('.battlePanel')].map(p => p.querySelectorAll('.modelBattleCard').length),
-  rosters: document.querySelectorAll('.battleRoster').length
+  rosters: document.querySelectorAll('.battleRoster').length,
+  gruntModelSrc: [...document.querySelectorAll('.pokelikeBattle .unitModelImage')].find(img => img.alt === 'Grunt')?.src || 'missing',
+  portraitModelLeaks: [...document.querySelectorAll('.pokelikeBattle .arenaStage .unitModelImage')].filter(img => img.src.includes('/character-faces/') || img.src.includes('/portraits/')).map(img => img.src)
 }));
 if (battleMetrics.rosters !== 2 || battleMetrics.panels.some(n => n < 1)) throw new Error(`Battle does not render roster rows: ${JSON.stringify(battleMetrics)}`);
+if (!battleMetrics.gruntModelSrc.includes('/generated-assets/units/orc-grunt-generated-model.webp')) throw new Error(`Battle Grunt must fight as the generated full-body model: ${JSON.stringify(battleMetrics)}`);
 const battleMotion = await page.evaluate(() => ({
   transitionShell: !!document.querySelector('.pokelikeBattle.appScreenTransition'),
   backdrop: !!document.querySelector('.pokelikeBattle .aaaBackdrop.battleFX'),
