@@ -176,11 +176,25 @@ const CHARACTER_ASSET_OVERRIDES = {
   grunt:'warcraft3-assets/portraits/grunt.png'
 };
 const MODEL_ASSET_OVERRIDES = {
-  grunt:'generated-assets/units/orc-grunt-generated-model.webp',
-  grunt_veteran:'generated-assets/units/orc-grunt-generated-model.webp'
+  grunt:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
+  grunt_veteran:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
+  archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
+  sentinel_archer:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
+  sharpshooter:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
+  huntress:'generated-assets/units/elf-archer-facing-right-3d-model.webp'
 };
 function characterAsset(id){ return hostedAsset(CHARACTER_ASSET_OVERRIDES[id] || `wow-assets/character-faces/${id}.png`); }
-function modelAsset(id){ return hostedAsset(MODEL_ASSET_OVERRIDES[id] || `wow-assets/characters/${id}.png`); }
+function modelAsset(id){
+  if(MODEL_ASSET_OVERRIDES[id]) return hostedAsset(MODEL_ASSET_OVERRIDES[id]);
+  const race=UNITS[id]?.race;
+  const raceFallback={
+    human:'generated-assets/units/human-footman-facing-right-3d-model.webp',
+    orc:'generated-assets/units/orc-grunt-facing-right-3d-model.webp',
+    nightelf:'generated-assets/units/elf-archer-facing-right-3d-model.webp',
+    undead:'generated-assets/units/undead-ghoul-facing-right-3d-model.webp'
+  };
+  return hostedAsset(raceFallback[race] || `wow-assets/characters/${id}.png`);
+}
 function Portrait({id, large=false, tiny=false, title}){ const race=(UNITS[id]?.race||HEROES[id]?.race||'neutral'); const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`wcPortrait ${race} ${large?'large':''} ${tiny?'tiny':''}`} title={label}>{!missing&&<img className="officialPortrait officialCharacterIcon" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<em>{initials(label)}</em>}</span>; }
 function ModelSprite({id, side='ally', small=false, title}){ const label=title||UNITS[id]?.name||HEROES[id]?.name||id; const sources=[modelAsset(id),characterAsset(id)]; const [srcIndex,setSrcIndex]=useState(0); useEffect(()=>setSrcIndex(0),[id]); const missing=srcIndex>=sources.length; return <span className={`modelSprite ${side} ${small?'small':''} ${missing?'missingModel':''}`} title={label}>{!missing&&<img className="officialCharacterIcon unitModelImage" src={sources[srcIndex]} alt={label} onError={()=>setSrcIndex(i=>i+1)}/>} {missing&&<Portrait id={id} tiny title={label}/>}</span>; }
 function itemSlug(name=''){ return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
